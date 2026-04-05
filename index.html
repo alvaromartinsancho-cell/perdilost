@@ -25,7 +25,7 @@ function mostrarPropietario() {
     <input type="email" id="contacto" placeholder="Tu email"><br><br>
     <textarea id="descripcion" placeholder="Descripción opcional del objeto"></textarea><br><br>
 
-    <button>Guardar</button>
+    <button onclick="guardarCodigo()">Guardar</button>
   `;
 }
 
@@ -42,6 +42,33 @@ function mostrarEncontrado() {
     <button>Enviar aviso</button>
   `;
 }
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  async function guardarCodigo() {
+  const codigo = document.getElementById('codigo').value;
+  const nombre = document.getElementById('nombre').value;
+  const contacto = document.getElementById('contacto').value;
+  const descripcion = document.getElementById('descripcion').value;
+
+  const { data, error } = await supabaseClient
+    .from('items')
+    .insert([
+      {
+        code: codigo,
+        owner_name: nombre,
+        contact_info: contacto,
+        description: descripcion
+      }
+    ]);
+
+  if (error) {
+    alert('Error: ' + error.message);
+  } else {
+    alert('Guardado correctamente');
+  }
+}
   </script>
+    const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
+    const supabaseKey = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
+    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 </body>
 </html>
