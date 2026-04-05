@@ -14,61 +14,63 @@
 
   <div id="zona"></div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-function mostrarPropietario() {
-  document.getElementById('zona').innerHTML = `
-    <h2>Registrar mi código</h2>
-    <p>Introduce tu código y tus datos de contacto.</p>
-
-    <input type="text" id="codigo" placeholder="Código"><br><br>
-    <input type="text" id="nombre" placeholder="Tu nombre"><br><br>
-    <input type="email" id="contacto" placeholder="Tu email"><br><br>
-    <textarea id="descripcion" placeholder="Descripción opcional del objeto"></textarea><br><br>
-
-    <button onclick="guardarCodigo()">Guardar</button>
-  `;
-}
-
-function mostrarEncontrado() {
-  document.getElementById('zona').innerHTML = `
-    <h2>He encontrado un objeto</h2>
-    <p>Introduce el código del objeto y tus datos.</p>
-
-    <input type="text" id="codigo-encontrado" placeholder="Código"><br><br>
-    <input type="text" id="nombre-encontrado" placeholder="Tu nombre"><br><br>
-    <input type="email" id="contacto-encontrado" placeholder="Tu email"><br><br>
-    <textarea id="mensaje-encontrado" placeholder="Mensaje para el propietario"></textarea><br><br>
-
-    <button>Enviar aviso</button>
-  `;
-}
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  async function guardarCodigo() {
-  const codigo = document.getElementById('codigo').value;
-  const nombre = document.getElementById('nombre').value;
-  const contacto = document.getElementById('contacto').value;
-  const descripcion = document.getElementById('descripcion').value;
-
-  const { data, error } = await supabaseClient
-    .from('items')
-    .insert([
-      {
-        code: codigo,
-        owner_name: nombre,
-        contact_info: contacto,
-        description: descripcion
-      }
-    ]);
-
-  if (error) {
-    alert('Error: ' + error.message);
-  } else {
-    alert('Guardado correctamente');
-  }
-}
-  </script>
     const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
     const supabaseKey = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    function mostrarPropietario() {
+      document.getElementById('zona').innerHTML = `
+        <h2>Registrar mi código</h2>
+        <p>Introduce tu código y tus datos de contacto.</p>
+
+        <input type="text" id="codigo" placeholder="Código"><br><br>
+        <input type="text" id="nombre" placeholder="Tu nombre"><br><br>
+        <input type="email" id="contacto" placeholder="Tu email"><br><br>
+        <textarea id="descripcion" placeholder="Descripción opcional del objeto"></textarea><br><br>
+
+        <button onclick="guardarCodigo()">Guardar</button>
+      `;
+    }
+
+    function mostrarEncontrado() {
+      document.getElementById('zona').innerHTML = `
+        <h2>He encontrado un objeto</h2>
+        <p>Introduce el código del objeto y tus datos.</p>
+
+        <input type="text" id="codigo-encontrado" placeholder="Código"><br><br>
+        <input type="text" id="nombre-encontrado" placeholder="Tu nombre"><br><br>
+        <input type="email" id="contacto-encontrado" placeholder="Tu email"><br><br>
+        <textarea id="mensaje-encontrado" placeholder="Mensaje para el propietario"></textarea><br><br>
+
+        <button>Enviar aviso</button>
+      `;
+    }
+
+    async function guardarCodigo() {
+      const codigo = document.getElementById('codigo').value;
+      const nombre = document.getElementById('nombre').value;
+      const contacto = document.getElementById('contacto').value;
+      const descripcion = document.getElementById('descripcion').value;
+
+      const { error } = await supabaseClient
+        .from('items')
+        .insert([
+          {
+            code: codigo,
+            owner_name: nombre,
+            contact_info: contacto,
+            description: descripcion
+          }
+        ]);
+
+      if (error) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Guardado correctamente');
+      }
+    }
+  </script>
 </body>
 </html>
