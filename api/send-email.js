@@ -5,11 +5,17 @@ export default async function handler(req, res) {
 
   try {
     const { to, subject, text } = req.body;
+const apiKey = process.env.RESEND_API_KEY;
 
+if (!apiKey) {
+  return res.status(500).json({
+    error: 'Falta RESEND_API_KEY en Vercel'
+  });
+}
     const respuesta = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
@@ -22,12 +28,14 @@ export default async function handler(req, res) {
 
     const datos = await respuesta.json();
 
-    if (!respuesta.ok) {
-      return res.status(400).json({
-        error: 'Error enviando email',
-        detalle: datos
-      });
-    }
+if (!respuesta.ok) {
+  return res.status(400).json({
+    error: 'Error enviando email',
+    detalle: datos,
+    apiKeyPrimeros5: apiKey.slice(0, 5),
+    apiKeyLongitud: apiKey.length
+  });
+}
 
     return res.status(200).json({
       ok: true,
