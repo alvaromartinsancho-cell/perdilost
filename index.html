@@ -4,15 +4,78 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perdilost</title>
+  <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f7fb;
+    margin: 0;
+    padding: 0;
+  }
+
+  .contenedor {
+    max-width: 700px;
+    margin: 60px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  h1 {
+    margin-top: 0;
+    color: #1f2d3d;
+  }
+
+  p {
+    color: #444;
+  }
+
+  button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 18px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+    margin-top: 10px;
+  }
+
+  button:hover {
+    background: #1d4ed8;
+  }
+
+  input, textarea {
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 14px;
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  #zona {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e5e7eb;
+  }
+</style>
 </head>
 <body>
-  <h1>Perdilost</h1>
-  <p>Selecciona una opción:</p>
+  <div class="contenedor">
+    <h1>Perdilost</h1>
+    <p>Selecciona una opción:</p>
 
-  <button onclick="mostrarPropietario()">Tengo un código</button>
-  <button onclick="mostrarEncontrado()">He encontrado un objeto</button>
+    <button onclick="mostrarPropietario()">Tengo un código</button>
+    <button onclick="mostrarEncontrado()">He encontrado un objeto</button>
 
-  <div id="zona"></div>
+    <div id="zona"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
@@ -127,5 +190,6 @@
       alert('Aviso guardado correctamente');
     }
   </script>
+</div>
 </body>
 </html>
