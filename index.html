@@ -48,86 +48,84 @@
       `;
     }
 
-async function guardarCodigo() {
-  const codigo = document.getElementById('codigo').value;
-  const nombre = document.getElementById('nombre').value;
-  const contacto = document.getElementById('contacto').value;
-  const descripcion = document.getElementById('descripcion').value;
+    async function guardarCodigo() {
+      const codigo = document.getElementById('codigo').value;
+      const nombre = document.getElementById('nombre').value;
+      const contacto = document.getElementById('contacto').value;
+      const descripcion = document.getElementById('descripcion').value;
 
-  const { data: existente, error: errorConsulta } = await supabaseClient
-    .from('items')
-    .select('*')
-    .eq('code', codigo);
+      const { data: existente, error: errorConsulta } = await supabaseClient
+        .from('items')
+        .select('*')
+        .eq('code', codigo);
 
-  if (errorConsulta) {
-    alert('Error al comprobar el código: ' + errorConsulta.message);
-    return;
-  }
-
-  if (existente && existente.length > 0) {
-    alert('Este código ya está registrado');
-    return;
-  }
-
-  const { error } = await supabaseClient
-    .from('items')
-    .insert([
-      {
-        code: codigo,
-        owner_name: nombre,
-        contact_info: contacto,
-        description: descripcion
+      if (errorConsulta) {
+        alert('Error al comprobar el código: ' + errorConsulta.message);
+        return;
       }
-    ]);
 
-  if (error) {
-    alert('Error: ' + error.message);
-  } else {
-    alert('Guardado correctamente');
-  }
-}
-async function comprobarCodigoEncontrado() {
-  const codigo = document.getElementById('codigo-encontrado').value;
-  const nombre = document.getElementById('nombre-encontrado').value;
-  const contacto = document.getElementById('contacto-encontrado').value;
-  const mensaje = document.getElementById('mensaje-encontrado').value;
-
-  const { data, error } = await supabaseClient
-    .from('items')
-    .select('*')
-    .eq('code', codigo);
-
-  if (error) {
-    alert('Error: ' + error.message);
-    return;
-  }
-
-  if (!data || data.length === 0) {
-    alert('Este código no está registrado');
-    return;
-  }
-
-  const { error: errorGuardar } = await supabaseClient
-    .from('found_reports')
-    .insert([
-      {
-        code: codigo,
-        finder_name: nombre,
-        finder_contact: contacto,
-        message: mensaje
+      if (existente && existente.length > 0) {
+        alert('Este código ya está registrado');
+        return;
       }
-    ]);
 
-  if (errorGuardar) {
-    alert('Error al guardar el aviso: ' + errorGuardar.message);
-    return;
-  }
+      const { error } = await supabaseClient
+        .from('items')
+        .insert([
+          {
+            code: codigo,
+            owner_name: nombre,
+            contact_info: contacto,
+            description: descripcion
+          }
+        ]);
 
-  alert('Aviso guardado correctamente');
-}
+      if (error) {
+        alert('Error: ' + error.message);
+      } else {
+        alert('Guardado correctamente');
+      }
+    }
 
-  alert('Código encontrado. Más adelante aquí enviaremos el aviso al propietario.');
-}
+    async function comprobarCodigoEncontrado() {
+      const codigo = document.getElementById('codigo-encontrado').value;
+      const nombre = document.getElementById('nombre-encontrado').value;
+      const contacto = document.getElementById('contacto-encontrado').value;
+      const mensaje = document.getElementById('mensaje-encontrado').value;
+
+      const { data, error } = await supabaseClient
+        .from('items')
+        .select('*')
+        .eq('code', codigo);
+
+      if (error) {
+        alert('Error: ' + error.message);
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        alert('Este código no está registrado');
+        return;
+      }
+
+      const { error: errorGuardar } = await supabaseClient
+        .from('found_reports')
+        .insert([
+          {
+            code: codigo,
+            finder_name: nombre,
+            finder_contact: contacto,
+            message: mensaje
+          }
+        ]);
+
+      if (errorGuardar) {
+        alert('Error al guardar el aviso: ' + errorGuardar.message);
+        return;
+      }
+
+      alert('Aviso guardado correctamente');
+    }
   </script>
 </body>
 </html>
