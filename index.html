@@ -60,11 +60,21 @@
     resize: vertical;
   }
 
-  #zona {
-    margin-top: 30px;
-    padding-top: 20px;
-    border-top: 1px solid #e5e7eb;
-  }
+#zona {
+  margin-top: 30px;
+}
+
+.tarjeta-formulario {
+  background: #f8fafc;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+}
+
+.tarjeta-formulario h2 {
+  margin-top: 0;
+  color: #1f2d3d;
+}
 </style>
 </head>
 <body>
@@ -85,6 +95,7 @@
 
     function mostrarPropietario() {
       document.getElementById('zona').innerHTML = `
+        <div class="tarjeta-formulario">
         <h2>Registrar mi código</h2>
         <p>Introduce tu código y tus datos de contacto.</p>
 
@@ -94,11 +105,13 @@
         <textarea id="descripcion" placeholder="Descripción opcional del objeto"></textarea><br><br>
 
         <button onclick="guardarCodigo()">Guardar</button>
+        </div>
       `;
     }
 
     function mostrarEncontrado() {
       document.getElementById('zona').innerHTML = `
+        <div class="tarjeta-formulario">
         <h2>He encontrado un objeto</h2>
         <p>Introduce el código del objeto y tus datos.</p>
 
@@ -108,6 +121,7 @@
         <textarea id="mensaje-encontrado" placeholder="Mensaje para el propietario"></textarea><br><br>
 
         <button onclick="comprobarCodigoEncontrado()">Enviar aviso</button>
+        </div>
       `;
     }
 
