@@ -86,8 +86,11 @@ async function guardarCodigo() {
     alert('Guardado correctamente');
   }
 }
-  async function comprobarCodigoEncontrado() {
+async function comprobarCodigoEncontrado() {
   const codigo = document.getElementById('codigo-encontrado').value;
+  const nombre = document.getElementById('nombre-encontrado').value;
+  const contacto = document.getElementById('contacto-encontrado').value;
+  const mensaje = document.getElementById('mensaje-encontrado').value;
 
   const { data, error } = await supabaseClient
     .from('items')
@@ -103,6 +106,25 @@ async function guardarCodigo() {
     alert('Este código no está registrado');
     return;
   }
+
+  const { error: errorGuardar } = await supabaseClient
+    .from('found_reports')
+    .insert([
+      {
+        code: codigo,
+        finder_name: nombre,
+        finder_contact: contacto,
+        message: mensaje
+      }
+    ]);
+
+  if (errorGuardar) {
+    alert('Error al guardar el aviso: ' + errorGuardar.message);
+    return;
+  }
+
+  alert('Aviso guardado correctamente');
+}
 
   alert('Código encontrado. Más adelante aquí enviaremos el aviso al propietario.');
 }
