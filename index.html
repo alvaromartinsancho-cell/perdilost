@@ -1,10 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perdilost</title>
 </head>
 <body>
   <h1>Perdilost</h1>
-  <p>Web en construcción 🚀</p>
+  <p>Prueba de conexión con la base de datos</p>
+
+  <button onclick="guardarPrueba()">Guardar prueba</button>
+
+  <p id="resultado"></p>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const supabaseUrl = 'https://ihpwcqkmqdlmowqkjmaq.supabase.co';
+    const supabaseKey = 'sb_publishable_xc-mlrcfwRNy394u97Hg3Q_RQvxGe5M';
+    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+    async function guardarPrueba() {
+      const resultado = document.getElementById('resultado');
+      resultado.textContent = 'Guardando...';
+
+      const { data, error } = await supabase
+        .from('items')
+        .insert([
+          {
+            code: 'PRUEBA001',
+            owner_name: 'Álvaro',
+            contact_info: 'prueba@perdilost.com',
+            description: 'Prueba desde la web'
+          }
+        ]);
+
+      if (error) {
+        resultado.textContent = 'Error: ' + error.message;
+      } else {
+        resultado.textContent = 'Guardado correctamente';
+      }
+    }
+  </script>
 </body>
 </html>
