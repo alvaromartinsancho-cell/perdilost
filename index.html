@@ -7,38 +7,26 @@
 </head>
 <body>
   <h1>Perdilost</h1>
-  <p>Prueba de conexión con la base de datos</p>
+  <p>Selecciona una opción:</p>
 
-  <button onclick="guardarPrueba()">Guardar prueba</button>
+  <button onclick="mostrarPropietario()">Tengo un código</button>
+  <button onclick="mostrarEncontrado()">He encontrado un objeto</button>
 
-  <p id="resultado"></p>
+  <div id="zona"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
-    const supabaseKey = 'sb_publishable_xc-mlrcfwRNy394u97Hg3Q_RQvxGe5M';
-    const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    function mostrarPropietario() {
+      document.getElementById('zona').innerHTML = `
+        <h2>Registrar mi código</h2>
+        <p>Aquí irá el formulario del propietario.</p>
+      `;
+    }
 
-    async function guardarPrueba() {
-      const resultado = document.getElementById('resultado');
-      resultado.textContent = 'Guardando...';
-
-      const { data, error } = await supabaseClient
-        .from('items')
-        .insert([
-          {
-            code: 'PRUEBA001',
-            owner_name: 'Álvaro',
-            contact_info: 'prueba@perdilost.com',
-            description: 'Prueba desde la web'
-          }
-        ]);
-
-      if (error) {
-        resultado.textContent = 'Error: ' + error.message;
-      } else {
-        resultado.textContent = 'Guardado correctamente';
-      }
+    function mostrarEncontrado() {
+      document.getElementById('zona').innerHTML = `
+        <h2>He encontrado un objeto</h2>
+        <p>Aquí irá el formulario de la persona que lo ha encontrado.</p>
+      `;
     }
   </script>
 </body>
