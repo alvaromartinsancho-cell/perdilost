@@ -15,12 +15,19 @@
   <div id="zona"></div>
 
   <script>
-    function mostrarPropietario() {
-      document.getElementById('zona').innerHTML = `
-        <h2>Registrar mi código</h2>
-        <p>Aquí irá el formulario del propietario.</p>
-      `;
-    }
+function mostrarPropietario() {
+  document.getElementById('zona').innerHTML = `
+    <h2>Registrar mi código</h2>
+    <p>Introduce tu código y tus datos de contacto.</p>
+
+    <input type="text" id="codigo" placeholder="Código"><br><br>
+    <input type="text" id="nombre" placeholder="Tu nombre"><br><br>
+    <input type="email" id="contacto" placeholder="Tu email"><br><br>
+    <textarea id="descripcion" placeholder="Descripción opcional del objeto"></textarea><br><br>
+
+    <button>Guardar</button>
+  `;
+}
 
     function mostrarEncontrado() {
       document.getElementById('zona').innerHTML = `
