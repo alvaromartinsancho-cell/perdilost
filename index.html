@@ -81,6 +81,29 @@ button {
   margin-top: 0;
   color: #1f2d3d;
 }
+#mensaje {
+  margin-top: 20px;
+}
+
+.mensaje-ok,
+.mensaje-error {
+  padding: 14px 16px;
+  border-radius: 12px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.mensaje-ok {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+.mensaje-error {
+  background: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
 </style>
 </head>
 <body>
@@ -93,6 +116,7 @@ button {
   <button onclick="mostrarEncontrado()">He encontrado un objeto</button>
 </div>
 
+    <div id="mensaje"></div>
     <div id="zona"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -100,7 +124,15 @@ button {
     const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
     const supabaseKey = 'sb_publishable_xc-mlrcfwRNy394u97Hg3Q_RQvxGe5M';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    function mostrarMensaje(texto, tipo) {
+  const mensaje = document.getElementById('mensaje');
 
+  if (tipo === 'ok') {
+    mensaje.innerHTML = `<div class="mensaje-ok">${texto}</div>`;
+  } else {
+    mensaje.innerHTML = `<div class="mensaje-error">${texto}</div>`;
+  }
+}
     function mostrarPropietario() {
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
@@ -144,15 +176,15 @@ button {
         .select('*')
         .eq('code', codigo);
 
-      if (errorConsulta) {
-        alert('Error al comprobar el código: ' + errorConsulta.message);
-        return;
-      }
+if (errorConsulta) {
+  mostrarMensaje('Error al comprobar el código: ' + errorConsulta.message, 'error');
+  return;
+}
 
-      if (existente && existente.length > 0) {
-        alert('Este código ya está registrado');
-        return;
-      }
+if (existente && existente.length > 0) {
+  mostrarMensaje('Este código ya está registrado', 'error');
+  return;
+}
 
       const { error } = await supabaseClient
         .from('items')
@@ -165,11 +197,11 @@ button {
           }
         ]);
 
-      if (error) {
-        alert('Error: ' + error.message);
-      } else {
-        alert('Guardado correctamente');
-      }
+if (error) {
+  mostrarMensaje('Error: ' + error.message, 'error');
+} else {
+  mostrarMensaje('Guardado correctamente', 'ok');
+}
     }
 
     async function comprobarCodigoEncontrado() {
@@ -183,15 +215,15 @@ button {
         .select('*')
         .eq('code', codigo);
 
-      if (error) {
-        alert('Error: ' + error.message);
-        return;
-      }
+if (error) {
+  mostrarMensaje('Error: ' + error.message, 'error');
+  return;
+}
 
-      if (!data || data.length === 0) {
-        alert('Este código no está registrado');
-        return;
-      }
+if (!data || data.length === 0) {
+  mostrarMensaje('Este código no está registrado', 'error');
+  return;
+}
 
       const { error: errorGuardar } = await supabaseClient
         .from('found_reports')
@@ -204,12 +236,12 @@ button {
           }
         ]);
 
-      if (errorGuardar) {
-        alert('Error al guardar el aviso: ' + errorGuardar.message);
-        return;
-      }
+if (errorGuardar) {
+  mostrarMensaje('Error al guardar el aviso: ' + errorGuardar.message, 'error');
+  return;
+}
 
-      alert('Aviso guardado correctamente');
+mostrarMensaje('Aviso guardado correctamente', 'ok');
     }
   </script>
 </div>
