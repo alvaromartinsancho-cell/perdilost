@@ -186,9 +186,9 @@ async function guardarCodigo() {
     return;
   }
 
-  const item = encontrados[0];
+  const yaRegistrado = encontrados.some(item => item.owner_name || item.contact_info);
 
-  if (item.owner_name || item.contact_info) {
+  if (yaRegistrado) {
     mostrarMensaje('Este código ya está registrado', 'error');
     return;
   }
