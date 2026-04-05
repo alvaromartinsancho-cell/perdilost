@@ -258,7 +258,7 @@ const respuestaEmail = await fetch('/api/send-email', {
 const resultadoEmail = await respuestaEmail.json();
 
 if (!respuestaEmail.ok) {
-  mostrarMensaje('Aviso guardado, pero el email no se pudo enviar: ' + JSON.stringify(resultadoEmail), 'error');
+  mostrarMensaje('Aviso guardado, pero no se ha podido enviar el email. Por favor, contacta con avisos@perdilost.com', 'error');
   return;
 }
 
