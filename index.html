@@ -44,7 +44,7 @@
         <input type="email" id="contacto-encontrado" placeholder="Tu email"><br><br>
         <textarea id="mensaje-encontrado" placeholder="Mensaje para el propietario"></textarea><br><br>
 
-        <button>Enviar aviso</button>
+        <button onclick="comprobarCodigoEncontrado()">Enviar aviso</button>
       `;
     }
 
@@ -85,6 +85,26 @@ async function guardarCodigo() {
   } else {
     alert('Guardado correctamente');
   }
+}
+  async function comprobarCodigoEncontrado() {
+  const codigo = document.getElementById('codigo-encontrado').value;
+
+  const { data, error } = await supabaseClient
+    .from('items')
+    .select('*')
+    .eq('code', codigo);
+
+  if (error) {
+    alert('Error: ' + error.message);
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    alert('Este código no está registrado');
+    return;
+  }
+
+  alert('Código encontrado. Más adelante aquí enviaremos el aviso al propietario.');
 }
   </script>
 </body>
