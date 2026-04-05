@@ -29,12 +29,19 @@ function mostrarPropietario() {
   `;
 }
 
-    function mostrarEncontrado() {
-      document.getElementById('zona').innerHTML = `
-        <h2>He encontrado un objeto</h2>
-        <p>Aquí irá el formulario de la persona que lo ha encontrado.</p>
-      `;
-    }
+function mostrarEncontrado() {
+  document.getElementById('zona').innerHTML = `
+    <h2>He encontrado un objeto</h2>
+    <p>Introduce el código del objeto y tus datos.</p>
+
+    <input type="text" id="codigo-encontrado" placeholder="Código"><br><br>
+    <input type="text" id="nombre-encontrado" placeholder="Tu nombre"><br><br>
+    <input type="email" id="contacto-encontrado" placeholder="Tu email"><br><br>
+    <textarea id="mensaje-encontrado" placeholder="Mensaje para el propietario"></textarea><br><br>
+
+    <button>Enviar aviso</button>
+  `;
+}
   </script>
 </body>
 </html>
