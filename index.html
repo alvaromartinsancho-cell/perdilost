@@ -210,10 +210,12 @@ if (error) {
       const contacto = document.getElementById('contacto-encontrado').value;
       const mensaje = document.getElementById('mensaje-encontrado').value;
 
-      const { data, error } = await supabaseClient
-        .from('items')
-        .select('*')
-        .eq('code', codigo);
+const { data, error } = await supabaseClient
+  .from('items')
+  .select('*')
+  .eq('code', codigo);
+
+const propietario = data && data.length > 0 ? data[0] : null;
 
 if (error) {
   mostrarMensaje('Error: ' + error.message, 'error');
@@ -241,7 +243,26 @@ if (errorGuardar) {
   return;
 }
 
-mostrarMensaje('Aviso guardado correctamente', 'ok');
+const respuestaEmail = await fetch('/api/send-email', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    to: propietario.contact_info,
+    subject: 'Han encontrado tu objeto',
+    text: `Hola ${propietario.owner_name || ''}, alguien ha encontrado el objeto con código ${codigo}.\n\nDatos de contacto:\n${nombre}\n${contacto}\n\nMensaje:\n${mensaje}`
+  })
+});
+
+const resultadoEmail = await respuestaEmail.json();
+
+if (!respuestaEmail.ok) {
+  mostrarMensaje('Aviso guardado, pero el email no se pudo enviar', 'error');
+  return;
+}
+
+mostrarMensaje('Aviso guardado y email enviado correctamente', 'ok');
     }
   </script>
 </div>
