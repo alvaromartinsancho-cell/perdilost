@@ -165,44 +165,50 @@ button {
       `;
     }
 
-    async function guardarCodigo() {
-      const codigo = document.getElementById('codigo').value;
-      const nombre = document.getElementById('nombre').value;
-      const contacto = document.getElementById('contacto').value;
-      const descripcion = document.getElementById('descripcion').value;
+async function guardarCodigo() {
+  const codigo = document.getElementById('codigo').value;
+  const nombre = document.getElementById('nombre').value;
+  const contacto = document.getElementById('contacto').value;
+  const descripcion = document.getElementById('descripcion').value;
 
-      const { data: existente, error: errorConsulta } = await supabaseClient
-        .from('items')
-        .select('*')
-        .eq('code', codigo);
+  const { data: encontrados, error: errorConsulta } = await supabaseClient
+    .from('items')
+    .select('*')
+    .eq('code', codigo);
 
-if (errorConsulta) {
-  mostrarMensaje('Error al comprobar el código: ' + errorConsulta.message, 'error');
-  return;
+  if (errorConsulta) {
+    mostrarMensaje('Error al comprobar el código: ' + errorConsulta.message, 'error');
+    return;
+  }
+
+  if (!encontrados || encontrados.length === 0) {
+    mostrarMensaje('Este código no es válido', 'error');
+    return;
+  }
+
+  const item = encontrados[0];
+
+  if (item.owner_name || item.contact_info) {
+    mostrarMensaje('Este código ya está registrado', 'error');
+    return;
+  }
+
+  const { error: errorUpdate } = await supabaseClient
+    .from('items')
+    .update({
+      owner_name: nombre,
+      contact_info: contacto,
+      description: descripcion
+    })
+    .eq('code', codigo);
+
+  if (errorUpdate) {
+    mostrarMensaje('Error al guardar: ' + errorUpdate.message, 'error');
+    return;
+  }
+
+  mostrarMensaje('Código activado correctamente', 'ok');
 }
-
-if (existente && existente.length > 0) {
-  mostrarMensaje('Este código ya está registrado', 'error');
-  return;
-}
-
-      const { error } = await supabaseClient
-        .from('items')
-        .insert([
-          {
-            code: codigo,
-            owner_name: nombre,
-            contact_info: contacto,
-            description: descripcion
-          }
-        ]);
-
-if (error) {
-  mostrarMensaje('Error: ' + error.message, 'error');
-} else {
-  mostrarMensaje('Guardado correctamente', 'ok');
-}
-    }
 
     async function comprobarCodigoEncontrado() {
       const codigo = document.getElementById('codigo-encontrado').value;
