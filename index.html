@@ -334,8 +334,22 @@ const respuestaEmail = await fetch('/api/send-email', {
   },
   body: JSON.stringify({
     to: propietario.contact_info,
-    subject: 'Han encontrado tu objeto',
-    text: `Hola ${propietario.owner_name || ''}, alguien ha encontrado el objeto con código ${codigo}.\n\nDatos de contacto:\n${nombre}\n${contacto}\n\nMensaje:\n${mensaje}`
+    subject: 'Han encontrado una pertenencia asociada a tu código Perdilost',
+text: `Hola ${propietario.owner_name || ''},
+
+Te informamos de que alguien ha encontrado una pertenencia asociada a tu código de Perdilost: ${codigo}.
+
+La persona que la ha encontrado nos ha dejado el siguiente mensaje:
+
+${mensaje}
+
+Datos de contacto (si los ha facilitado):
+Nombre: ${nombre || 'No facilitado'}
+Email: ${contacto || 'No facilitado'}
+
+Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.
+
+Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a avisos@perdilost.com.`
   })
 });
 
