@@ -36,15 +36,15 @@ const intro = indiceMensaje > 1
     const cierre = indiceCierre >= 0
       ? lineas.slice(indiceCierre).filter(Boolean).join(' ')
       : '';
-const codigoRegistrado = esEmailRegistro && lineas[4] ? lineas[4] : '';
+const codigoRegistrado = esEmailRegistro && lineas[7] ? lineas[7] : '';
 const datosContactoRegistro = esEmailRegistro
-  ? lineas.slice(6, 8).filter(Boolean).join('<br>')
+  ? lineas.slice(10, 12).filter(Boolean).join('<br>')
   : '';
-const descripcionRegistro = esEmailRegistro && lineas[10]
-  ? lineas[10]
+const descripcionRegistro = esEmailRegistro && lineas[14]
+  ? lineas[14]
   : '';
 const funcionamientoRegistro = esEmailRegistro
-  ? lineas.slice(12).filter(Boolean).join(' ')
+  ? lineas.slice(16).filter(Boolean).join(' ')
   : '';
     const html = `
       <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
