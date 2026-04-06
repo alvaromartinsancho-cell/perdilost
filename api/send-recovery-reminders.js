@@ -33,10 +33,37 @@ export default async function handler(req, res) {
     return new Date(aviso.created_at) <= haceDosDias;
   });
 
+  const codigosCandidatos = [...new Set(avisosCandidatos.map(aviso => aviso.code))];
+
+  const respuestaItems = await fetch(
+    `${supabaseUrl}/rest/v1/items?select=code,is_recovered,recovery_reminder_sent&code=in.(${codigosCandidatos.map(code => `"${code}"`).join(',')})`,
+    {
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`
+      }
+    }
+  );
+
+  const items = await respuestaItems.json();
+
+  if (!respuestaItems.ok) {
+    return res.status(500).json({
+      ok: false,
+      error: 'Error al leer items',
+      detalle: items
+    });
+  }
+
+  const itemsValidos = items.filter(item =>
+    item.is_recovered === null && item.recovery_reminder_sent === false
+  );
+
   return res.status(200).json({
     ok: true,
     total_found_reports: datos.length,
     total_candidatos_2_dias: avisosCandidatos.length,
-    primer_candidato: avisosCandidatos[0] || null
+    total_items_validos_recordatorio: itemsValidos.length,
+    primer_item_valido: itemsValidos[0] || null
   });
 }
