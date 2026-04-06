@@ -385,17 +385,25 @@ if (!respuestaEmail.ok) {
 
 const idReporte = reporteInsertado ? reporteInsertado.id : null;
 
-if (idReporte) {
-  const { error: errorMarcarEmailEnviado } = await supabaseClient
-    .from('found_reports')
-    .update({ email_sent: true })
-    .eq('id', idReporte);
-
-  if (errorMarcarEmailEnviado) {
-    mostrarMensaje('El email se ha enviado, pero no se ha podido actualizar el estado de envío en la base de datos: ' + errorMarcarEmailEnviado.message, 'error');
-    return;
-  }
+if (!idReporte) {
+  mostrarMensaje('Diagnóstico: no se ha recibido el id del reporte insertado.', 'error');
+  return;
 }
+
+const { data: reporteActualizado, error: errorMarcarEmailEnviado } = await supabaseClient
+  .from('found_reports')
+  .update({ email_sent: true })
+  .eq('id', idReporte)
+  .select('id, email_sent')
+  .single();
+
+if (errorMarcarEmailEnviado) {
+  mostrarMensaje('Diagnóstico update error: ' + errorMarcarEmailEnviado.message, 'error');
+  return;
+}
+
+mostrarMensaje('Diagnóstico OK. ID: ' + reporteActualizado.id + ' | email_sent: ' + reporteActualizado.email_sent, 'ok');
+return;
 
 document.getElementById('codigo-encontrado').value = '';
 document.getElementById('nombre-encontrado').value = '';
