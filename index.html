@@ -205,7 +205,9 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
 
        <input type="text" id="codigo" placeholder="Ejemplo: 1234567890" required><br><br>
        <input type="text" id="nombre" placeholder="Escribe tu nombre completo" required><br><br>
-       <input type="email" id="contacto" placeholder="ejemplo@correo.com" required><br><br>
+       <input type="email" id="contacto" placeholder="Escribe tu email" required><br><br>
+       <input type="email" id="contacto-repetir" placeholder="Repite tu email" required><br><br>
+       <div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">Los emails no coinciden.</div>
        <textarea id="descripcion" placeholder="Indicaciones sobre como devolver en caso de que alguien lo encuentre" required></textarea><br><br>
 
         <button onclick="guardarCodigo()">Crear registro</button>
@@ -242,10 +244,20 @@ async function guardarCodigo() {
    const codigo = document.getElementById('codigo').value.trim();
    const nombre = document.getElementById('nombre').value.trim();
    const contacto = document.getElementById('contacto').value.trim();
+   const contactoRepetir = document.getElementById('contacto-repetir').value.trim();
    const descripcion = document.getElementById('descripcion').value.trim();
+   const mensajeEmailCoincide = document.getElementById('mensaje-email-coincide');
 
-if (!codigo || !nombre || !contacto || !descripcion) {
+mensajeEmailCoincide.style.display = 'none';
+
+if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
   mostrarMensaje('Debes completar todos los campos para registrar tu código.', 'error');
+  return;
+}
+
+if (contacto !== contactoRepetir) {
+  mensajeEmailCoincide.style.display = 'block';
+  mostrarMensaje('Los emails no coinciden. Revisa ambos campos.', 'error');
   return;
 }
 
@@ -288,6 +300,7 @@ if (!codigo || !nombre || !contacto || !descripcion) {
   document.getElementById('codigo').value = '';
   document.getElementById('nombre').value = '';
   document.getElementById('contacto').value = '';
+  document.getElementById('contacto-repetir').value = '';
   document.getElementById('descripcion').value = '';
   
   mostrarMensaje('Código activado correctamente', 'ok');
