@@ -55,18 +55,55 @@
       En esta página podrás confirmar si finalmente has recuperado tu objeto.
     </div>
 
-    <div class="codigo" id="codigo-recuperacion">
-      Código: no informado
-    </div>
+<div class="codigo" id="codigo-recuperacion">
+  Código: no informado
+</div>
+
+<div style="margin-top: 24px;">
+  <p style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">¿Has recuperado tu objeto?</p>
+
+  <label style="display:block; margin-bottom:10px; color:#334155;">
+    <input type="radio" name="recuperado" value="si">
+    Sí, ya lo he recuperado
+  </label>
+
+  <label style="display:block; margin-bottom:10px; color:#334155;">
+    <input type="radio" name="recuperado" value="no">
+    No, todavía no lo he recuperado
+  </label>
+</div>
+    <div style="margin-top: 24px;">
+  <p style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">Comentarios (opcional)</p>
+  <textarea id="recovery-comments" placeholder="Puedes añadir aquí cualquier comentario sobre la recuperación del objeto" style="width:100%; max-width:100%; min-height:120px; padding:12px; border:1px solid #cbd5e1; border-radius:10px; box-sizing:border-box; font-size:14px;"></textarea>
+</div>
+    <div style="margin-top: 24px;">
+  <button type="button" id="btn-enviar-recuperacion" style="background:#2563eb; color:white; border:none; padding:12px 18px; border-radius:10px; cursor:pointer;">
+    Enviar confirmación
+  </button>
+</div>
+
+<div id="mensaje-recuperacion" style="margin-top:20px;"></div>
   </div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
 
-    if (code) {
-      document.getElementById('codigo-recuperacion').textContent = 'Código: ' + code;
+  if (code) {
+    document.getElementById('codigo-recuperacion').textContent = 'Código: ' + code;
+  }
+
+  document.getElementById('btn-enviar-recuperacion').addEventListener('click', function () {
+    const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
+    const mensaje = document.getElementById('mensaje-recuperacion');
+
+    if (!opcionSeleccionada) {
+      mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">Debes indicar si has recuperado tu objeto.</div>';
+      return;
     }
-  </script>
+
+    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">Formulario listo para enviar.</div>';
+  });
+</script>
 </body>
 </html>
