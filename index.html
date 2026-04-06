@@ -297,13 +297,41 @@ if (contacto !== contactoRepetir) {
     mostrarMensaje('Error al guardar: ' + errorUpdate.message, 'error');
     return;
   }
+
+  const respuestaEmailRegistro = await fetch('/api/send-email', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      to: contacto,
+      subject: 'Has registrado correctamente tu código Perdilost',
+      text: `Hola ${nombre},
+
+Te confirmamos que has registrado correctamente tu código en Perdilost.
+
+Resumen de tu registro:
+Código: ${codigo}
+Nombre: ${nombre}
+Email: ${contacto}
+Descripción: ${descripcion || 'No informada'}
+
+Si en algún momento alguien encuentra tu objeto y utiliza este código en nuestra web, te enviaremos un aviso a este mismo correo.
+
+Gracias por confiar en Perdilost.`
+    })
+  });
+  if (!respuestaEmailRegistro.ok) {
+    mostrarMensaje('Código activado correctamente, pero no hemos podido enviarte el email de confirmación.', 'error');
+    return;
+  }
   document.getElementById('codigo').value = '';
   document.getElementById('nombre').value = '';
   document.getElementById('contacto').value = '';
   document.getElementById('contacto-repetir').value = '';
   document.getElementById('descripcion').value = '';
   
-  mostrarMensaje('Código activado correctamente', 'ok');
+  mostrarMensaje('Código activado correctamente. Te hemos enviado un email de confirmación con los datos del registro.', 'ok');
 }
 
     async function comprobarCodigoEncontrado() {
