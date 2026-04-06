@@ -15,13 +15,14 @@ export default async function handler(req, res) {
 
     const lineas = text.split('\n').map(l => l.trim());
 
-    const saludo = lineas[0] || 'Hola,';
-    const intro = indiceMensaje > 1
+   const saludo = lineas[0] || 'Hola,';
+const indiceMensaje = lineas.findIndex(l => l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:'));
+const indiceDatos = lineas.findIndex(l => l.toLowerCase().includes('datos de contacto'));
+const indiceCierre = lineas.findIndex(l => l.toLowerCase().includes('te recomendamos ponerte en contacto'));
+
+const intro = indiceMensaje > 1
   ? lineas.slice(1, indiceMensaje).filter(Boolean).join(' ')
   : '';
-    const indiceMensaje = lineas.findIndex(l => l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:'));
-    const indiceDatos = lineas.findIndex(l => l.toLowerCase().includes('datos de contacto'));
-    const indiceCierre = lineas.findIndex(l => l.toLowerCase().includes('te recomendamos ponerte en contacto'));
 
     const mensaje = indiceMensaje >= 0 && indiceDatos > indiceMensaje
       ? lineas.slice(indiceMensaje + 1, indiceDatos).filter(Boolean).join('<br>')
