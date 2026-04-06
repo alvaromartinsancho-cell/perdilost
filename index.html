@@ -104,12 +104,44 @@ button {
   color: #991b1b;
   border: 1px solid #fca5a5;
 }
+.bloque-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e3a8a;
+  padding: 18px 20px;
+  border-radius: 14px;
+  margin-top: 18px;
+  line-height: 1.6;
+}
+
+.bloque-info strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #1e40af;
+}
+
+.texto-secundario {
+  margin-top: 10px;
+  color: #475569;
+  line-height: 1.6;
+}
 </style>
 </head>
 <body>
   <div class="contenedor">
-    <h1>Perdilost</h1>
-    <p>Selecciona una opción:</p>
+<h1>Perdilost</h1>
+
+<div class="bloque-info">
+  <strong>Bienvenido a Perdilost</strong>
+  En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.
+  <div class="texto-secundario">
+    Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto.<br><br>
+    Si has encontrado una pertenencia con una etiqueta de Perdilost, pulsa en <strong>He encontrado un objeto</strong> para que podamos avisar al propietario.
+  </div>
+</div>
+
+<p>Selecciona una opción:</p>
 
 <div class="botones-principales">
   <button onclick="mostrarPropietario()">Tengo un código</button>
@@ -136,8 +168,16 @@ button {
     function mostrarPropietario() {
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
-        <h2>Registrar mi código</h2>
-        <p>Introduce tu código y tus datos de contacto.</p>
+<h2>Registrar mi código</h2>
+<p>Introduce tu código y tus datos de contacto.</p>
+
+<div class="bloque-info">
+  <strong>¿Qué ocurre al registrar este código?</strong>
+  Si alguien encuentra esta pertenencia y accede a nuestra web, te enviaremos un aviso al email que indiques en esta cuenta.
+  <div class="texto-secundario">
+    También puedes añadir una breve descripción del objeto. Esto puede servir más adelante para ayudar a validar que el objeto encontrado corresponde realmente a tu pertenencia.
+  </div>
+</div>
 
         <input type="text" id="codigo" placeholder="Código"><br><br>
         <input type="text" id="nombre" placeholder="Tu nombre"><br><br>
@@ -152,8 +192,16 @@ button {
     function mostrarEncontrado() {
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
-        <h2>He encontrado un objeto</h2>
-        <p>Introduce el código del objeto y tus datos.</p>
+<h2>He encontrado un objeto</h2>
+<p>Introduce el código del objeto y tus datos.</p>
+
+<div class="bloque-info">
+  <strong>¿Qué tienes que hacer?</strong>
+  Introduce el código que aparece en la etiqueta de la pertenencia que has encontrado, tu nombre, tu email y el mensaje que quieres que reenviemos al propietario.
+  <div class="texto-secundario">
+    No te preocupes: tus datos serán privados. El propietario no recibirá tus datos directamente, solo el mensaje que tú decidas enviarle a través de nuestra web.
+  </div>
+</div>
 
         <input type="text" id="codigo-encontrado" placeholder="Código"><br><br>
         <input type="text" id="nombre-encontrado" placeholder="Tu nombre"><br><br>
