@@ -26,9 +26,17 @@ export default async function handler(req, res) {
     });
   }
 
+  const ahora = new Date();
+  const haceDosDias = new Date(ahora.getTime() - 2 * 24 * 60 * 60 * 1000);
+
+  const avisosCandidatos = datos.filter(aviso => {
+    return new Date(aviso.created_at) <= haceDosDias;
+  });
+
   return res.status(200).json({
     ok: true,
     total_found_reports: datos.length,
-    primer_found_report: datos[0] || null
+    total_candidatos_2_dias: avisosCandidatos.length,
+    primer_candidato: avisosCandidatos[0] || null
   });
 }
