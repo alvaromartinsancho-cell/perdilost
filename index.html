@@ -308,17 +308,24 @@ if (contacto !== contactoRepetir) {
       subject: 'Has registrado correctamente tu código Perdilost',
       text: `Hola ${nombre},
 
-Te confirmamos que has registrado correctamente tu código en Perdilost.
+Bienvenido a Perdilost y gracias por confiar en nuestro servicio.
 
-Resumen de tu registro:
-Código: ${codigo}
+El registro de tu código en Perdilost se ha completado correctamente.
+
+Código registrado:
+${codigo}
+
+Datos de contacto:
 Nombre: ${nombre}
 Email: ${contacto}
-Descripción: ${descripcion || 'No informada'}
 
-Si en algún momento alguien encuentra tu objeto y utiliza este código en nuestra web, te enviaremos un aviso a este mismo correo.
+Mensaje o descripción indicada:
+${descripcion || 'No informada'}
 
-Gracias por confiar en Perdilost.`
+Funcionamiento de tu código:
+Si en algún momento alguien encuentra tu objeto y utiliza este código en nuestra web para comunicarlo, esa persona no tendrá acceso a tus datos personales. Nosotros te enviaremos a este mismo correo el mensaje que nos haya dejado para que puedas ponerte en contacto y recuperarlo.
+
+Gracias por utilizar Perdilost.`
     })
   });
   if (!respuestaEmailRegistro.ok) {
