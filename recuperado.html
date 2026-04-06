@@ -4,9 +4,69 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perdilost - Confirmar recuperación</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 0;
+    }
+
+    .contenedor {
+      max-width: 700px;
+      margin: 60px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      margin-top: 0;
+      color: #1f2d3d;
+    }
+
+    .bloque-info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      color: #1e3a8a;
+      padding: 18px 20px;
+      border-radius: 14px;
+      margin-top: 18px;
+      line-height: 1.6;
+    }
+
+    .codigo {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      color: #1f2937;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-  <h1>Confirmar recuperación</h1>
-  <p>Esta página servirá para confirmar si has recuperado tu objeto.</p>
+  <div class="contenedor">
+    <h1>Confirmar recuperación</h1>
+
+    <div class="bloque-info">
+      En esta página podrás confirmar si finalmente has recuperado tu objeto.
+    </div>
+
+    <div class="codigo" id="codigo-recuperacion">
+      Código: no informado
+    </div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+
+    if (code) {
+      document.getElementById('codigo-recuperacion').textContent = 'Código: ' + code;
+    }
+  </script>
 </body>
 </html>
