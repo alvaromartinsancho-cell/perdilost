@@ -84,8 +84,14 @@
 
 <div id="mensaje-recuperacion" style="margin-top:20px;"></div>
   </div>
-
+  
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  
 <script>
+  const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
+  const supabaseKey = 'sb_publishable_xc-mlrcfwRNy394u97Hg3Q_RQvxGe5M';
+  const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
 
@@ -93,17 +99,41 @@
     document.getElementById('codigo-recuperacion').textContent = 'Código: ' + code;
   }
 
-  document.getElementById('btn-enviar-recuperacion').addEventListener('click', function () {
-    const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
-    const mensaje = document.getElementById('mensaje-recuperacion');
+document.getElementById('btn-enviar-recuperacion').addEventListener('click', async function () {
+  const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
+  const comentarios = document.getElementById('recovery-comments').value.trim();
+  const mensaje = document.getElementById('mensaje-recuperacion');
 
-    if (!opcionSeleccionada) {
-      mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">Debes indicar si has recuperado tu objeto.</div>';
-      return;
-    }
+  if (!opcionSeleccionada) {
+    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">Debes indicar si has recuperado tu objeto.</div>';
+    return;
+  }
 
-    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">Formulario listo para enviar.</div>';
-  });
+  const recuperado = opcionSeleccionada.value === 'si';
+
+  const datosActualizar = {
+    is_recovered: recuperado,
+    recovery_comments: comentarios || null
+  };
+
+  if (recuperado) {
+    datosActualizar.recovered_at = new Date().toISOString();
+  } else {
+    datosActualizar.recovered_at = null;
+  }
+
+  const { error } = await supabaseClient
+    .from('items')
+    .update(datosActualizar)
+    .eq('code', code);
+
+  if (error) {
+    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">Error al guardar la confirmación: ' + error.message + '</div>';
+    return;
+  }
+
+  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">Confirmación guardada correctamente.</div>';
+});
 </script>
 </body>
 </html>
