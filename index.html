@@ -234,10 +234,15 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
     }
 
 async function guardarCodigo() {
-  const codigo = document.getElementById('codigo').value;
-  const nombre = document.getElementById('nombre').value;
-  const contacto = document.getElementById('contacto').value;
-  const descripcion = document.getElementById('descripcion').value;
+   const codigo = document.getElementById('codigo').value.trim();
+   const nombre = document.getElementById('nombre').value.trim();
+   const contacto = document.getElementById('contacto').value.trim();
+   const descripcion = document.getElementById('descripcion').value.trim();
+
+if (!codigo || !nombre || !contacto || !descripcion) {
+  mostrarMensaje('Debes completar todos los campos para registrar tu código.', 'error');
+  return;
+}
 
   const { data: encontrados, error: errorConsulta } = await supabaseClient
     .from('items')
@@ -279,10 +284,15 @@ async function guardarCodigo() {
 }
 
     async function comprobarCodigoEncontrado() {
-      const codigo = document.getElementById('codigo-encontrado').value;
-      const nombre = document.getElementById('nombre-encontrado').value;
-      const contacto = document.getElementById('contacto-encontrado').value;
-      const mensaje = document.getElementById('mensaje-encontrado').value;
+      const codigo = document.getElementById('codigo-encontrado').value.trim();
+      const nombre = document.getElementById('nombre-encontrado').value.trim();
+      const contacto = document.getElementById('contacto-encontrado').value.trim();
+      const mensaje = document.getElementById('mensaje-encontrado').value.trim();
+
+if (!codigo || !mensaje) {
+  mostrarMensaje('Debes introducir el código y escribir un mensaje para el propietario.', 'error');
+  return;
+}
 
 const { data, error } = await supabaseClient
   .from('items')
