@@ -376,7 +376,7 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
 const resultadoEmail = await respuestaEmail.json();
 
 if (!respuestaEmail.ok) {
-  mostrarMensaje('Aviso guardado, pero no se ha podido enviar el email. Por favor, contacta con avisos@perdilost.com', 'error');
+  mostrarMensaje('Aviso guardado correctamente, pero no hemos podido enviar el email al propietario. Por favor, inténtalo de nuevo más tarde o contacta con avisos@perdilost.com.', 'error');
   return;
 }
 
