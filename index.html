@@ -321,16 +321,18 @@ if (!data || data.length === 0) {
   return;
 }
 
-      const { error: errorGuardar } = await supabaseClient
+      const { data: reporteInsertado, error: errorGuardar } = await supabaseClient
         .from('found_reports')
         .insert([
           {
             code: codigo,
             finder_name: nombre,
             finder_contact: contacto,
-            message: mensaje
+            message: mensaje,
+            email_sent: false
           }
-        ]);
+        ])
+        .select();
 
 if (errorGuardar) {
   mostrarMensaje('Error al guardar el aviso: ' + errorGuardar.message, 'error');
@@ -376,8 +378,22 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
 const resultadoEmail = await respuestaEmail.json();
 
 if (!respuestaEmail.ok) {
-  mostrarMensaje('Aviso guardado correctamente. No hemos podido entregar el email al propietario en este momento, pero tu mensaje ha quedado registrado y lo revisaremos para intentar contactar con él. También puedes contactar directamente con nosotros: avisos@perdilost.com.', 'error');
+  mostrarMensaje('Aviso guardado correctamente. No hemos podido entregar el email al propietario en este momento, pero tu mensaje ha quedado registrado y lo revisaremos para intentar contactar con él. También puedes contactar directamente con nosotros: avisos@perdilost.com', 'error');
   return;
+}
+
+const idReporte = reporteInsertado && reporteInsertado.length > 0 ? reporteInsertado[0].id : null;
+
+if (idReporte) {
+  const { error: errorMarcarEmailEnviado } = await supabaseClient
+    .from('found_reports')
+    .update({ email_sent: true })
+    .eq('id', idReporte);
+
+  if (errorMarcarEmailEnviado) {
+    mostrarMensaje('El email se ha enviado, pero no se ha podido actualizar el estado de envío en la base de datos: ' + errorMarcarEmailEnviado.message, 'error');
+    return;
+  }
 }
 
 document.getElementById('codigo-encontrado').value = '';
