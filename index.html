@@ -279,7 +279,11 @@ if (!codigo || !nombre || !contacto || !descripcion) {
     mostrarMensaje('Error al guardar: ' + errorUpdate.message, 'error');
     return;
   }
-
+  document.getElementById('codigo').value = '';
+  document.getElementById('nombre').value = '';
+  document.getElementById('contacto').value = '';
+  document.getElementById('descripcion').value = '';
+  
   mostrarMensaje('Código activado correctamente', 'ok');
 }
 
@@ -358,6 +362,10 @@ if (!respuestaEmail.ok) {
   return;
 }
 
+document.getElementById('codigo-encontrado').value = '';
+document.getElementById('nombre-encontrado').value = '';
+document.getElementById('contacto-encontrado').value = '';
+document.getElementById('mensaje-encontrado').value = '';      
 mostrarMensaje('Aviso guardado y email enviado correctamente', 'ok');
     }
   </script>
