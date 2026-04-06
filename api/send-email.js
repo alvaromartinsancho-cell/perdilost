@@ -41,7 +41,7 @@ const intro = indiceMensaje > 1
         <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
           <div style="margin-bottom:24px;">
             <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
-            <p style="margin:8px 0 0 0;color:#475569;">Han encontrado una pertenencia asociada a tu código.</p>
+            <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
           </div>
 
           <p style="margin:0 0 16px 0;">${saludo}</p>
