@@ -103,11 +103,38 @@ export default async function handler(req, res) {
     });
   }
 
+  const respuestaEmail = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      from: 'Perdilost <avisos@perdilost.com>',
+      to: [itemDetalle.contact_info],
+      subject: '¿Has recuperado ya tu objeto en Perdilost?',
+      text: `Hola ${itemDetalle.owner_name || ''},
+
+Te escribimos para saber si finalmente has recuperado tu objeto asociado al código ${itemDetalle.code}.
+
+Descripción registrada:
+${itemDetalle.description || 'No informada'}
+
+Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, puedes confirmarlo aquí:
+https://perdilost.com/recuperado.html?code=${itemDetalle.code}
+
+Gracias por utilizar Perdilost.`
+    })
+  });
+
+  const resultadoEmail = await respuestaEmail.json();
+
   return res.status(200).json({
     ok: true,
     total_found_reports: datos.length,
     total_candidatos_2_dias: avisosCandidatos.length,
     total_items_validos_recordatorio: itemsValidos.length,
-    item_recordatorio_prueba: itemDetalle
+    email_status_ok: respuestaEmail.ok,
+    email_resultado: resultadoEmail
   });
 }
