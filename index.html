@@ -39,6 +39,9 @@ button {
   cursor: pointer;
   margin-top: 10px;
 }
+button.activo {
+  background: #1e3a8a;
+}
 
 .botones-principales {
   display: flex;
@@ -149,8 +152,8 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
 <p>Selecciona una opción:</p>
 
 <div class="botones-principales">
-  <button onclick="mostrarPropietario()">Registrar mi código</button>
-  <button onclick="mostrarEncontrado()">He encontrado un objeto</button>
+  <button id="btn-propietario" onclick="mostrarPropietario()">Registrar mi código</button>
+  <button id="btn-encontrado" onclick="mostrarEncontrado()">He encontrado un objeto</button>
 </div>
 
     <div id="mensaje"></div>
@@ -171,6 +174,8 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
   }
 }
     function mostrarPropietario() {
+      document.getElementById('btn-propietario').classList.add('activo');
+      document.getElementById('btn-encontrado').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
 <h2>Registrar mi código</h2>
@@ -195,6 +200,8 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
     }
 
     function mostrarEncontrado() {
+      document.getElementById('btn-encontrado').classList.add('activo');
+      document.getElementById('btn-propietario').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
 <h2>He encontrado un objeto</h2>
