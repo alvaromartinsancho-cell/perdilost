@@ -332,7 +332,8 @@ if (!data || data.length === 0) {
             email_sent: false
           }
         ])
-        .select();
+        .select('id')
+        .single();
 
 if (errorGuardar) {
   mostrarMensaje('Error al guardar el aviso: ' + errorGuardar.message, 'error');
@@ -382,7 +383,7 @@ if (!respuestaEmail.ok) {
   return;
 }
 
-const idReporte = reporteInsertado && reporteInsertado.length > 0 ? reporteInsertado[0].id : null;
+const idReporte = reporteInsertado ? reporteInsertado.id : null;
 
 if (idReporte) {
   const { error: errorMarcarEmailEnviado } = await supabaseClient
