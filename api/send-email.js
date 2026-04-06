@@ -13,6 +13,26 @@ export default async function handler(req, res) {
       });
     }
 
+    const lineas = text.split('\n').map(l => l.trim());
+
+    const saludo = lineas[0] || 'Hola,';
+    const intro = lineas.slice(1, 4).filter(Boolean).join(' ');
+    const indiceMensaje = lineas.findIndex(l => l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:'));
+    const indiceDatos = lineas.findIndex(l => l.toLowerCase().includes('datos de contacto'));
+    const indiceCierre = lineas.findIndex(l => l.toLowerCase().includes('te recomendamos ponerte en contacto'));
+
+    const mensaje = indiceMensaje >= 0 && indiceDatos > indiceMensaje
+      ? lineas.slice(indiceMensaje + 1, indiceDatos).filter(Boolean).join('<br>')
+      : '';
+
+    const datosContacto = indiceDatos >= 0 && indiceCierre > indiceDatos
+      ? lineas.slice(indiceDatos + 1, indiceCierre).filter(Boolean).join('<br>')
+      : '';
+
+    const cierre = indiceCierre >= 0
+      ? lineas.slice(indiceCierre).filter(Boolean).join(' ')
+      : '';
+
     const html = `
       <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
         <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
@@ -21,10 +41,20 @@ export default async function handler(req, res) {
             <p style="margin:8px 0 0 0;color:#475569;">Han encontrado una pertenencia asociada a tu código.</p>
           </div>
 
-          <p style="margin:0 0 16px 0;">${text
-            .split('\n')
-            .map(linea => linea.trim() === '' ? '</p><p style="margin:0 0 16px 0;">' : linea)
-            .join('<br>')}</p>
+          <p style="margin:0 0 16px 0;">${saludo}</p>
+          <p style="margin:0 0 20px 0;line-height:1.7;">${intro}</p>
+
+          <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
+            <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Mensaje recibido</div>
+            <div style="color:#1f2937;line-height:1.7;">${mensaje || 'Sin mensaje.'}</div>
+          </div>
+
+          <div style="margin:24px 0;">
+            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Datos de contacto (si los ha facilitado)</div>
+            <div style="color:#475569;line-height:1.7;">${datosContacto || 'No facilitados.'}</div>
+          </div>
+
+          <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">${cierre}</p>
 
           <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
             Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
