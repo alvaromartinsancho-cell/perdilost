@@ -394,15 +394,14 @@ const { data: reporteActualizado, error: errorMarcarEmailEnviado } = await supab
   .from('found_reports')
   .update({ email_sent: true })
   .eq('id', idReporte)
-  .select('id, email_sent')
-  .single();
+  .select('id, email_sent');
 
 if (errorMarcarEmailEnviado) {
   mostrarMensaje('Diagnóstico update error: ' + errorMarcarEmailEnviado.message, 'error');
   return;
 }
 
-mostrarMensaje('Diagnóstico OK. ID: ' + reporteActualizado.id + ' | email_sent: ' + reporteActualizado.email_sent, 'ok');
+mostrarMensaje('Diagnóstico filas actualizadas: ' + (reporteActualizado ? reporteActualizado.length : 0), 'ok');
 return;
 
 document.getElementById('codigo-encontrado').value = '';
