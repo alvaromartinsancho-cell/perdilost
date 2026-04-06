@@ -198,10 +198,10 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
   </div>
 </div>
 
-        <input type="text" id="codigo" placeholder="Código"><br><br>
-        <input type="text" id="nombre" placeholder="Tu nombre"><br><br>
-        <input type="email" id="contacto" placeholder="Tu email"><br><br>
-        <textarea id="descripcion" placeholder="Descripción opcional del objeto"></textarea><br><br>
+       <input type="text" id="codigo" placeholder="Ejemplo: 1234567890" required><br><br>
+       <input type="text" id="nombre" placeholder="Escribe tu nombre completo" required><br><br>
+       <input type="email" id="contacto" placeholder="ejemplo@correo.com" required><br><br>
+       <textarea id="descripcion" placeholder="Indicaciones sobre como devolver en caso de que alguien lo encuentre" required></textarea><br><br>
 
         <button onclick="guardarCodigo()">Crear registro</button>
         </div>
@@ -223,10 +223,10 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
   </div>
 </div>
 
-        <input type="text" id="codigo-encontrado" placeholder="Código"><br><br>
-        <input type="text" id="nombre-encontrado" placeholder="Tu nombre"><br><br>
-        <input type="email" id="contacto-encontrado" placeholder="Tu email"><br><br>
-        <textarea id="mensaje-encontrado" placeholder="Mensaje para el propietario"></textarea><br><br>
+        <input type="text" id="codigo-encontrado" placeholder="Introduce el código de la etiqueta" required><br><br>
+        <input type="text" id="nombre-encontrado" placeholder="Tu nombre (opcional)"><br><br>
+        <input type="email" id="contacto-encontrado" placeholder="Tu email (opcional)"><br><br>
+        <textarea id="mensaje-encontrado" placeholder="Escribe aquí el mensaje que quieres que reciba el propietario para poder recuperar su pertenencia. Puedes indicar cómo contactarte o en qué lugar la has dejado." required></textarea><br><br>
 
         <button onclick="comprobarCodigoEncontrado()">Enviar aviso</button>
         </div>
