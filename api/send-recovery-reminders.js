@@ -59,11 +59,55 @@ export default async function handler(req, res) {
     item.is_recovered === null && item.recovery_reminder_sent === false
   );
 
+  if (itemsValidos.length === 0) {
+    return res.status(200).json({
+      ok: true,
+      total_found_reports: datos.length,
+      total_candidatos_2_dias: avisosCandidatos.length,
+      total_items_validos_recordatorio: 0,
+      message: 'No hay recordatorios pendientes de envío'
+    });
+  }
+
+  const itemObjetivo = itemsValidos[0];
+
+  const respuestaItemDetalle = await fetch(
+    `${supabaseUrl}/rest/v1/items?select=code,owner_name,contact_info,description&code=eq.${itemObjetivo.code}`,
+    {
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`
+      }
+    }
+  );
+
+  const itemDetalleArray = await respuestaItemDetalle.json();
+
+  if (!respuestaItemDetalle.ok) {
+    return res.status(500).json({
+      ok: false,
+      error: 'Error al leer el detalle del item',
+      detalle: itemDetalleArray
+    });
+  }
+
+  const itemDetalle = itemDetalleArray && itemDetalleArray.length > 0 ? itemDetalleArray[0] : null;
+
+  if (!itemDetalle || !itemDetalle.contact_info) {
+    return res.status(200).json({
+      ok: true,
+      total_found_reports: datos.length,
+      total_candidatos_2_dias: avisosCandidatos.length,
+      total_items_validos_recordatorio: itemsValidos.length,
+      message: 'No se ha encontrado un email válido para el recordatorio'
+    });
+  }
+
   return res.status(200).json({
     ok: true,
     total_found_reports: datos.length,
     total_candidatos_2_dias: avisosCandidatos.length,
     total_items_validos_recordatorio: itemsValidos.length,
-    primer_item_valido: itemsValidos[0] || null
+    item_recordatorio_prueba: itemDetalle
   });
 }
