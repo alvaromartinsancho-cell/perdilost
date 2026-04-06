@@ -5,13 +5,35 @@ export default async function handler(req, res) {
 
   try {
     const { to, subject, text } = req.body;
-const apiKey = process.env.RESEND_API_KEY;
+    const apiKey = process.env.RESEND_API_KEY;
 
-if (!apiKey) {
-  return res.status(500).json({
-    error: 'Falta RESEND_API_KEY en Vercel'
-  });
-}
+    if (!apiKey) {
+      return res.status(500).json({
+        error: 'Falta RESEND_API_KEY en Vercel'
+      });
+    }
+
+    const html = `
+      <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
+        <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+          <div style="margin-bottom:24px;">
+            <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
+            <p style="margin:8px 0 0 0;color:#475569;">Han encontrado una pertenencia asociada a tu código.</p>
+          </div>
+
+          <p style="margin:0 0 16px 0;">${text
+            .split('\n')
+            .map(linea => linea.trim() === '' ? '</p><p style="margin:0 0 16px 0;">' : linea)
+            .join('<br>')}</p>
+
+          <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+            Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
+            <a href="mailto:avisos@perdilost.com" style="color:#1e40af;text-decoration:none;">avisos@perdilost.com</a>.
+          </div>
+        </div>
+      </div>
+    `;
+
     const respuesta = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -22,20 +44,21 @@ if (!apiKey) {
         from: 'Perdilost <avisos@perdilost.com>',
         to: [to],
         subject: subject,
-        text: text
+        text: text,
+        html: html
       })
     });
 
     const datos = await respuesta.json();
 
-if (!respuesta.ok) {
-  return res.status(400).json({
-    error: 'Error enviando email',
-    detalle: datos,
-    apiKeyPrimeros5: apiKey.slice(0, 5),
-    apiKeyLongitud: apiKey.length
-  });
-}
+    if (!respuesta.ok) {
+      return res.status(400).json({
+        error: 'Error enviando email',
+        detalle: datos,
+        apiKeyPrimeros5: apiKey.slice(0, 5),
+        apiKeyLongitud: apiKey.length
+      });
+    }
 
     return res.status(200).json({
       ok: true,
