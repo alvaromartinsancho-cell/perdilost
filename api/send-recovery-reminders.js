@@ -120,7 +120,7 @@ Te escribimos para saber si finalmente has recuperado tu objeto asociado al cód
 Descripción registrada:
 ${itemDetalle.description || 'No informada'}
 
-Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, puedes confirmarlo aquí:
+Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, te rogamos que nos lo confirmes haciendo clic aquí para ayudarnos a mejorar el servicio y para que quede registrado que has podido recuperarlo:
 https://perdilost.com/recuperado.html?code=${itemDetalle.code}
 
 Gracias por utilizar Perdilost.`
