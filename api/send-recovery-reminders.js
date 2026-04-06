@@ -103,7 +103,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const respuestaEmail = await fetch('https://api.resend.com/emails', {
+    const respuestaEmail = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
       'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
@@ -129,12 +129,47 @@ Gracias por utilizar Perdilost.`
 
   const resultadoEmail = await respuestaEmail.json();
 
+  if (!respuestaEmail.ok) {
+    return res.status(500).json({
+      ok: false,
+      error: 'Error al enviar el recordatorio',
+      email_resultado: resultadoEmail
+    });
+  }
+
+  const respuestaUpdateItem = await fetch(
+    `${supabaseUrl}/rest/v1/items?code=eq.${itemDetalle.code}`,
+    {
+      method: 'PATCH',
+      headers: {
+        apikey: supabaseKey,
+        Authorization: `Bearer ${supabaseKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        recovery_reminder_sent: true,
+        recovery_reminder_sent_at: new Date().toISOString()
+      })
+    }
+  );
+
+  const resultadoUpdateItem = await respuestaUpdateItem.text();
+
+  if (!respuestaUpdateItem.ok) {
+    return res.status(500).json({
+      ok: false,
+      error: 'Email enviado, pero no se pudo actualizar items',
+      detalle_update: resultadoUpdateItem
+    });
+  }
+
   return res.status(200).json({
     ok: true,
     total_found_reports: datos.length,
     total_candidatos_2_dias: avisosCandidatos.length,
     total_items_validos_recordatorio: itemsValidos.length,
-    email_status_ok: respuestaEmail.ok,
-    email_resultado: resultadoEmail
+    reminder_sent_to: itemDetalle.contact_info,
+    reminder_sent_code: itemDetalle.code,
+    recovery_reminder_sent: true
   });
 }
