@@ -118,7 +118,7 @@ const funcionamientoRegistro = esEmailRegistro
 
     const datos = await respuesta.json();
 
-    if (!respuesta.ok) {
+       if (!respuesta.ok) {
       await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -127,12 +127,15 @@ const funcionamientoRegistro = esEmailRegistro
         },
         body: JSON.stringify({
           from: 'Perdilost <avisos@perdilost.com>',
-          to: ['avisos@perdilost.com'],
-          subject: 'Fallo al enviar email a propietario en Perdilost',
-          text: `No se ha podido enviar un email al propietario.
+          to: ['infoperdilost@gmail.com'],
+          subject: 'Copia de aviso no entregado al propietario en Perdilost',
+          text: `No se ha podido entregar al propietario el siguiente aviso enviado desde el formulario "He encontrado un objeto".
 
-Destinatario previsto: ${to}
-Asunto: ${subject}
+Destinatario previsto del propietario: ${to}
+Asunto original: ${subject}
+
+Contenido original del mensaje:
+${text}
 
 Detalle del error devuelto por Resend:
 ${JSON.stringify(datos)}`
