@@ -332,8 +332,7 @@ if (!data || data.length === 0) {
             email_sent: false
           }
         ])
-        .select('id')
-        .single();
+        .select('id');
 
 if (errorGuardar) {
   mostrarMensaje('Error al guardar el aviso: ' + errorGuardar.message, 'error');
@@ -383,7 +382,7 @@ if (!respuestaEmail.ok) {
   return;
 }
 
-const idReporte = reporteInsertado ? reporteInsertado.id : null;
+const idReporte = reporteInsertado && reporteInsertado.length > 0 ? reporteInsertado[0].id : null;
 
 if (!idReporte) {
   mostrarMensaje('Diagnóstico: no se ha recibido el id del reporte insertado.', 'error');
