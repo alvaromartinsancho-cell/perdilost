@@ -276,7 +276,8 @@ if (!codigo || !nombre || !contacto || !descripcion) {
     .update({
       owner_name: nombre,
       contact_info: contacto,
-      description: descripcion
+      description: descripcion,
+      activated_at: new Date().toISOString()
     })
     .eq('code', codigo);
 
@@ -333,6 +334,18 @@ if (!data || data.length === 0) {
 
 if (errorGuardar) {
   mostrarMensaje('Error al guardar el aviso: ' + errorGuardar.message, 'error');
+  return;
+}
+
+const { error: errorUpdateLastFound } = await supabaseClient
+  .from('items')
+  .update({
+    last_found_at: new Date().toISOString()
+  })
+  .eq('code', codigo);
+
+if (errorUpdateLastFound) {
+  mostrarMensaje('Aviso guardado, pero no se ha podido actualizar la fecha del último hallazgo: ' + errorUpdateLastFound.message, 'error');
   return;
 }
 
