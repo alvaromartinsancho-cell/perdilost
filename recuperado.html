@@ -58,7 +58,9 @@
 <div class="codigo" id="codigo-recuperacion">
   Código: no informado
 </div>
-
+<div class="codigo" id="descripcion-recuperacion" style="font-weight: normal;">
+  Descripción: no informada
+</div>
 <div style="margin-top: 24px;">
   <p style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">¿Has recuperado tu objeto?</p>
 
@@ -95,9 +97,20 @@
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
 
-  if (code) {
-    document.getElementById('codigo-recuperacion').textContent = 'Código: ' + code;
-  }
+if (code) {
+  document.getElementById('codigo-recuperacion').textContent = 'Código: ' + code;
+
+  supabaseClient
+    .from('items')
+    .select('description')
+    .eq('code', code)
+    .single()
+    .then(({ data, error }) => {
+      if (!error && data && data.description) {
+        document.getElementById('descripcion-recuperacion').textContent = 'Descripción: ' + data.description;
+      }
+    });
+}
 
 document.getElementById('btn-enviar-recuperacion').addEventListener('click', async function () {
   const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
