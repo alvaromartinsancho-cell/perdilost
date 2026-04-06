@@ -9,9 +9,26 @@ export default async function handler(req, res) {
     });
   }
 
+  const respuesta = await fetch(`${supabaseUrl}/rest/v1/found_reports?select=id,code,created_at&order=created_at.asc`, {
+    headers: {
+      apikey: supabaseKey,
+      Authorization: `Bearer ${supabaseKey}`
+    }
+  });
+
+  const datos = await respuesta.json();
+
+  if (!respuesta.ok) {
+    return res.status(500).json({
+      ok: false,
+      error: 'Error al leer found_reports',
+      detalle: datos
+    });
+  }
+
   return res.status(200).json({
     ok: true,
-    message: 'Función lista para conectar con Supabase',
-    supabaseUrl
+    total_found_reports: datos.length,
+    primer_found_report: datos[0] || null
   });
 }
