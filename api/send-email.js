@@ -85,6 +85,26 @@ const intro = indiceMensaje > 1
     const datos = await respuesta.json();
 
     if (!respuesta.ok) {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: 'Perdilost <avisos@perdilost.com>',
+          to: ['avisos@perdilost.com'],
+          subject: 'Fallo al enviar email a propietario en Perdilost',
+          text: `No se ha podido enviar un email al propietario.
+
+Destinatario previsto: ${to}
+Asunto: ${subject}
+
+Detalle del error devuelto por Resend:
+${JSON.stringify(datos)}`
+        })
+      });
+
       return res.status(400).json({
         error: 'Error enviando email',
         detalle: datos,
