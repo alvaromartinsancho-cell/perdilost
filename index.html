@@ -205,6 +205,7 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
 
        <input type="text" id="codigo" placeholder="Ejemplo: 1234567890" required><br><br>
        <input type="text" id="nombre" placeholder="Escribe tu nombre completo" required><br><br>
+       <input type="text" id="telefono" placeholder="Escribe tu teléfono (opcional)"><br><br>
        <input type="email" id="contacto" placeholder="Escribe tu email" required><br><br>
        <input type="email" id="contacto-repetir" placeholder="Repite tu email" required><br><br>
        <div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">Los emails no coinciden.</div>
@@ -232,6 +233,7 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
 
         <input type="text" id="codigo-encontrado" placeholder="Introduce el código de la etiqueta" required><br><br>
         <input type="text" id="nombre-encontrado" placeholder="Tu nombre (opcional)"><br><br>
+        <input type="text" id="telefono-encontrado" placeholder="Tu teléfono (opcional)"><br><br>
         <input type="email" id="contacto-encontrado" placeholder="Tu email (opcional)"><br><br>
         <textarea id="mensaje-encontrado" placeholder="Escribe aquí el mensaje que quieres que reciba el propietario para poder recuperar su pertenencia. Puedes indicar cómo contactarte o en qué lugar la has dejado." required></textarea><br><br>
 
@@ -243,6 +245,7 @@ Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que av
 async function guardarCodigo() {
    const codigo = document.getElementById('codigo').value.trim();
    const nombre = document.getElementById('nombre').value.trim();
+   const telefono = document.getElementById('telefono').value.trim();
    const contacto = document.getElementById('contacto').value.trim();
    const contactoRepetir = document.getElementById('contacto-repetir').value.trim();
    const descripcion = document.getElementById('descripcion').value.trim();
@@ -287,6 +290,7 @@ if (contacto !== contactoRepetir) {
     .from('items')
     .update({
       owner_name: nombre,
+      owner_phone: telefono || null,
       contact_info: contacto,
       description: descripcion,
       activated_at: new Date().toISOString()
@@ -334,6 +338,7 @@ Gracias por utilizar Perdilost.`
   }
   document.getElementById('codigo').value = '';
   document.getElementById('nombre').value = '';
+  document.getElementById('telefono').value = '';
   document.getElementById('contacto').value = '';
   document.getElementById('contacto-repetir').value = '';
   document.getElementById('descripcion').value = '';
@@ -344,6 +349,7 @@ Gracias por utilizar Perdilost.`
     async function comprobarCodigoEncontrado() {
       const codigo = document.getElementById('codigo-encontrado').value.trim();
       const nombre = document.getElementById('nombre-encontrado').value.trim();
+      const telefono = document.getElementById('telefono-encontrado').value.trim();
       const contacto = document.getElementById('contacto-encontrado').value.trim();
       const mensaje = document.getElementById('mensaje-encontrado').value.trim();
 
