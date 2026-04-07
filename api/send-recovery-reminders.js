@@ -120,10 +120,51 @@ Te escribimos para saber si finalmente has recuperado tu objeto asociado al cód
 Descripción registrada:
 ${itemDetalle.description || 'No informada'}
 
-Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, te rogamos que nos lo confirmes haciendo clic aquí para ayudarnos a mejorar el servicio y para que quede registrado que has podido recuperarlo:
+Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, te rogamos que nos lo confirmes para ayudarnos a mejorar el servicio y para que quede registrado que has podido recuperarlo:
 https://perdilost.com/recuperado.html?code=${itemDetalle.code}
 
-Gracias por utilizar Perdilost.`
+Gracias por utilizar Perdilost.`,
+      html: `
+        <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
+          <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+            <div style="margin-bottom:24px;">
+              <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
+              <p style="margin:8px 0 0 0;color:#475569;">¿Has recuperado ya tu objeto en Perdilost?</p>
+            </div>
+
+            <p style="margin:0 0 16px 0;">Hola ${itemDetalle.owner_name || ''},</p>
+
+            <p style="margin:0 0 20px 0;line-height:1.7;">
+              Te escribimos para saber si finalmente has recuperado tu objeto asociado al código <strong>${itemDetalle.code}</strong>.
+            </p>
+
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
+              <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Descripción registrada</div>
+              <div style="color:#1f2937;line-height:1.7;">${itemDetalle.description || 'No informada'}</div>
+            </div>
+
+            <p style="margin:24px 0;line-height:1.7;color:#475569;">
+              Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, te rogamos que nos lo confirmes para ayudarnos a mejorar el servicio y para que quede registrado que has podido recuperarlo.
+            </p>
+
+            <div style="margin:28px 0;">
+              <a href="https://perdilost.com/recuperado.html?code=${itemDetalle.code}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:bold;">
+                Confirmar si lo has recuperado
+              </a>
+            </div>
+
+            <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+              Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
+              <a href="mailto:avisos@perdilost.com" style="color:#1e40af;text-decoration:none;">avisos@perdilost.com</a>.
+
+              <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
+                Si deseas darte de baja de nuestras comunicaciones, escribe la palabra baja a la siguiente dirección de email:
+                <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      `
     })
   });
 
