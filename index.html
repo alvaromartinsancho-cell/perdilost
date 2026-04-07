@@ -381,6 +381,7 @@ if (!data || data.length === 0) {
           {
             code: codigo,
             finder_name: nombre,
+            finder_phone: telefono || null,
             finder_contact: contacto,
             message: mensaje,
             email_sent: false
@@ -423,6 +424,7 @@ ${mensaje}
 
 Datos de contacto (si los ha facilitado):
 Nombre: ${nombre || 'No facilitado'}
+Teléfono: ${telefono || 'No facilitado'}
 Email: ${contacto || 'No facilitado'}
 
 Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
@@ -452,6 +454,7 @@ if (idReporte) {
 
 document.getElementById('codigo-encontrado').value = '';
 document.getElementById('nombre-encontrado').value = '';
+document.getElementById('telefono-encontrado').value = '';
 document.getElementById('contacto-encontrado').value = '';
 document.getElementById('mensaje-encontrado').value = '';      
 mostrarMensaje('Aviso guardado y email enviado correctamente', 'ok');
