@@ -224,7 +224,9 @@ placeholderCodigoEncontrado: 'Introduce el código de la etiqueta',
 placeholderNombreEncontrado: 'Tu nombre (opcional)',
 placeholderTelefonoEncontrado: 'Tu teléfono (opcional)',
 placeholderContactoEncontrado: 'Tu email (opcional)',
-placeholderMensajeEncontrado: 'Escribe aquí el mensaje que quieres que reciba el propietario para poder recuperar su pertenencia. Puedes indicar cómo contactarte o en qué lugar has dejado el objeto para que pueda pasar a recogerlo.'
+placeholplaceholderMensajeEncontrado: 'Escribe aquí el mensaje que quieres que reciba el propietario para poder recuperar su pertenencia. Puedes indicar cómo contactarte o en qué lugar has dejado el objeto para que pueda pasar a recogerlo.',
+botonCrearRegistro: 'Crear registro',
+botonEnviarAviso: 'Enviar aviso'
   },
   en: {
     bienvenidaTitulo: 'Welcome to Perdilost',
@@ -252,7 +254,9 @@ placeholderCodigoEncontrado: 'Enter the code on the tag',
 placeholderNombreEncontrado: 'Your name (optional)',
 placeholderTelefonoEncontrado: 'Your phone number (optional)',
 placeholderContactoEncontrado: 'Your email (optional)',
-placeholderMensajeEncontrado: 'Write here the message you want the owner to receive so they can recover their item. You can indicate how to contact you or where you left it.'
+placeholderMensajeEncontrado: 'Write here the message you want the owner to receive so they can recover their item. You can indicate how to contact you or where you left it.',
+botonCrearRegistro: 'Create record',
+botonEnviarAviso: 'Send notice''
   }
 };
     function aplicarTextosGenerales() {
@@ -303,7 +307,7 @@ placeholderMensajeEncontrado: 'Write here the message you want the owner to rece
 <div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">Los emails no coinciden.</div>
 <textarea id="descripcion" placeholder="${textos[idiomaActual].placeholderDescripcion}" required></textarea><br><br>
 
-<button type="button" onclick="guardarCodigo()">Crear registro</button>
+<button type="button" onclick="guardarCodigo()">${textos[idiomaActual].botonCrearRegistro}</button>
 </div>
 `;
     }
@@ -329,7 +333,7 @@ placeholderMensajeEncontrado: 'Write here the message you want the owner to rece
 <input type="email" id="contacto-encontrado" placeholder="${textos[idiomaActual].placeholderContactoEncontrado}"><br><br>
 <textarea id="mensaje-encontrado" placeholder="${textos[idiomaActual].placeholderMensajeEncontrado}" required></textarea><br><br>
 
-<button onclick="comprobarCodigoEncontrado()">Enviar aviso</button>
+<button onclick="comprobarCodigoEncontrado()">${textos[idiomaActual].botonEnviarAviso}</button>
         </div>
       `;
     }
