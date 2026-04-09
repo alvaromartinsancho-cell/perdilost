@@ -209,7 +209,11 @@ h1 i {
 formPropietarioTitulo: 'Registrar mi código',
 formPropietarioIntro: 'Introduce tu código y tus datos de contacto.',
 formPropietarioTexto1: 'Registra tu código en nuestra web de manera que, si alguien encuentra esta pertenencia y accede a Perdilost, te enviaremos un aviso al email que indiques en esta cuenta.',
-formPropietarioTexto2: 'También puedes añadir una breve descripción del objeto e instrucciones para su devolución. Esto puede servir más adelante para ayudarte a recuperarlo en caso de pérdida. Todos los datos que facilites son privados y solo los utilizaremos para ayudarte a recuperar tu objeto. Nadie tendrá acceso a esta información a través del código.'
+formPropietarioTexto2: 'También puedes añadir una breve descripción del objeto e instrucciones para su devolución. Esto puede servir más adelante para ayudarte a recuperarlo en caso de pérdida. Todos los datos que facilites son privados y solo los utilizaremos para ayudarte a recuperar tu objeto. Nadie tendrá acceso a esta información a través del código.',
+formEncontradoTitulo: 'He encontrado un objeto',
+formEncontradoIntro: 'Introduce el código del objeto y tus datos.',
+formEncontradoTexto1: 'Introduce el código que aparece en la etiqueta de la pertenencia que has encontrado, tu nombre (opcional), tu email (opcional) y el mensaje que quieres que reenviemos al propietario con las instrucciones para poder recuperar su pertenencia.',
+formEncontradoTexto2: 'Tus datos serán privados. El propietario solo recibirá el mensaje que tú decidas enviarle a través de nuestra web.'
   },
   en: {
     bienvenidaTitulo: 'Welcome to Perdilost',
@@ -222,7 +226,11 @@ formPropietarioTexto2: 'También puedes añadir una breve descripción del objet
 formPropietarioTitulo: 'Register my code',
 formPropietarioIntro: 'Enter your code and your contact details.',
 formPropietarioTexto1: 'Register your code on our website so that, if someone finds this item and accesses Perdilost, we can send you a notice to the email address you provide.',
-formPropietarioTexto2: 'You can also add a brief description of the item and instructions for its return. This may help you recover it later if it is lost. All the data you provide is private and will only be used to help you recover your item. No one will have access to this information through the code.'
+formPropietarioTexto2: 'You can also add a brief description of the item and instructions for its return. This may help you recover it later if it is lost. All the data you provide is private and will only be used to help you recover your item. No one will have access to this information through the code.',
+formEncontradoTitulo: 'I found an item',
+formEncontradoIntro: 'Enter the item code and your details.',
+formEncontradoTexto1: 'Enter the code shown on the tag of the item you found, your name (optional), your email (optional), and the message you want us to forward to the owner with instructions so they can recover their item.',
+formEncontradoTexto2: 'Your details will remain private. The owner will only receive the message that you choose to send through our website.'
   }
 };
     function aplicarTextosGenerales() {
@@ -283,13 +291,13 @@ formPropietarioTexto2: 'You can also add a brief description of the item and ins
       document.getElementById('btn-propietario').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
-<p><strong>He encontrado un objeto</strong></p><hr>
-<p>Introduce el código del objeto y tus datos.</p>
+<p><strong>${textos[idiomaActual].formEncontradoTitulo}</strong></p><hr>
+<p>${textos[idiomaActual].formEncontradoIntro}</p>
 
 <div class="texto-explicativo-formulario">
-  Introduce el código que aparece en la etiqueta de la pertenencia que has encontrado, tu nombre(opcional), tu email(opcional) y el mensaje que quieres que reenviemos al propietario con las instrucciones para poder recuperar su pertenencia.
-  <div class="texto-secundario">
-    Tus datos serán privados. El propietario solo recibirá el mensaje que tú decidas enviarle a través de nuestra web.
+  ${textos[idiomaActual].formEncontradoTexto1}
+  <div class="texto-secundario salto-suave">
+    ${textos[idiomaActual].formEncontradoTexto2}
   </div>
 </div>
 
