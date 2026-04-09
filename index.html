@@ -269,9 +269,15 @@ botonEnviarAviso: 'Send notice'
   document.getElementById('texto-privacidad').innerHTML = textos[idiomaActual].privacidadTexto;
 }
 
-    function cambiarIdioma(idioma) {
+function cambiarIdioma(idioma) {
   idiomaActual = idioma;
   aplicarTextosGenerales();
+  if (document.getElementById('btn-propietario').classList.contains('activo')) {
+    mostrarPropietario();
+  }
+  if (document.getElementById('btn-encontrado').classList.contains('activo')) {
+    mostrarEncontrado();
+  }
 }
     aplicarTextosGenerales();
     
