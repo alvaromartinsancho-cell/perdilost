@@ -255,13 +255,13 @@ formPropietarioTexto2: 'You can also add a brief description of the item and ins
       document.getElementById('btn-encontrado').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
-<p><strong>Registrar mi código</strong></p><hr>
-<p>Introduce tu código y tus datos de contacto.</p>
+<p><strong>${textos[idiomaActual].formPropietarioTitulo}</strong></p><hr>
+<p>${textos[idiomaActual].formPropietarioIntro}</p>
 
 <div class="texto-explicativo-formulario">
-  Introduce el código que aparece en la etiqueta de la pertenencia que has encontrado, tu nombre(opcional), tu email(opcional) y el mensaje que quieres que reenviemos al propietario con las instrucciones para poder recuperar su pertenencia.
+   ${textos[idiomaActual].formPropietarioTexto1}
   <div class="texto-secundario salto-suave">
-    Tus datos serán privados. El propietario solo recibirá el mensaje que tú decidas enviarle a través de nuestra web.
+    ${textos[idiomaActual].formPropietarioTexto2}
   </div>
 </div>
 
