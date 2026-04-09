@@ -197,6 +197,7 @@ h1 i {
     const supabaseKey = 'sb_publishable_xc-mlrcfwRNy394u97Hg3Q_RQvxGe5M';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
     let idiomaActual = 'es';
+let formularioActivo = '';
     const textos = {
   es: {
     bienvenidaTitulo: 'Bienvenido a Perdilost',
@@ -272,10 +273,12 @@ botonEnviarAviso: 'Send notice'
 function cambiarIdioma(idioma) {
   idiomaActual = idioma;
   aplicarTextosGenerales();
-  if (document.getElementById('btn-propietario').classList.contains('activo')) {
+
+  if (formularioActivo === 'propietario') {
     mostrarPropietario();
   }
-  if (document.getElementById('btn-encontrado').classList.contains('activo')) {
+
+  if (formularioActivo === 'encontrado') {
     mostrarEncontrado();
   }
 }
@@ -292,6 +295,7 @@ function cambiarIdioma(idioma) {
 }
     function mostrarPropietario() {
       document.getElementById('btn-propietario').classList.add('activo');
+      formularioActivo = 'propietario';
       document.getElementById('btn-encontrado').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
@@ -320,6 +324,7 @@ function cambiarIdioma(idioma) {
 
     function mostrarEncontrado() {
       document.getElementById('btn-encontrado').classList.add('activo');
+      formularioActivo = 'encontrado';
       document.getElementById('btn-propietario').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
