@@ -153,12 +153,17 @@ h1 i {
 </head>
 <body>
   <div class="contenedor">
-<h1><i class="fa-solid fa-location-crosshairs"></i> Perdilost</h1>
-
+<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+  <h1 style="margin-bottom:0;"><i class="fa-solid fa-location-crosshairs"></i> Perdilost</h1>
+  <div>
+    <button type="button" onclick="cambiarIdioma('es')">ES</button>
+    <button type="button" onclick="cambiarIdioma('en')">EN</button>
+  </div>
+</div>
 <div class="bloque-info">
-  <strong>Bienvenido a Perdilost</strong><hr>
-  En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.
-<div class="texto-secundario">
+<strong id="bienvenida-titulo">Bienvenido a Perdilost</strong><hr>
+<span id="bienvenida-texto">En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.</span>
+<div class="texto-secundario" id="bienvenida-secundario">
   Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong>
   Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>He encontrado un objeto</strong><hr>
  Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuerarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código.
@@ -166,11 +171,11 @@ h1 i {
 </div>
 </div>
 
-<p>Selecciona una opción:</p>
+<p id="texto-selecciona-opcion">Selecciona una opción:</p>
 
 <div class="botones-principales">
-  <button id="btn-propietario" onclick="mostrarPropietario()">Registrar mi código</button>
-  <button id="btn-encontrado" onclick="mostrarEncontrado()">He encontrado un objeto</button>
+<button id="btn-propietario" onclick="mostrarPropietario()">Registrar mi código</button>
+<button id="btn-encontrado" onclick="mostrarEncontrado()">He encontrado un objeto</button>
 </div>
 
     <div id="mensaje"></div>
@@ -181,6 +186,40 @@ h1 i {
     const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
     const supabaseKey = 'sb_publishable_xc-mlrcfwRNy394u97Hg3Q_RQvxGe5M';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    let idiomaActual = 'es';
+    const textos = {
+  es: {
+    bienvenidaTitulo: 'Bienvenido a Perdilost',
+    bienvenidaTexto: 'En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.',
+    bienvenidaSecundario: 'Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong><br><br>Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>He encontrado un objeto</strong>.',
+    seleccionaOpcion: 'Selecciona una opción:',
+    botonRegistrar: 'Registrar mi código',
+    botonEncontrado: 'He encontrado un objeto'
+  },
+  en: {
+    bienvenidaTitulo: 'Welcome to Perdilost',
+    bienvenidaTexto: 'At Perdilost, we help lost belongings find their way back to their owners thanks to the collaboration of the person who finds them.',
+    bienvenidaSecundario: 'If you are placing this tag on one of your belongings, you must register your code to link it to your contact details. To do so, click: <strong>Register my code</strong><br><br>If you have found an item with a Perdilost tag and want us to notify the owner so they can recover it, click: <strong>I found an item</strong>.',
+    seleccionaOpcion: 'Choose an option:',
+    botonRegistrar: 'Register my code',
+    botonEncontrado: 'I found an item'
+  }
+};
+    function aplicarTextosGenerales() {
+  document.getElementById('bienvenida-titulo').innerHTML = textos[idiomaActual].bienvenidaTitulo;
+  document.getElementById('bienvenida-texto').innerHTML = textos[idiomaActual].bienvenidaTexto;
+  document.getElementById('bienvenida-secundario').innerHTML = textos[idiomaActual].bienvenidaSecundario;
+  document.getElementById('texto-selecciona-opcion').innerHTML = textos[idiomaActual].seleccionaOpcion;
+  document.getElementById('btn-propietario').innerHTML = textos[idiomaActual].botonRegistrar;
+  document.getElementById('btn-encontrado').innerHTML = textos[idiomaActual].botonEncontrado;
+}
+
+    function cambiarIdioma(idioma) {
+  idiomaActual = idioma;
+  aplicarTextosGenerales();
+}
+    aplicarTextosGenerales();
+    
     function mostrarMensaje(texto, tipo) {
   const mensaje = document.getElementById('mensaje');
 
