@@ -4,8 +4,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { to, subject, text } = req.body;
-    const { language } = req.body;
+const { to, subject, text, language } = req.body;
     const idiomaEmail = language === 'en' ? 'en' : 'es';
     const apiKey = process.env.RESEND_API_KEY;
 
