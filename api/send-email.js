@@ -32,6 +32,7 @@ const esEmailRegistro =
   textoNormalizado.includes('welcome to perdilost');
 
 const esEmailRegistroEnIngles =
+  idiomaEmail === 'en' ||
   asuntoNormalizado.includes('you have successfully registered your perdilost code') ||
   textoNormalizado.includes('welcome to perdilost') ||
   textoNormalizado.startsWith('hello ');
@@ -45,6 +46,7 @@ const indiceCierre = lineas.findIndex(l =>
 );
 
 const esEmailEncontradoEnIngles =
+  idiomaEmail === 'en' ||
   asuntoNormalizado.includes('someone has found an item linked to your perdilost code') ||
   textoNormalizado.includes('the person who found it left us the following message:') ||
   textoNormalizado.includes('we recommend that you get in touch');
