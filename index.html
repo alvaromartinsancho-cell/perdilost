@@ -421,6 +421,7 @@ if (contacto !== contactoRepetir) {
       contact_info: contacto,
       description: descripcion,
       activated_at: new Date().toISOString()
+      preferred_language: idiomaActual,
     })
     .eq('code', codigo);
 
