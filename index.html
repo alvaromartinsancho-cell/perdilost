@@ -436,8 +436,32 @@ if (contacto !== contactoRepetir) {
     },
     body: JSON.stringify({
       to: contacto,
-      subject: 'Has registrado correctamente tu código Perdilost',
-      text: `Hola ${nombre},
+     subject: idiomaActual === 'en'
+  ? 'You have successfully registered your Perdilost code'
+  : 'Has registrado correctamente tu código Perdilost',
+text: idiomaActual === 'en'
+  ? `Hello ${nombre},
+
+Welcome to Perdilost and thank you for trusting our service.
+
+Your Perdilost code registration has been completed successfully.
+
+Registered code:
+${codigo}
+
+Contact details:
+Name: ${nombre}
+Phone: ${telefono || 'Not provided'}
+Email: ${contacto}
+
+Message or description provided:
+${descripcion || 'Not provided'}
+
+How your code works:
+If someone finds your item and uses this code on our website to notify us, they will not have access to your personal data. We will send you their message to this same email address so you can contact them and recover your item.
+
+Thank you for using Perdilost.`
+  : `Hola ${nombre},
 
 Bienvenido a Perdilost y gracias por confiar en nuestro servicio.
 
