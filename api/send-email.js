@@ -88,8 +88,13 @@ const funcionamientoRegistro = esEmailRegistro
           <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">${cierre}</p>
           `}
 
-<div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;font-family:Arial,sans-serif;">
-  <span style="font-size:14px;line-height:1.6;color:#475569;font-family:Arial,sans-serif;">Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a </span><span style="font-size:14px;line-height:1.6;font-family:Arial,sans-serif;"><a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;font-size:14px;line-height:1.6;font-family:Arial,sans-serif;">infoperdilost@gmail.com</a></span>.
+<div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;font-family:Arial, sans-serif;mso-line-height-rule:exactly;">
+  <span style="color:#475569 !important;font-size:14px !important;line-height:1.6 !important;font-family:Arial, sans-serif !important;">
+    Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
+  </span>
+  <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af !important;text-decoration:none !important;font-size:14px !important;line-height:1.6 !important;font-family:Arial, sans-serif !important;font-weight:normal !important;">
+    infoperdilost@gmail.com
+  </a>.
 </div>
 
             <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
