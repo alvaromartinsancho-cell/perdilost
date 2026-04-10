@@ -438,10 +438,10 @@ if (contacto !== contactoRepetir) {
     body: JSON.stringify({
       to: contacto,
       language: idiomaActual,
-     subject: idiomaActual === 'en'
+     subject: (propietario.preferred_language || 'es') === 'en'
   ? 'You have successfully registered your Perdilost code'
   : 'Has registrado correctamente tu código Perdilost',
-text: idiomaActual === 'en'
+text: (propietario.preferred_language || 'es') === 'en'
   ? `Hello ${nombre},
 
 Welcome to Perdilost and thank you for trusting our service.
