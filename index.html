@@ -436,8 +436,8 @@ const { error: errorUpdate } = await supabaseClient
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      to: contacto,
-      language: idiomaActual,
+  to: contacto,
+  language: idiomaActual,
      subject: idiomaActual === 'en'
   ? 'You have successfully registered your Perdilost code'
   : 'Has registrado correctamente tu código Perdilost',
