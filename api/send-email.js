@@ -18,9 +18,18 @@ export default async function handler(req, res) {
    const saludo = lineas[0] || 'Hola,';
 const indiceMensaje = lineas.findIndex(l => l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:'));
 const asuntoNormalizado = subject.toLowerCase();
+const textoNormalizado = text.toLowerCase();
+
 const esEmailRegistro =
   asuntoNormalizado.includes('has registrado correctamente tu código perdilost') ||
-  asuntoNormalizado.includes('you have successfully registered your perdilost code');
+  asuntoNormalizado.includes('you have successfully registered your perdilost code') ||
+  textoNormalizado.includes('bienvenido a perdilost') ||
+  textoNormalizado.includes('welcome to perdilost');
+
+const esEmailRegistroEnIngles =
+  asuntoNormalizado.includes('you have successfully registered your perdilost code') ||
+  textoNormalizado.includes('welcome to perdilost') ||
+  textoNormalizado.startsWith('hello ');
 const indiceDatos = lineas.findIndex(l => l.toLowerCase().includes('datos de contacto'));
 const indiceCierre = lineas.findIndex(l => l.toLowerCase().includes('te recomendamos ponerte en contacto'));
 
@@ -39,7 +48,6 @@ const intro = indiceMensaje > 1
     const cierre = indiceCierre >= 0
       ? lineas.slice(indiceCierre).filter(Boolean).join(' ')
       : '';
-const esEmailRegistroEnIngles = asuntoNormalizado.includes('you have successfully registered your perdilost code');
 
 const codigoRegistrado = esEmailRegistro && lineas[7] ? lineas[7] : '';
 
