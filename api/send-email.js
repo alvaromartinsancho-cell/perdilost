@@ -65,10 +65,10 @@ const textoNoInformados = esEmailRegistroEnIngles ? 'Not provided.' : 'No inform
 const textoNoInformada = esEmailRegistroEnIngles ? 'Not provided.' : 'No informada.';
 const textoContactoFooter = esEmailRegistroEnIngles
   ? 'If you have any questions or would like more information about Perdilost, you can write to'
-  : 'Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a';
+  : '${textoContactoFooter}';
 const textoBajaFooter = esEmailRegistroEnIngles
   ? 'If you wish to unsubscribe from our communications, write the word unsubscribe to the following email address:'
-  : 'Si deseas darte de baja de nuestras comunicaciones, escribe la palabra baja a la siguiente dirección de email:';
+  : '${textoBajaFooter}';
     const html = `
       <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
         <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
