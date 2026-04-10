@@ -166,10 +166,11 @@ Gracias por utilizar Perdilost.`,
     : 'Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, te rogamos que nos lo confirmes para ayudarnos a mejorar el servicio y para que quede registrado que has podido recuperarlo.'}
 </p>
 
-            <div style="margin:28px 0;">
-             <a href="https://perdilost.com/recuperado.html?code=${itemDetalle.code}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:bold;">
-  ${idiomaReminder === 'en' ? 'Confirm whether you have recovered it' : 'Confirmar si lo has recuperado'}
-</a>
+<div style="margin:28px 0;">
+  <a href="https://perdilost.com/recuperado.html?code=${itemDetalle.code}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:bold;">
+    ${idiomaReminder === 'en' ? 'Confirm whether you have recovered it' : 'Confirmar si lo has recuperado'}
+  </a>
+</div>
 
 <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
   ${idiomaReminder === 'en'
