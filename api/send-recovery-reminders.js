@@ -27,10 +27,10 @@ export default async function handler(req, res) {
   }
 
   const ahora = new Date();
-  const haceDosDias = new Date(ahora.getTime() - 2 * 24 * 60 * 60 * 1000);
+  const haceUnDia = new Date(ahora.getTime() - 1 * 24 * 60 * 60 * 1000);
 
   const avisosCandidatos = datos.filter(aviso => {
-    return new Date(aviso.created_at) <= haceDosDias;
+    return new Date(aviso.created_at) <= haceUnDia;
   });
 
   const codigosCandidatos = [...new Set(avisosCandidatos.map(aviso => aviso.code))];
@@ -63,7 +63,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       total_found_reports: datos.length,
-      total_candidatos_2_dias: avisosCandidatos.length,
+      total_candidatos_1_dia: avisosCandidatos.length,
       total_items_validos_recordatorio: 0,
       message: 'No hay recordatorios pendientes de envío'
     });
@@ -97,7 +97,7 @@ export default async function handler(req, res) {
     return res.status(200).json({
       ok: true,
       total_found_reports: datos.length,
-      total_candidatos_2_dias: avisosCandidatos.length,
+      total_candidatos_1_dia: avisosCandidatos.length,
       total_items_validos_recordatorio: itemsValidos.length,
       message: 'No se ha encontrado un email válido para el recordatorio'
     });
@@ -207,7 +207,7 @@ Gracias por utilizar Perdilost.`,
   return res.status(200).json({
     ok: true,
     total_found_reports: datos.length,
-    total_candidatos_2_dias: avisosCandidatos.length,
+    total_candidatos_1_dia: avisosCandidatos.length,
     total_items_validos_recordatorio: itemsValidos.length,
     reminder_sent_to: itemDetalle.contact_info,
     reminder_sent_code: itemDetalle.code,
