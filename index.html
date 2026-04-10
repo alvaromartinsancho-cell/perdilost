@@ -437,6 +437,7 @@ if (contacto !== contactoRepetir) {
     },
     body: JSON.stringify({
       to: contacto,
+      language: idiomaActual,
      subject: idiomaActual === 'en'
   ? 'You have successfully registered your Perdilost code'
   : 'Has registrado correctamente tu código Perdilost',
@@ -566,6 +567,7 @@ const respuestaEmail = await fetch('/api/send-email', {
   },
   body: JSON.stringify({
     to: propietario.contact_info,
+    language: propietario.preferred_language || 'es',
     subject: idiomaActual === 'en'
   ? 'Someone has found an item linked to your Perdilost code'
   : 'Han encontrado una pertenencia asociada a tu código Perdilost',
