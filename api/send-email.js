@@ -16,8 +16,6 @@ try {
 
     const lineas = text.split('\n').map(l => l.trim());
 
-    const lineas = text.split('\n').map(l => l.trim());
-
     const saludo = lineas[0] || 'Hola,';
     const asuntoNormalizado = subject.toLowerCase();
     const textoNormalizado = text.toLowerCase();
