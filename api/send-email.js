@@ -17,7 +17,10 @@ export default async function handler(req, res) {
 
    const saludo = lineas[0] || 'Hola,';
 const indiceMensaje = lineas.findIndex(l => l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:'));
-const esEmailRegistro = subject.toLowerCase().includes('has registrado correctamente tu código perdilost');
+const asuntoNormalizado = subject.toLowerCase();
+const esEmailRegistro =
+  asuntoNormalizado.includes('has registrado correctamente tu código perdilost') ||
+  asuntoNormalizado.includes('you have successfully registered your perdilost code');
 const indiceDatos = lineas.findIndex(l => l.toLowerCase().includes('datos de contacto'));
 const indiceCierre = lineas.findIndex(l => l.toLowerCase().includes('te recomendamos ponerte en contacto'));
 
