@@ -413,17 +413,17 @@ if (contacto !== contactoRepetir) {
     return;
   }
 
-  const { error: errorUpdate } = await supabaseClient
-    .from('items')
-    .update({
-  owner_name: nombre,
-  owner_phone: telefono || null,
-  contact_info: contacto,
-  description: descripcion,
-  preferred_language: idiomaActual,
-  activated_at: new Date().toISOString()
-})
-    .eq('code', codigo);
+const { error: errorUpdate } = await supabaseClient
+  .from('items')
+  .update({
+    owner_name: nombre,
+    owner_phone: telefono || null,
+    contact_info: contacto,
+    description: descripcion,
+    preferred_language: idiomaActual,
+    activated_at: new Date().toISOString()
+  })
+  .eq('code', codigo);
 
   if (errorUpdate) {
     mostrarMensaje('Error al guardar: ' + errorUpdate.message, 'error');
