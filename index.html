@@ -227,7 +227,17 @@ placeholderTelefonoEncontrado: 'Tu teléfono (opcional)',
 placeholderContactoEncontrado: 'Tu email (opcional)',
 placeholplaceholderMensajeEncontrado: 'Escribe aquí el mensaje que quieres que reciba el propietario para poder recuperar su pertenencia. Puedes indicar cómo contactarte o en qué lugar has dejado el objeto para que pueda pasar a recogerlo.',
 botonCrearRegistro: 'Crear registro',
-botonEnviarAviso: 'Enviar aviso'
+botonEnviarAviso: 'Enviar aviso',
+mensajeCamposRegistro: 'Debes completar todos los campos para registrar tu código.',
+mensajeEmailsNoCoinciden: 'Los emails no coinciden. Revisa ambos campos.',
+mensajeCodigoNoValido: 'Este código no es válido',
+mensajeCodigoYaRegistrado: 'Este código ya está registrado',
+mensajeEmailRegistroNoEnviado: 'Código activado correctamente, pero no hemos podido enviarte el email de confirmación.',
+mensajeRegistroOk: 'Código activado correctamente. Te hemos enviado un email de confirmación con los datos del registro.',
+mensajeCamposEncontrado: 'Debes introducir el código y escribir un mensaje para el propietario.',
+mensajeCodigoNoRegistrado: 'Este código no está registrado',
+mensajeEmailPropietarioNoEnviado: 'Aviso guardado correctamente. No hemos podido entregar el email al propietario en este momento, pero tu mensaje ha quedado registrado y lo revisaremos para intentar contactar con él. También puedes contactar directamente con nosotros: avisos@perdilost.com',
+mensajeAvisoOk: 'Aviso guardado y email enviado correctamente'
   },
   en: {
     bienvenidaTitulo: 'Welcome to Perdilost',
@@ -257,7 +267,17 @@ placeholderTelefonoEncontrado: 'Your phone number (optional)',
 placeholderContactoEncontrado: 'Your email (optional)',
 placeholderMensajeEncontrado: 'Write here the message you want the owner to receive so they can recover their item. You can indicate how to contact you or where you left it.',
 botonCrearRegistro: 'Create record',
-botonEnviarAviso: 'Send notice'
+botonEnviarAviso: 'Send notice',
+mensajeCamposRegistro: 'You must complete all fields to register your code.',
+mensajeEmailsNoCoinciden: 'The email addresses do not match. Please check both fields.',
+mensajeCodigoNoValido: 'This code is not valid',
+mensajeCodigoYaRegistrado: 'This code is already registered',
+mensajeEmailRegistroNoEnviado: 'Code activated correctly, but we could not send you the confirmation email.',
+mensajeRegistroOk: 'Code activated correctly. We have sent you a confirmation email with the registration details.',
+mensajeCamposEncontrado: 'You must enter the code and write a message for the owner.',
+mensajeCodigoNoRegistrado: 'This code is not registered',
+mensajeEmailPropietarioNoEnviado: 'Notice saved correctly. We could not deliver the email to the owner at this time, but your message has been recorded and we will review the issue to try to contact them. You can also contact us directly at: avisos@perdilost.com',
+mensajeAvisoOk: 'Notice saved and email sent correctly'
   }
 };
     function aplicarTextosGenerales() {
@@ -361,13 +381,13 @@ async function guardarCodigo() {
 mensajeEmailCoincide.style.display = 'none';
 
 if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
-  mostrarMensaje('Debes completar todos los campos para registrar tu código.', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeCamposRegistro, 'error');
   return;
 }
 
 if (contacto !== contactoRepetir) {
   mensajeEmailCoincide.style.display = 'block';
-  mostrarMensaje('Los emails no coinciden. Revisa ambos campos.', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeEmailsNoCoinciden, 'error');
   return;
 }
 
@@ -382,14 +402,14 @@ if (contacto !== contactoRepetir) {
   }
 
   if (!encontrados || encontrados.length === 0) {
-    mostrarMensaje('Este código no es válido', 'error');
+    mostrarMensaje(textos[idiomaActual].mensajeCodigoNoValido, 'error');
     return;
   }
 
   const yaRegistrado = encontrados.some(item => item.owner_name || item.contact_info);
 
   if (yaRegistrado) {
-    mostrarMensaje('Este código ya está registrado', 'error');
+    mostrarMensaje(textos[idiomaActual].mensajeCodigoYaRegistrado, 'error');
     return;
   }
 
@@ -441,7 +461,7 @@ Gracias por utilizar Perdilost.`
     })
   });
   if (!respuestaEmailRegistro.ok) {
-    mostrarMensaje('Código activado correctamente, pero no hemos podido enviarte el email de confirmación.', 'error');
+    mostrarMensaje(textos[idiomaActual].mensajeEmailRegistroNoEnviado, 'error');
     return;
   }
   document.getElementById('codigo').value = '';
@@ -451,7 +471,7 @@ Gracias por utilizar Perdilost.`
   document.getElementById('contacto-repetir').value = '';
   document.getElementById('descripcion').value = '';
   
-  mostrarMensaje('Código activado correctamente. Te hemos enviado un email de confirmación con los datos del registro.', 'ok');
+  mostrarMensaje(textos[idiomaActual].mensajeRegistroOk, 'ok');
 }
 
     async function comprobarCodigoEncontrado() {
@@ -462,7 +482,7 @@ Gracias por utilizar Perdilost.`
       const mensaje = document.getElementById('mensaje-encontrado').value.trim();
 
 if (!codigo || !mensaje) {
-  mostrarMensaje('Debes introducir el código y escribir un mensaje para el propietario.', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeCamposEncontrado, 'error');
   return;
 }
 
@@ -479,7 +499,7 @@ if (error) {
 }
 
 if (!data || data.length === 0) {
-  mostrarMensaje('Este código no está registrado', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeCodigoNoRegistrado, 'error');
   return;
 }
 
@@ -542,7 +562,7 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
 const resultadoEmail = await respuestaEmail.json();
 
 if (!respuestaEmail.ok) {
-  mostrarMensaje('Aviso guardado correctamente. No hemos podido entregar el email al propietario en este momento, pero tu mensaje ha quedado registrado y lo revisaremos para intentar contactar con él. También puedes contactar directamente con nosotros: avisos@perdilost.com', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeEmailPropietarioNoEnviado, 'error');
   return;
 }
 
@@ -565,7 +585,7 @@ document.getElementById('nombre-encontrado').value = '';
 document.getElementById('telefono-encontrado').value = '';
 document.getElementById('contacto-encontrado').value = '';
 document.getElementById('mensaje-encontrado').value = '';      
-mostrarMensaje('Aviso guardado y email enviado correctamente', 'ok');
+mostrarMensaje(textos[idiomaActual].mensajeAvisoOk, 'ok');
     }
   </script>
 </div>
