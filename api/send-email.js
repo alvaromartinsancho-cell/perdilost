@@ -16,7 +16,10 @@ export default async function handler(req, res) {
     const lineas = text.split('\n').map(l => l.trim());
 
    const saludo = lineas[0] || 'Hola,';
-const indiceMensaje = lineas.findIndex(l => l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:'));
+const indiceMensaje = lineas.findIndex(l =>
+  l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:') ||
+  l.toLowerCase().includes('the person who found it left us the following message:')
+);
 const asuntoNormalizado = subject.toLowerCase();
 const textoNormalizado = text.toLowerCase();
 
@@ -30,8 +33,19 @@ const esEmailRegistroEnIngles =
   asuntoNormalizado.includes('you have successfully registered your perdilost code') ||
   textoNormalizado.includes('welcome to perdilost') ||
   textoNormalizado.startsWith('hello ');
-const indiceDatos = lineas.findIndex(l => l.toLowerCase().includes('datos de contacto'));
-const indiceCierre = lineas.findIndex(l => l.toLowerCase().includes('te recomendamos ponerte en contacto'));
+const indiceDatos = lineas.findIndex(l =>
+  l.toLowerCase().includes('datos de contacto') ||
+  l.toLowerCase().includes('contact details')
+);
+const indiceCierre = lineas.findIndex(l =>
+  l.toLowerCase().includes('te recomendamos ponerte en contacto') ||
+  l.toLowerCase().includes('we recommend that you get in touch')
+);
+
+const esEmailEncontradoEnIngles =
+  asuntoNormalizado.includes('someone has found an item linked to your perdilost code') ||
+  textoNormalizado.includes('the person who found it left us the following message:') ||
+  textoNormalizado.includes('we recommend that you get in touch');
 
 const intro = indiceMensaje > 1
   ? lineas.slice(1, indiceMensaje).filter(Boolean).join(' ')
@@ -108,13 +122,13 @@ const textoBajaFooter = esEmailRegistroEnIngles
           <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">${funcionamientoRegistro}</p>
           ` : `
           <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
-            <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Mensaje recibido</div>
-            <div style="color:#1f2937;line-height:1.7;">${mensaje || 'Sin mensaje.'}</div>
+            <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">${esEmailEncontradoEnIngles ? 'Message received' : 'Mensaje recibido'}</div>
+            <div style="color:#1f2937;line-height:1.7;">${mensaje || (esEmailEncontradoEnIngles ? 'No message.' : 'Sin mensaje.')}</div>
           </div>
 
           <div style="margin:24px 0;">
-            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Datos de contacto (si los ha facilitado)</div>
-            <div style="color:#475569;line-height:1.7;">${datosContacto || 'No facilitados.'}</div>
+            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">${esEmailEncontradoEnIngles ? 'Contact details (if provided)' : 'Datos de contacto (si los ha facilitado)'}</div>
+            <div style="color:#475569;line-height:1.7;">${datosContacto || (esEmailEncontradoEnIngles ? 'Not provided.' : 'No facilitados.')}</div>
           </div>
 
           <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">${cierre}</p>
