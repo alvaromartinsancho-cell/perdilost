@@ -416,13 +416,13 @@ if (contacto !== contactoRepetir) {
   const { error: errorUpdate } = await supabaseClient
     .from('items')
     .update({
-      owner_name: nombre,
-      owner_phone: telefono || null,
-      contact_info: contacto,
-      description: descripcion,
-      activated_at: new Date().toISOString()
-      preferred_language: idiomaActual,
-    })
+  owner_name: nombre,
+  owner_phone: telefono || null,
+  contact_info: contacto,
+  description: descripcion,
+  preferred_language: idiomaActual,
+  activated_at: new Date().toISOString()
+})
     .eq('code', codigo);
 
   if (errorUpdate) {
@@ -438,10 +438,10 @@ if (contacto !== contactoRepetir) {
     body: JSON.stringify({
       to: contacto,
       language: idiomaActual,
-     subject: (propietario.preferred_language || 'es') === 'en'
+     subject: idiomaActual === 'en'
   ? 'You have successfully registered your Perdilost code'
   : 'Has registrado correctamente tu código Perdilost',
-text: (propietario.preferred_language || 'es') === 'en'
+text: idiomaActual === 'en'
   ? `Hello ${nombre},
 
 Welcome to Perdilost and thank you for trusting our service.
@@ -568,10 +568,10 @@ const respuestaEmail = await fetch('/api/send-email', {
   body: JSON.stringify({
     to: propietario.contact_info,
     language: propietario.preferred_language || 'es',
-    subject: idiomaActual === 'en'
+ subject: (propietario.preferred_language || 'es') === 'en'
   ? 'Someone has found an item linked to your Perdilost code'
   : 'Han encontrado una pertenencia asociada a tu código Perdilost',
-text: idiomaActual === 'en'
+text: (propietario.preferred_language || 'es') === 'en'
   ? `Hello ${propietario.owner_name || ''},
 
 We would like to let you know that someone has found an item linked to your Perdilost code: ${codigo}.
