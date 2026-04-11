@@ -169,10 +169,14 @@ if (code) {
 
   supabaseClient
     .from('items')
-    .select('description')
+    .select('description, preferred_language')
     .eq('code', code)
     .single()
     .then(({ data, error }) => {
+      if (!error && data && data.preferred_language) {
+  idiomaActual = data.preferred_language === 'en' ? 'en' : 'es';
+  aplicarTextosRecuperacion();
+}
       if (!error && data && data.description) {
         document.getElementById('descripcion-recuperacion').textContent = textos[idiomaActual].descripcionLabel + data.description;
       }
