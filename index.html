@@ -441,11 +441,27 @@ if (!codigo) {
   return;
 }
 
-if (!nombre || !contacto || !contactoRepetir || !descripcion) {
-  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
+const { data: encontrados, error: errorConsulta } = await supabaseClient
+  .from('items')
+  .select('*')
+  .eq('code', codigo);
+
+if (errorConsulta) {
+  mostrarMensaje('Error al comprobar el código: ' + errorConsulta.message, 'error');
   return;
 }
 
+if (!encontrados || encontrados.length === 0) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoNoValido}</div>`;
+  return;
+}
+
+const yaRegistrado = encontrados.some(item => item.owner_name || item.contact_info);
+
+if (yaRegistrado) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoYaRegistrado}</div>`;
+  return;
+}
 const privacyAccepted = document.getElementById('privacy-accepted')?.checked;
 if (!privacyAccepted) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
@@ -455,28 +471,6 @@ if (!privacyAccepted) {
 if (contacto !== contactoRepetir) {
   mensajeEmailCoincide.style.display = 'block';
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailsNoCoinciden}</div>`;
-  return;
-}
-
-  const { data: encontrados, error: errorConsulta } = await supabaseClient
-    .from('items')
-    .select('*')
-    .eq('code', codigo);
-
-  if (errorConsulta) {
-    mostrarMensaje('Error al comprobar el código: ' + errorConsulta.message, 'error');
-    return;
-  }
-
-if (!encontrados || encontrados.length === 0) {
-  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoNoValido}</div>`;
-  return;
-}
-
-  const yaRegistrado = encontrados.some(item => item.owner_name || item.contact_info);
-
-if (yaRegistrado) {
-  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoYaRegistrado}</div>`;
   return;
 }
 
