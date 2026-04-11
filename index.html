@@ -463,17 +463,17 @@ if (contacto !== contactoRepetir) {
     return;
   }
 
-  if (!encontrados || encontrados.length === 0) {
-    mostrarMensaje(textos[idiomaActual].mensajeCodigoNoValido, 'error');
-    return;
-  }
+if (!encontrados || encontrados.length === 0) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoNoValido}</div>`;
+  return;
+}
 
   const yaRegistrado = encontrados.some(item => item.owner_name || item.contact_info);
 
-  if (yaRegistrado) {
-    mostrarMensaje(textos[idiomaActual].mensajeCodigoYaRegistrado, 'error');
-    return;
-  }
+if (yaRegistrado) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoYaRegistrado}</div>`;
+  return;
+}
 
 const { error: errorUpdate } = await supabaseClient
   .from('items')
@@ -490,10 +490,10 @@ privacy_version: 'v1',
   })
   .eq('code', codigo);
 
-  if (errorUpdate) {
-    mostrarMensaje('Error al guardar: ' + errorUpdate.message, 'error');
-    return;
-  }
+if (errorUpdate) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">Error al guardar: ${errorUpdate.message}</div>`;
+  return;
+}
 
   const respuestaEmailRegistro = await fetch('/api/send-email', {
     method: 'POST',
@@ -551,10 +551,10 @@ Si en algún momento alguien encuentra tu objeto y utiliza este código en nuest
 Gracias por utilizar Perdilost.`
     })
   });
-  if (!respuestaEmailRegistro.ok) {
-    mostrarMensaje(textos[idiomaActual].mensajeEmailRegistroNoEnviado, 'error');
-    return;
-  }
+if (!respuestaEmailRegistro.ok) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailRegistroNoEnviado}</div>`;
+  return;
+}
   document.getElementById('codigo').value = '';
   document.getElementById('nombre').value = '';
   document.getElementById('telefono').value = '';
@@ -562,7 +562,7 @@ Gracias por utilizar Perdilost.`
   document.getElementById('contacto-repetir').value = '';
   document.getElementById('descripcion').value = '';
   
-  mostrarMensaje(textos[idiomaActual].mensajeRegistroOk, 'ok');
+  mensajeRegistro.innerHTML = `<div class="mensaje-ok">${textos[idiomaActual].mensajeRegistroOk}</div>`;
 }
 
     async function comprobarCodigoEncontrado() {
