@@ -1,4 +1,10 @@
 export default async function handler(req, res) {
+    if (req.method !== 'GET') {
+    return res.status(405).json({
+      ok: false,
+      error: 'Método no permitido'
+    });
+  }
   const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
