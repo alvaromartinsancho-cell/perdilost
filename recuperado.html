@@ -177,9 +177,10 @@ if (code) {
   idiomaActual = data.preferred_language === 'en' ? 'en' : 'es';
   aplicarTextosRecuperacion();
 }
-      if (!error && data && data.description) {
-        document.getElementById('descripcion-recuperacion').textContent = textos[idiomaActual].descripcionLabel + data.description;
-      }
+if (!error && data) {
+  document.getElementById('descripcion-recuperacion').textContent =
+    textos[idiomaActual].descripcionLabel + (data.description || textos[idiomaActual].descripcionNoInformada.replace(textos[idiomaActual].descripcionLabel, '').trim());
+}
     });
 }
 aplicarTextosRecuperacion();
