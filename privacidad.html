@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perdilost · Política de privacidad</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 0;
+      color: #1f2937;
+    }
+
+    .contenedor {
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+
+    h1, h2 {
+      color: #1f2d3d;
+    }
+
+    .idiomas {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button.activo {
+      background: #1e3a8a;
+    }
+
+    .bloque {
+      line-height: 1.7;
+    }
+
+    .oculto {
+      display: none;
+    }
+
+    a {
+      color: #2563eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor">
+    <div class="idiomas">
+      <button id="btn-es" type="button" onclick="cambiarIdiomaPrivacidad('es')" class="activo">ES</button>
+      <button id="btn-en" type="button" onclick="cambiarIdiomaPrivacidad('en')">EN</button>
+    </div>
+
+    <div id="privacidad-es" class="bloque">
+      <h1>Política de privacidad</h1>
+
+      <p><strong>Responsable del tratamiento:</strong> Perdilost</p>
+      <p><strong>Correo de contacto:</strong> <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a></p>
+      <p><strong>Dirección postal:</strong> Pendiente de completar</p>
+
+      <h2>1. Finalidad del tratamiento</h2>
+      <p>En Perdilost tratamos los datos personales que nos facilitas para gestionar el registro de tu código, asociarlo a tus datos de contacto, avisarte si alguien encuentra el objeto vinculado a ese código, enviarte recordatorios relacionados con la recuperación del objeto y atender incidencias o comunicaciones necesarias del servicio.</p>
+
+      <h2>2. Datos que tratamos</h2>
+      <p>Podemos tratar, según el uso del servicio, datos como tu nombre, teléfono, dirección de correo electrónico, descripción del objeto, código asociado, idioma preferido y datos relacionados con avisos o comunicaciones vinculadas al servicio.</p>
+
+      <h2>3. Base jurídica</h2>
+      <p>La base jurídica del tratamiento es tu consentimiento al registrar tu código y solicitar el uso del servicio Perdilost.</p>
+
+      <h2>4. Destinatarios</h2>
+      <p>No cederemos tus datos a terceros salvo obligación legal o cuando sea necesario para prestar el servicio a través de proveedores tecnológicos, como alojamiento web, base de datos o envío de correos electrónicos.</p>
+
+      <h2>5. Conservación</h2>
+      <p>Conservaremos tus datos mientras sean necesarios para la prestación del servicio, la gestión del código registrado y las comunicaciones asociadas, o hasta que solicites su supresión, salvo que exista una obligación legal de conservación.</p>
+
+      <h2>6. Derechos</h2>
+      <p>Puedes solicitar el acceso, rectificación, supresión, oposición, limitación del tratamiento y cualquier otro derecho aplicable escribiendo a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>.</p>
+
+      <h2>7. Seguridad</h2>
+      <p>Perdilost adopta medidas razonables para proteger los datos personales frente a accesos no autorizados, pérdida, alteración o divulgación indebida, teniendo en cuenta la naturaleza de la información tratada y los medios técnicos disponibles.</p>
+    </div>
+
+    <div id="privacidad-en" class="bloque oculto">
+      <h1>Privacy Policy</h1>
+
+      <p><strong>Data controller:</strong> Perdilost</p>
+      <p><strong>Contact email:</strong> <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a></p>
+      <p><strong>Postal address:</strong> To be completed</p>
+
+      <h2>1. Purpose of processing</h2>
+      <p>At Perdilost, we process the personal data you provide to manage your code registration, link it to your contact details, notify you if someone finds the item associated with that code, send you reminders related to item recovery, and handle incidents or communications necessary for the service.</p>
+
+      <h2>2. Data we process</h2>
+      <p>Depending on how you use the service, we may process data such as your name, phone number, email address, item description, associated code, preferred language, and data related to notices or communications connected to the service.</p>
+
+      <h2>3. Legal basis</h2>
+      <p>The legal basis for processing is your consent when registering your code and requesting the use of the Perdilost service.</p>
+
+      <h2>4. Recipients</h2>
+      <p>We will not disclose your data to third parties except when required by law or when necessary to provide the service through technology providers such as web hosting, database, or email delivery services.</p>
+
+      <h2>5. Retention</h2>
+      <p>We will keep your data for as long as necessary to provide the service, manage the registered code, and handle related communications, or until you request deletion, unless there is a legal obligation to retain it.</p>
+
+      <h2>6. Rights</h2>
+      <p>You may request access, rectification, erasure, objection, restriction of processing, and any other applicable rights by writing to <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>.</p>
+
+      <h2>7. Security</h2>
+      <p>Perdilost adopts reasonable measures to protect personal data against unauthorized access, loss, alteration, or improper disclosure, taking into account the nature of the information processed and the available technical means.</p>
+    </div>
+  </div>
+
+  <script>
+    function cambiarIdiomaPrivacidad(idioma) {
+      const es = document.getElementById('privacidad-es');
+      const en = document.getElementById('privacidad-en');
+      const btnEs = document.getElementById('btn-es');
+      const btnEn = document.getElementById('btn-en');
+
+      if (idioma === 'es') {
+        es.classList.remove('oculto');
+        en.classList.add('oculto');
+        btnEs.classList.add('activo');
+        btnEn.classList.remove('activo');
+      } else {
+        en.classList.remove('oculto');
+        es.classList.add('oculto');
+        btnEn.classList.add('activo');
+        btnEs.classList.remove('activo');
+      }
+    }
+  </script>
+</body>
+</html>
