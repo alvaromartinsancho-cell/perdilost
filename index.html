@@ -262,6 +262,7 @@ proteccionDatosInfoAdicionalValor: 'puedes consultar la política de privacidad 
 proteccionDatosPoliticaTexto: 'Ver política de privacidad completa',
 checkboxPrivacidadRegistro: 'He leído la información básica sobre protección de datos y acepto el tratamiento de mis datos para registrar mi código y gestionar las comunicaciones necesarias del servicio Perdilost.',
 mensajePrivacidadObligatoria: 'Debes aceptar la información de protección de datos para registrar tu código.'
+mensajePrivacidadObligatoriaEncontrado: 'Debes aceptar la información de protección de datos para enviar el aviso.'
   },
   en: {
     bienvenidaTitulo: 'Welcome to Perdilost',
@@ -326,6 +327,7 @@ proteccionDatosInfoAdicionalValor: 'you can read the full privacy policy using t
 proteccionDatosPoliticaTexto: 'View full privacy policy',
 checkboxPrivacidadRegistro: 'I have read the basic data protection information and I accept the processing of my data to register my code and manage the communications necessary for the Perdilost service.',
 mensajePrivacidadObligatoria: 'You must accept the data protection information to register your code.'
+mensajePrivacidadObligatoriaEncontrado: 'You must accept the data protection information to send the notice.'
   }
 };
     function aplicarTextosGenerales() {
@@ -640,7 +642,7 @@ if (!mensaje) {
 
 const privacyAcceptedEncontrado = document.getElementById('privacy-accepted-encontrado')?.checked;
 if (!privacyAcceptedEncontrado) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoriaEncontrado}</div>`;
   return;
 }
 
