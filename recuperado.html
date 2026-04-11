@@ -49,11 +49,15 @@
 </head>
 <body>
   <div class="contenedor">
-    <h1>Confirmar recuperación</h1>
+    <h1 id="titulo-recuperacion">Confirmar recuperación</h1>
+    <div style="display:flex; justify-content:flex-end; gap:8px; margin-bottom:16px;">
+  <button type="button" onclick="cambiarIdioma('es')" id="btn-es" style="background:#2563eb; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;">ES</button>
+  <button type="button" onclick="cambiarIdioma('en')" id="btn-en" style="background:#2563eb; color:white; border:none; padding:8px 12px; border-radius:8px; cursor:pointer;">EN</button>
+</div>
 
-    <div class="bloque-info">
-      En esta página podrás confirmar si finalmente has recuperado tu objeto.
-    </div>
+<div class="bloque-info" id="texto-info-recuperacion">
+  En esta página podrás confirmar si finalmente has recuperado tu objeto.
+</div>
 
 <div class="codigo" id="codigo-recuperacion">
   Código: no informado
@@ -62,20 +66,20 @@
   Descripción: no informada
 </div>
 <div style="margin-top: 24px;">
-  <p style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">¿Has recuperado ya el objeto (o has quedado con la persona para recuperarlo próximamente)?</p>
+  <p id="pregunta-recuperacion" style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">¿Has recuperado ya el objeto (o has quedado con la persona para recuperarlo próximamente)?</p>
 
-  <label style="display:block; margin-bottom:10px; color:#334155;">
-    <input type="radio" name="recuperado" value="si">
-    Sí, ya lo he recuperado
-  </label>
+<label id="label-recuperado-si" style="display:block; margin-bottom:10px; color:#334155;">
+  <input type="radio" name="recuperado" value="si">
+  Sí, ya lo he recuperado
+</label>
 
-  <label style="display:block; margin-bottom:10px; color:#334155;">
-    <input type="radio" name="recuperado" value="no">
-    No, todavía no lo he recuperado
-  </label>
+<label id="label-recuperado-no" style="display:block; margin-bottom:10px; color:#334155;">
+  <input type="radio" name="recuperado" value="no">
+  No, todavía no lo he recuperado
+</label>
 </div>
     <div style="margin-top: 24px;">
-  <p style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">Comentarios (opcional)</p>
+  <p id="titulo-comentarios" style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">Comentarios (opcional)</p>
   <textarea id="recovery-comments" placeholder="Puedes añadir aquí cualquier comentario sobre la recuperación del objeto" style="width:100%; max-width:100%; min-height:120px; padding:12px; border:1px solid #cbd5e1; border-radius:10px; box-sizing:border-box; font-size:14px;"></textarea>
 </div>
     <div style="margin-top: 24px;">
@@ -96,9 +100,72 @@
 
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
+  let idiomaActual = 'es';
+
+const textos = {
+  es: {
+    titulo: 'Confirmar recuperación',
+    info: 'En esta página podrás confirmar si finalmente has recuperado tu objeto.',
+    codigoNoInformado: 'Código: no informado',
+    descripcionNoInformada: 'Descripción: no informada',
+    pregunta: '¿Has recuperado ya el objeto (o has quedado con la persona para recuperarlo próximamente)?',
+    opcionSi: 'Sí, ya lo he recuperado',
+    opcionNo: 'No, todavía no lo he recuperado',
+    comentarios: 'Comentarios (opcional)',
+    placeholderComentarios: 'Puedes añadir aquí cualquier comentario sobre la recuperación del objeto',
+    boton: 'Enviar confirmación',
+    errorFaltaOpcion: 'Debes indicar si has recuperado tu objeto.',
+    errorGuardar: 'Error al guardar la confirmación: ',
+    okGuardar: 'Confirmación guardada correctamente.',
+    codigoLabel: 'Código: ',
+    descripcionLabel: 'Descripción: '
+  },
+  en: {
+    titulo: 'Confirm recovery',
+    info: 'On this page you can confirm whether you have finally recovered your item.',
+    codigoNoInformado: 'Code: not provided',
+    descripcionNoInformada: 'Description: not provided',
+    pregunta: 'Have you already recovered the item (or arranged to recover it soon)?',
+    opcionSi: 'Yes, I have already recovered it',
+    opcionNo: 'No, I have not recovered it yet',
+    comentarios: 'Comments (optional)',
+    placeholderComentarios: 'You can add here any comments about the recovery of the item',
+    boton: 'Send confirmation',
+    errorFaltaOpcion: 'You must indicate whether you have recovered your item.',
+    errorGuardar: 'Error saving the confirmation: ',
+    okGuardar: 'Confirmation saved correctly.',
+    codigoLabel: 'Code: ',
+    descripcionLabel: 'Description: '
+  }
+};
+
+function aplicarTextosRecuperacion() {
+  document.getElementById('titulo-recuperacion').textContent = textos[idiomaActual].titulo;
+  document.getElementById('texto-info-recuperacion').textContent = textos[idiomaActual].info;
+  document.getElementById('pregunta-recuperacion').textContent = textos[idiomaActual].pregunta;
+  document.getElementById('label-recuperado-si').lastChild.textContent = ' ' + textos[idiomaActual].opcionSi;
+  document.getElementById('label-recuperado-no').lastChild.textContent = ' ' + textos[idiomaActual].opcionNo;
+  document.getElementById('titulo-comentarios').textContent = textos[idiomaActual].comentarios;
+  document.getElementById('recovery-comments').placeholder = textos[idiomaActual].placeholderComentarios;
+  document.getElementById('btn-enviar-recuperacion').textContent = textos[idiomaActual].boton;
+
+  if (!code) {
+    document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
+    document.getElementById('descripcion-recuperacion').textContent = textos[idiomaActual].descripcionNoInformada;
+  }
+}
+
+function cambiarIdioma(idioma) {
+  idiomaActual = idioma;
+  aplicarTextosRecuperacion();
+
+  if (code) {
+    document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
+  }
+}
 
 if (code) {
-  document.getElementById('codigo-recuperacion').textContent = 'Código: ' + code;
+  document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
 
   supabaseClient
     .from('items')
@@ -107,20 +174,20 @@ if (code) {
     .single()
     .then(({ data, error }) => {
       if (!error && data && data.description) {
-        document.getElementById('descripcion-recuperacion').textContent = 'Descripción: ' + data.description;
+        document.getElementById('descripcion-recuperacion').textContent = textos[idiomaActual].descripcionLabel + data.description;
       }
     });
 }
-
+aplicarTextosRecuperacion();
 document.getElementById('btn-enviar-recuperacion').addEventListener('click', async function () {
   const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
   const comentarios = document.getElementById('recovery-comments').value.trim();
   const mensaje = document.getElementById('mensaje-recuperacion');
 
-  if (!opcionSeleccionada) {
-    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">Debes indicar si has recuperado tu objeto.</div>';
-    return;
-  }
+if (!opcionSeleccionada) {
+  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorFaltaOpcion + '</div>';
+  return;
+}
 
   const recuperado = opcionSeleccionada.value === 'si';
 
@@ -140,12 +207,12 @@ document.getElementById('btn-enviar-recuperacion').addEventListener('click', asy
     .update(datosActualizar)
     .eq('code', code);
 
-  if (error) {
-    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">Error al guardar la confirmación: ' + error.message + '</div>';
-    return;
-  }
+if (error) {
+  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + error.message + '</div>';
+  return;
+}
 
-  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">Confirmación guardada correctamente.</div>';
+  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">' + textos[idiomaActual].okGuardar + '</div>';
 });
 </script>
 </body>
