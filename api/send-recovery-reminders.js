@@ -18,13 +18,12 @@ export default async function handler(req, res) {
 
   const datos = await respuesta.json();
 
-  if (!respuesta.ok) {
-    return res.status(500).json({
-      ok: false,
-      error: 'Error al leer found_reports',
-      detalle: datos
-    });
-  }
+if (!respuesta.ok) {
+  return res.status(500).json({
+    ok: false,
+    error: 'Error al leer found_reports'
+  });
+}
 
   const ahora = new Date();
   const haceUnDia = new Date(ahora.getTime() - 1 * 24 * 60 * 60 * 1000);
@@ -47,13 +46,12 @@ export default async function handler(req, res) {
 
   const items = await respuestaItems.json();
 
-  if (!respuestaItems.ok) {
-    return res.status(500).json({
-      ok: false,
-      error: 'Error al leer items',
-      detalle: items
-    });
-  }
+if (!respuestaItems.ok) {
+  return res.status(500).json({
+    ok: false,
+    error: 'Error al leer items'
+  });
+}
 
   const itemsValidos = items.filter(item =>
     item.is_recovered === null && item.recovery_reminder_sent === false
@@ -82,13 +80,12 @@ const respuestaItemDetalle = await fetch(
 
   const itemDetalleArray = await respuestaItemDetalle.json();
 
-  if (!respuestaItemDetalle.ok) {
-    return res.status(500).json({
-      ok: false,
-      error: 'Error al leer el detalle del item',
-      detalle: itemDetalleArray
-    });
-  }
+if (!respuestaItemDetalle.ok) {
+  return res.status(500).json({
+    ok: false,
+    error: 'Error al leer el detalle del item'
+  });
+}
 
   const itemDetalle = itemDetalleArray && itemDetalleArray.length > 0 ? itemDetalleArray[0] : null;
   const idiomaReminder = itemDetalle?.preferred_language === 'en' ? 'en' : 'es';
@@ -192,13 +189,12 @@ Gracias por utilizar Perdilost.`,
 
   const resultadoEmail = await respuestaEmail.json();
 
-  if (!respuestaEmail.ok) {
-    return res.status(500).json({
-      ok: false,
-      error: 'Error al enviar el recordatorio',
-      email_resultado: resultadoEmail
-    });
-  }
+if (!respuestaEmail.ok) {
+  return res.status(500).json({
+    ok: false,
+    error: 'Error al enviar el recordatorio'
+  });
+}
 
   const respuestaUpdateItem = await fetch(
     `${supabaseUrl}/rest/v1/items?code=eq.${itemDetalle.code}`,
@@ -218,13 +214,12 @@ Gracias por utilizar Perdilost.`,
 
   const resultadoUpdateItem = await respuestaUpdateItem.text();
 
-  if (!respuestaUpdateItem.ok) {
-    return res.status(500).json({
-      ok: false,
-      error: 'Email enviado, pero no se pudo actualizar items',
-      detalle_update: resultadoUpdateItem
-    });
-  }
+if (!respuestaUpdateItem.ok) {
+  return res.status(500).json({
+    ok: false,
+    error: 'Email enviado, pero no se pudo actualizar items'
+  });
+}
 
   return res.status(200).json({
     ok: true,
