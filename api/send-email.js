@@ -23,6 +23,11 @@ if (!apiKey) {
     error: 'Error de configuración del servidor'
   });
 }
+    if (to.length > 320 || subject.length > 200 || text.length > 10000) {
+  return res.status(400).json({
+    error: 'Los datos enviados son demasiado largos'
+  });
+}
 
     const lineas = text.split('\n').map(l => l.trim());
 
