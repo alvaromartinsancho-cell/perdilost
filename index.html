@@ -588,7 +588,7 @@ const mensajeEncontradoFormulario = document.getElementById('mensaje-encontrado-
 
 mensajeEncontradoFormulario.innerHTML = '';
 
-if (!codigo || !mensaje) {
+if (!codigo) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   return;
 }
@@ -605,8 +605,8 @@ if (error) {
   return;
 }
 
-if (!data || data.length === 0) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoNoRegistrado}</div>`;
+if (!mensaje) {
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   return;
 }
 
