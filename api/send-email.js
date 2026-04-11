@@ -199,7 +199,15 @@ try {
           from: 'Perdilost <avisos@perdilost.com>',
           to: ['infoperdilost@gmail.com'],
           subject: 'Copia de aviso no entregado al propietario en Perdilost',
-          text: `No se ha podido entregar al propietario el siguiente aviso enviado desde el formulario "He encontrado un objeto".
+          text: `No se ha podido entregar un email desde Perdilost.
+
+Asunto original:
+${subject}
+
+Se ha producido un error al intentar enviarlo mediante Resend.
+
+Detalle técnico resumido:
+${JSON.stringify(datos)}`
 
 Destinatario previsto del propietario: ${to}
 Asunto original: ${subject}
