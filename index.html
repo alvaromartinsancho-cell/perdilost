@@ -615,11 +615,7 @@ if (!codigo) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   return;
 }
-const privacyAcceptedEncontrado = document.getElementById('privacy-accepted-encontrado')?.checked;
-if (!privacyAcceptedEncontrado) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
-  return;
-}
+
 const { data, error } = await supabaseClient
   .from('items')
   .select('*')
@@ -639,6 +635,11 @@ if (!data || data.length === 0) {
 
 if (!mensaje) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
+  return;
+}
+      const privacyAcceptedEncontrado = document.getElementById('privacy-accepted-encontrado')?.checked;
+if (!privacyAcceptedEncontrado) {
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
   return;
 }
 
