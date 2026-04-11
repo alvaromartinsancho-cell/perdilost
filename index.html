@@ -217,6 +217,7 @@ formEncontradoIntro: 'Introduce el código del objeto y tus datos.',
 formEncontradoTexto1: 'Introduce el código que aparece en la etiqueta de la pertenencia que has encontrado, tu nombre (opcional), tu email (opcional) y el mensaje que quieres que reenviemos al propietario con las instrucciones para poder recuperar su pertenencia.',
 formEncontradoTexto2: 'Tus datos serán privados. El propietario solo recibirá el mensaje que tú decidas enviarle a través de nuestra web.',
 formEncontradoTextoLegal: 'Antes de enviar el aviso, puedes consultar la información básica sobre protección de datos aplicable a este formulario.',
+checkboxPrivacidadEncontrado: 'He leído la información básica sobre protección de datos y acepto el tratamiento de los datos que facilite para gestionar este aviso a través del servicio Perdilost.',
 placeholderCodigo: 'Ejemplo: 1234567890',
 placeholderNombre: 'Escribe tu nombre completo',
 placeholderTelefono: 'Escribe tu teléfono (opcional)',
@@ -280,6 +281,7 @@ formEncontradoIntro: 'Enter the item code and your details.',
 formEncontradoTexto1: 'Enter the code shown on the tag of the item you found, your name (optional), your email (optional), and the message you want us to forward to the owner with instructions so they can recover their item.',
 formEncontradoTexto2: 'Your details will remain private. The owner will only receive the message that you choose to send through our website.',
 formEncontradoTextoLegal: 'Before sending the notice, you can read the basic data protection information applicable to this form.',
+checkboxPrivacidadEncontrado: 'I have read the basic data protection information and I accept the processing of the data I provide to manage this notice through the Perdilost service.',
 placeholderCodigo: 'Example: 1234567890',
 placeholderNombre: 'Enter your full name',
 placeholderTelefono: 'Enter your phone number (optional)',
@@ -388,6 +390,11 @@ function cambiarIdioma(idioma) {
   <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
   <p><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
 </div>
+
+<label style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
+  <input type="checkbox" id="privacy-accepted-encontrado" style="width:auto; margin-top:3px;">
+  <span>${textos[idiomaActual].checkboxPrivacidadEncontrado}</span>
+</label>
 
 <label style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
   <input type="checkbox" id="privacy-accepted" style="width:auto; margin-top:3px;">
@@ -608,7 +615,11 @@ if (!codigo) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   return;
 }
-
+const privacyAcceptedEncontrado = document.getElementById('privacy-accepted-encontrado')?.checked;
+if (!privacyAcceptedEncontrado) {
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
+  return;
+}
 const { data, error } = await supabaseClient
   .from('items')
   .select('*')
