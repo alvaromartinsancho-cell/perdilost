@@ -213,7 +213,7 @@ try {
           from: 'Perdilost <avisos@perdilost.com>',
           to: ['infoperdilost@gmail.com'],
           subject: 'Incidencia de envío de email en Perdilost',
-          text: `No se ha podido entregar un email desde Perdilost.
+text: `No se ha podido entregar un email desde Perdilost.
 
 Asunto original:
 ${subject}
@@ -221,15 +221,6 @@ ${subject}
 Se ha producido un error al intentar enviarlo mediante Resend.
 
 Detalle técnico resumido:
-${JSON.stringify(datos)}`
-
-Destinatario previsto del propietario: ${to}
-Asunto original: ${subject}
-
-Contenido original del mensaje:
-${text}
-
-Detalle del error devuelto por Resend:
 ${JSON.stringify(datos)}`
         })
       });
