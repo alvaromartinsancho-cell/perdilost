@@ -389,7 +389,7 @@ function cambiarIdioma(idioma) {
 <input type="text" id="telefono" placeholder="${textos[idiomaActual].placeholderTelefono}"><br><br>
 <input type="email" id="contacto" placeholder="${textos[idiomaActual].placeholderContacto}" required><br><br>
 <input type="email" id="contacto-repetir" placeholder="${textos[idiomaActual].placeholderContactoRepetir}" required><br><br>
-<div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">Los emails no coinciden.</div>
+<div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">${textos[idiomaActual].mensajeEmailsNoCoinciden}</div>
 <textarea id="descripcion" placeholder="${textos[idiomaActual].placeholderDescripcion}" required></textarea><br><br>
 
 <button type="button" onclick="guardarCodigo()">${textos[idiomaActual].botonCrearRegistro}</button>
