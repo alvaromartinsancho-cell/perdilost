@@ -181,7 +181,12 @@ const textoBajaFooter = esEmailRegistroEnIngles
       })
     });
 
-    const datos = await respuesta.json();
+    let datos = null;
+try {
+  datos = await respuesta.json();
+} catch (e) {
+  datos = null;
+}
 
        if (!respuesta.ok) {
       await fetch('https://api.resend.com/emails', {
