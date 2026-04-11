@@ -192,22 +192,17 @@ ${JSON.stringify(datos)}`
         })
       });
 
-      return res.status(400).json({
-        error: 'Error enviando email',
-        detalle: datos,
-        apiKeyPrimeros5: apiKey.slice(0, 5),
-        apiKeyLongitud: apiKey.length
-      });
+ return res.status(400).json({
+  error: 'Error enviando email'
+});
     }
 
-    return res.status(200).json({
-      ok: true,
-      resultado: datos
-    });
+return res.status(200).json({
+  ok: true
+});
   } catch (error) {
-    return res.status(500).json({
-      error: 'Error interno',
-      detalle: error.message
-    });
+return res.status(500).json({
+  error: 'Error interno'
+});
   }
 }
