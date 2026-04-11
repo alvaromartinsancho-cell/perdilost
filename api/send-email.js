@@ -198,7 +198,7 @@ try {
         body: JSON.stringify({
           from: 'Perdilost <avisos@perdilost.com>',
           to: ['infoperdilost@gmail.com'],
-          subject: 'Copia de aviso no entregado al propietario en Perdilost',
+          subject: 'Incidencia de envío de email en Perdilost',
           text: `No se ha podido entregar un email desde Perdilost.
 
 Asunto original:
