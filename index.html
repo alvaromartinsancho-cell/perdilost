@@ -122,7 +122,7 @@ button.activo {
   line-height: 1.6;
 }
 
-.bloque-info strong {
+#bienvenida-titulo {
   display: block;
   margin-bottom: 8px;
   font-size: 16px;
@@ -130,9 +130,14 @@ button.activo {
 }
 
 .texto-secundario {
-  margin-top: 10px;
+  margin-top: 0px;
   color: #475569;
   line-height: 1.6;
+}
+
+#bienvenida-secundario {
+  margin-top: 12px;
+  margin-bottom: 12px;
 }
 .texto-explicativo-formulario {
   margin-top: 14px;
@@ -148,29 +153,39 @@ h1 i {
   margin-right: 6px;
   color: #2563eb;
 }
+    .salto-suave {
+  display: block;
+  margin-top: 8px;
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <div class="contenedor">
-<h1><i class="fa-solid fa-location-crosshairs"></i> Perdilost</h1>
-
+<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+  <h1 style="margin-bottom:0;"><i class="fa-solid fa-location-crosshairs"></i> Perdilost</h1>
+  <div>
+    <button type="button" onclick="cambiarIdioma('es')">ES</button>
+    <button type="button" onclick="cambiarIdioma('en')">EN</button>
+  </div>
+</div>
 <div class="bloque-info">
-  <strong>Bienvenido a Perdilost</strong><hr>
-  En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.
-<div class="texto-secundario">
-  Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong>
-  Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>He encontrado un objeto</strong><hr>
- Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuerarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código.
-  Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a infoperdilost@gmail.com
-</div>
+  <strong id="bienvenida-titulo">Bienvenido a Perdilost</strong><hr>
+  <span id="bienvenida-texto">En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.</span>
+  <div class="texto-secundario" id="bienvenida-secundario">
+    Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong>.Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>Devolver a su dueño</strong>
+  </div>
+  <hr>
+  <div class="texto-secundario" id="texto-privacidad">
+    Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a infoperdilost@gmail.com
+  </div>
 </div>
 
-<p>Selecciona una opción:</p>
+<p id="texto-selecciona-opcion">Selecciona una opción:</p>
 
 <div class="botones-principales">
-  <button id="btn-propietario" onclick="mostrarPropietario()">Registrar mi código</button>
-  <button id="btn-encontrado" onclick="mostrarEncontrado()">He encontrado un objeto</button>
+<button id="btn-propietario" onclick="mostrarPropietario()">Registrar mi código</button>
+<button id="btn-encontrado" onclick="mostrarEncontrado()">He encontrado un objeto</button>
 </div>
 
     <div id="mensaje"></div>
@@ -181,6 +196,114 @@ h1 i {
     const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
     const supabaseKey = 'sb_publishable_xc-mlrcfwRNy394u97Hg3Q_RQvxGe5M';
     const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+    let idiomaActual = 'es';
+let formularioActivo = '';
+    const textos = {
+  es: {
+    bienvenidaTitulo: 'Bienvenido a Perdilost',
+    bienvenidaTexto: 'En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.',
+    bienvenidaSecundario: 'Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong><span class="salto-suave">Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>He encontrado un objeto</strong>.</span>',
+    seleccionaOpcion: 'Selecciona una opción:',
+    botonRegistrar: 'Registrar mi código',
+    botonEncontrado: 'Devolver a su dueño',
+    privacidadTexto: 'Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
+formPropietarioTitulo: 'Registrar mi código',
+formPropietarioIntro: 'Introduce tu código y tus datos de contacto.',
+formPropietarioTexto1: 'Registra tu código en nuestra web de manera que, si alguien encuentra esta pertenencia y accede a Perdilost, te enviaremos un aviso al email que indiques en esta cuenta.',
+formPropietarioTexto2: 'También puedes añadir una breve descripción del objeto e instrucciones para su devolución. Esto puede servir más adelante para ayudarte a recuperarlo en caso de pérdida. Todos los datos que facilites son privados y solo los utilizaremos para ayudarte a recuperar tu objeto. Nadie tendrá acceso a esta información a través del código.',
+formEncontradoTitulo: 'Devolver a su dueño',
+formEncontradoIntro: 'Introduce el código del objeto y tus datos.',
+formEncontradoTexto1: 'Introduce el código que aparece en la etiqueta de la pertenencia que has encontrado, tu nombre (opcional), tu email (opcional) y el mensaje que quieres que reenviemos al propietario con las instrucciones para poder recuperar su pertenencia.',
+formEncontradoTexto2: 'Tus datos serán privados. El propietario solo recibirá el mensaje que tú decidas enviarle a través de nuestra web.',
+placeholderCodigo: 'Ejemplo: 1234567890',
+placeholderNombre: 'Escribe tu nombre completo',
+placeholderTelefono: 'Escribe tu teléfono (opcional)',
+placeholderContacto: 'Escribe tu email',
+placeholderContactoRepetir: 'Repite tu email',
+placeholderDescripcion: 'Describe el objeto y añade indicaciones sobre cómo devolverlo en caso de que alguien lo encuentre',
+placeholderCodigoEncontrado: 'Introduce el código de la etiqueta',
+placeholderNombreEncontrado: 'Tu nombre (opcional)',
+placeholderTelefonoEncontrado: 'Tu teléfono (opcional)',
+placeholderContactoEncontrado: 'Tu email (opcional)',
+placeholderMensajeEncontrado: 'Escribe aquí el mensaje que quieres que reciba el propietario para poder recuperar su pertenencia. Puedes indicar cómo contactarte o en qué lugar has dejado el objeto para que pueda pasar a recogerlo.',
+botonCrearRegistro: 'Crear registro',
+botonEnviarAviso: 'Enviar aviso',
+mensajeCamposRegistro: 'Debes completar todos los campos para registrar tu código.',
+mensajeEmailsNoCoinciden: 'Los emails no coinciden. Revisa ambos campos.',
+mensajeCodigoNoValido: 'Este código no es válido',
+mensajeCodigoYaRegistrado: 'Este código ya está registrado',
+mensajeEmailRegistroNoEnviado: 'Código activado correctamente, pero no hemos podido enviarte el email de confirmación.',
+mensajeRegistroOk: 'Código activado correctamente. Te hemos enviado un email de confirmación con los datos del registro.',
+mensajeCamposEncontrado: 'Debes introducir el código y escribir un mensaje para el propietario.',
+mensajeCodigoNoRegistrado: 'Este código no está registrado',
+mensajeEmailPropietarioNoEnviado: 'Aviso guardado correctamente. No hemos podido entregar el email al propietario en este momento, pero tu mensaje ha quedado registrado y lo revisaremos para intentar contactar con él. También puedes contactar directamente con nosotros: avisos@perdilost.com',
+mensajeAvisoOk: 'Aviso guardado y email enviado correctamente'
+  },
+  en: {
+    bienvenidaTitulo: 'Welcome to Perdilost',
+    bienvenidaTexto: 'At Perdilost, we help lost belongings find their way back to their owners thanks to the collaboration of the person who finds them.',
+    bienvenidaSecundario: 'If you are placing this tag on one of your belongings, you must register your code to link it to your contact details. To do so, click: <strong>Register my code</strong><span class="salto-suave">If you have found an item with a Perdilost tag and want us to notify the owner so they can recover it, click: <strong>Return it to its owner</strong>.</span>',
+    seleccionaOpcion: 'Choose an option:',
+    botonRegistrar: 'Register my code',
+    botonEncontrado: 'Return it to its owner',
+    privacidadTexto: 'Privacy and security: no one will be able to access your data through this code or contact you directly. If someone finds your item, they will send a message with the instructions for recovering it to Perdilost, and we will forward it to the email address you provided when registering the code. If you would like Perdilost codes to place on your belongings, write to us at <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
+formPropietarioTitulo: 'Register my code',
+formPropietarioIntro: 'Enter your code and your contact details.',
+formPropietarioTexto1: 'Register your code on our website so that, if someone finds this item and accesses Perdilost, we can send you a notice to the email address you provide.',
+formPropietarioTexto2: 'You can also add a brief description of the item and instructions for its return. This may help you recover it later if it is lost. All the data you provide is private and will only be used to help you recover your item. No one will have access to this information through the code.',
+formEncontradoTitulo: 'Return it to its owner',
+formEncontradoIntro: 'Enter the item code and your details.',
+formEncontradoTexto1: 'Enter the code shown on the tag of the item you found, your name (optional), your email (optional), and the message you want us to forward to the owner with instructions so they can recover their item.',
+formEncontradoTexto2: 'Your details will remain private. The owner will only receive the message that you choose to send through our website.',
+placeholderCodigo: 'Example: 1234567890',
+placeholderNombre: 'Enter your full name',
+placeholderTelefono: 'Enter your phone number (optional)',
+placeholderContacto: 'Enter your email',
+placeholderContactoRepetir: 'Repeat your email',
+placeholderDescripcion: 'Describe the item and add instructions on how to return it if someone finds it',
+placeholderCodigoEncontrado: 'Enter the code on the tag',
+placeholderNombreEncontrado: 'Your name (optional)',
+placeholderTelefonoEncontrado: 'Your phone number (optional)',
+placeholderContactoEncontrado: 'Your email (optional)',
+placeholderMensajeEncontrado: 'Write here the message you want the owner to receive so they can recover their item. You can indicate how to contact you or where you left it.',
+botonCrearRegistro: 'Create record',
+botonEnviarAviso: 'Send notice',
+mensajeCamposRegistro: 'You must complete all fields to register your code.',
+mensajeEmailsNoCoinciden: 'The email addresses do not match. Please check both fields.',
+mensajeCodigoNoValido: 'This code is not valid',
+mensajeCodigoYaRegistrado: 'This code is already registered',
+mensajeEmailRegistroNoEnviado: 'Code activated correctly, but we could not send you the confirmation email.',
+mensajeRegistroOk: 'Code activated correctly. We have sent you a confirmation email with the registration details.',
+mensajeCamposEncontrado: 'You must enter the code and write a message for the owner.',
+mensajeCodigoNoRegistrado: 'This code is not registered',
+mensajeEmailPropietarioNoEnviado: 'Notice saved correctly. We could not deliver the email to the owner at this time, but your message has been recorded and we will review the issue to try to contact them. You can also contact us directly at: avisos@perdilost.com',
+mensajeAvisoOk: 'Notice saved and email sent correctly'
+  }
+};
+    function aplicarTextosGenerales() {
+  document.getElementById('bienvenida-titulo').innerHTML = textos[idiomaActual].bienvenidaTitulo;
+  document.getElementById('bienvenida-texto').innerHTML = textos[idiomaActual].bienvenidaTexto;
+  document.getElementById('bienvenida-secundario').innerHTML = textos[idiomaActual].bienvenidaSecundario;
+  document.getElementById('texto-selecciona-opcion').innerHTML = textos[idiomaActual].seleccionaOpcion;
+  document.getElementById('btn-propietario').innerHTML = textos[idiomaActual].botonRegistrar;
+  document.getElementById('btn-encontrado').innerHTML = textos[idiomaActual].botonEncontrado;
+  document.getElementById('texto-privacidad').innerHTML = textos[idiomaActual].privacidadTexto;
+}
+
+function cambiarIdioma(idioma) {
+  idiomaActual = idioma;
+  aplicarTextosGenerales();
+
+  if (formularioActivo === 'propietario') {
+    mostrarPropietario();
+  }
+
+  if (formularioActivo === 'encontrado') {
+    mostrarEncontrado();
+  }
+}
+    aplicarTextosGenerales();
+    
     function mostrarMensaje(texto, tipo) {
   const mensaje = document.getElementById('mensaje');
 
@@ -192,54 +315,56 @@ h1 i {
 }
     function mostrarPropietario() {
       document.getElementById('btn-propietario').classList.add('activo');
+      formularioActivo = 'propietario';
       document.getElementById('btn-encontrado').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
-<p><strong>Registrar mi código</strong></p><hr>
-<p>Introduce tu código y tus datos de contacto.</p>
+<p><strong>${textos[idiomaActual].formPropietarioTitulo}</strong></p><hr>
+<p>${textos[idiomaActual].formPropietarioIntro}</p>
 
 <div class="texto-explicativo-formulario">
-   Registra tu código en nuestra web de manera que, si alguien encuentra esta pertenencia y accede a Perdilost, te enviaremos un aviso al email que indiques en esta cuenta.
-  <div class="texto-secundario">
-    También puedes añadir una breve descripción del objeto e instrucciones para su devolución. Esto puede servir más adelante para ayudarte a recuperarlo en caso de pérdida. Todos los datos que facilites son privados y solo los utilizaremos para ayudarte a recuperar tu objeto. Nadie tendrá acceso a esta información a través del código.
+   ${textos[idiomaActual].formPropietarioTexto1}
+  <div class="texto-secundario salto-suave">
+    ${textos[idiomaActual].formPropietarioTexto2}
   </div>
 </div>
 
-<input type="text" id="codigo" placeholder="Ejemplo: 1234567890" required><br><br>
-<input type="text" id="nombre" placeholder="Escribe tu nombre completo" required><br><br>
-<input type="text" id="telefono" placeholder="Escribe tu teléfono (opcional)"><br><br>
-<input type="email" id="contacto" placeholder="Escribe tu email" required><br><br>
-<input type="email" id="contacto-repetir" placeholder="Repite tu email" required><br><br>
+<input type="text" id="codigo" placeholder="${textos[idiomaActual].placeholderCodigo}" required><br><br>
+<input type="text" id="nombre" placeholder="${textos[idiomaActual].placeholderNombre}" required><br><br>
+<input type="text" id="telefono" placeholder="${textos[idiomaActual].placeholderTelefono}"><br><br>
+<input type="email" id="contacto" placeholder="${textos[idiomaActual].placeholderContacto}" required><br><br>
+<input type="email" id="contacto-repetir" placeholder="${textos[idiomaActual].placeholderContactoRepetir}" required><br><br>
 <div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">Los emails no coinciden.</div>
-<textarea id="descripcion" placeholder="Describe el objeto y añade indicaciones sobre cómo devolverlo en caso de que alguien lo encuentre" required></textarea><br><br>
+<textarea id="descripcion" placeholder="${textos[idiomaActual].placeholderDescripcion}" required></textarea><br><br>
 
-<button type="button" onclick="guardarCodigo()">Crear registro</button>
+<button type="button" onclick="guardarCodigo()">${textos[idiomaActual].botonCrearRegistro}</button>
 </div>
 `;
     }
 
     function mostrarEncontrado() {
       document.getElementById('btn-encontrado').classList.add('activo');
+      formularioActivo = 'encontrado';
       document.getElementById('btn-propietario').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
-<p><strong>He encontrado un objeto</strong></p><hr>
-<p>Introduce el código del objeto y tus datos.</p>
+<p><strong>${textos[idiomaActual].formEncontradoTitulo}</strong></p><hr>
+<p>${textos[idiomaActual].formEncontradoIntro}</p>
 
 <div class="texto-explicativo-formulario">
-  Introduce el código que aparece en la etiqueta de la pertenencia que has encontrado, tu nombre(opcional), tu email(opcional) y el mensaje que quieres que reenviemos al propietario con las instrucciones para poder recuperar su pertenencia.
-  <div class="texto-secundario">
-    Tus datos serán privados. El propietario solo recibirá el mensaje que tú decidas enviarle a través de nuestra web.
+  ${textos[idiomaActual].formEncontradoTexto1}
+  <div class="texto-secundario salto-suave">
+    ${textos[idiomaActual].formEncontradoTexto2}
   </div>
 </div>
 
-        <input type="text" id="codigo-encontrado" placeholder="Introduce el código de la etiqueta" required><br><br>
-        <input type="text" id="nombre-encontrado" placeholder="Tu nombre (opcional)"><br><br>
-        <input type="text" id="telefono-encontrado" placeholder="Tu teléfono (opcional)"><br><br>
-        <input type="email" id="contacto-encontrado" placeholder="Tu email (opcional)"><br><br>
-        <textarea id="mensaje-encontrado" placeholder="Escribe aquí el mensaje que quieres que reciba el propietario para poder recuperar su pertenencia. Puedes indicar cómo contactarte o en qué lugar has dejado el objeto para que pueda pasar a recogerlo." required></textarea><br><br>
+<input type="text" id="codigo-encontrado" placeholder="${textos[idiomaActual].placeholderCodigoEncontrado}" required><br><br>
+<input type="text" id="nombre-encontrado" placeholder="${textos[idiomaActual].placeholderNombreEncontrado}"><br><br>
+<input type="text" id="telefono-encontrado" placeholder="${textos[idiomaActual].placeholderTelefonoEncontrado}"><br><br>
+<input type="email" id="contacto-encontrado" placeholder="${textos[idiomaActual].placeholderContactoEncontrado}"><br><br>
+<textarea id="mensaje-encontrado" placeholder="${textos[idiomaActual].placeholderMensajeEncontrado}" required></textarea><br><br>
 
-        <button onclick="comprobarCodigoEncontrado()">Enviar aviso</button>
+<button onclick="comprobarCodigoEncontrado()">${textos[idiomaActual].botonEnviarAviso}</button>
         </div>
       `;
     }
@@ -256,13 +381,13 @@ async function guardarCodigo() {
 mensajeEmailCoincide.style.display = 'none';
 
 if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
-  mostrarMensaje('Debes completar todos los campos para registrar tu código.', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeCamposRegistro, 'error');
   return;
 }
 
 if (contacto !== contactoRepetir) {
   mensajeEmailCoincide.style.display = 'block';
-  mostrarMensaje('Los emails no coinciden. Revisa ambos campos.', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeEmailsNoCoinciden, 'error');
   return;
 }
 
@@ -277,27 +402,28 @@ if (contacto !== contactoRepetir) {
   }
 
   if (!encontrados || encontrados.length === 0) {
-    mostrarMensaje('Este código no es válido', 'error');
+    mostrarMensaje(textos[idiomaActual].mensajeCodigoNoValido, 'error');
     return;
   }
 
   const yaRegistrado = encontrados.some(item => item.owner_name || item.contact_info);
 
   if (yaRegistrado) {
-    mostrarMensaje('Este código ya está registrado', 'error');
+    mostrarMensaje(textos[idiomaActual].mensajeCodigoYaRegistrado, 'error');
     return;
   }
 
-  const { error: errorUpdate } = await supabaseClient
-    .from('items')
-    .update({
-      owner_name: nombre,
-      owner_phone: telefono || null,
-      contact_info: contacto,
-      description: descripcion,
-      activated_at: new Date().toISOString()
-    })
-    .eq('code', codigo);
+const { error: errorUpdate } = await supabaseClient
+  .from('items')
+  .update({
+    owner_name: nombre,
+    owner_phone: telefono || null,
+    contact_info: contacto,
+    description: descripcion,
+    preferred_language: idiomaActual,
+    activated_at: new Date().toISOString()
+  })
+  .eq('code', codigo);
 
   if (errorUpdate) {
     mostrarMensaje('Error al guardar: ' + errorUpdate.message, 'error');
@@ -310,9 +436,34 @@ if (contacto !== contactoRepetir) {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      to: contacto,
-      subject: 'Has registrado correctamente tu código Perdilost',
-      text: `Hola ${nombre},
+  to: contacto,
+  language: idiomaActual,
+     subject: idiomaActual === 'en'
+  ? 'You have successfully registered your Perdilost code'
+  : 'Has registrado correctamente tu código Perdilost',
+text: idiomaActual === 'en'
+  ? `Hello ${nombre},
+
+Welcome to Perdilost and thank you for trusting our service.
+
+Your Perdilost code registration has been completed successfully.
+
+Registered code:
+${codigo}
+
+Contact details:
+Name: ${nombre}
+Phone: ${telefono || 'Not provided'}
+Email: ${contacto}
+
+Message or description provided:
+${descripcion || 'Not provided'}
+
+How your code works:
+If someone finds your item and uses this code on our website to notify us, they will not have access to your personal data. We will send you their message to this same email address so you can contact them and recover your item.
+
+Thank you for using Perdilost.`
+  : `Hola ${nombre},
 
 Bienvenido a Perdilost y gracias por confiar en nuestro servicio.
 
@@ -336,7 +487,7 @@ Gracias por utilizar Perdilost.`
     })
   });
   if (!respuestaEmailRegistro.ok) {
-    mostrarMensaje('Código activado correctamente, pero no hemos podido enviarte el email de confirmación.', 'error');
+    mostrarMensaje(textos[idiomaActual].mensajeEmailRegistroNoEnviado, 'error');
     return;
   }
   document.getElementById('codigo').value = '';
@@ -346,7 +497,7 @@ Gracias por utilizar Perdilost.`
   document.getElementById('contacto-repetir').value = '';
   document.getElementById('descripcion').value = '';
   
-  mostrarMensaje('Código activado correctamente. Te hemos enviado un email de confirmación con los datos del registro.', 'ok');
+  mostrarMensaje(textos[idiomaActual].mensajeRegistroOk, 'ok');
 }
 
     async function comprobarCodigoEncontrado() {
@@ -357,7 +508,7 @@ Gracias por utilizar Perdilost.`
       const mensaje = document.getElementById('mensaje-encontrado').value.trim();
 
 if (!codigo || !mensaje) {
-  mostrarMensaje('Debes introducir el código y escribir un mensaje para el propietario.', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeCamposEncontrado, 'error');
   return;
 }
 
@@ -374,7 +525,7 @@ if (error) {
 }
 
 if (!data || data.length === 0) {
-  mostrarMensaje('Este código no está registrado', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeCodigoNoRegistrado, 'error');
   return;
 }
 
@@ -416,8 +567,26 @@ const respuestaEmail = await fetch('/api/send-email', {
   },
   body: JSON.stringify({
     to: propietario.contact_info,
-    subject: 'Han encontrado una pertenencia asociada a tu código Perdilost',
-text: `Hola ${propietario.owner_name || ''},
+    language: propietario.preferred_language || 'es',
+ subject: (propietario.preferred_language || 'es') === 'en'
+  ? 'Someone has found an item linked to your Perdilost code'
+  : 'Han encontrado una pertenencia asociada a tu código Perdilost',
+text: (propietario.preferred_language || 'es') === 'en'
+  ? `Hello ${propietario.owner_name || ''},
+
+We would like to let you know that someone has found an item linked to your Perdilost code: ${codigo}.
+
+The person who found it left us the following message:
+
+${mensaje}
+
+Contact details (if provided):
+Name: ${nombre || 'Not provided'}
+Phone: ${telefono || 'Not provided'}
+Email: ${contacto || 'Not provided'}
+
+We recommend that you get in touch as soon as possible so you can recover it.`
+  : `Hola ${propietario.owner_name || ''},
 
 Te informamos de que alguien ha encontrado una pertenencia asociada a tu código de Perdilost: ${codigo}.
 
@@ -437,7 +606,7 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
 const resultadoEmail = await respuestaEmail.json();
 
 if (!respuestaEmail.ok) {
-  mostrarMensaje('Aviso guardado correctamente. No hemos podido entregar el email al propietario en este momento, pero tu mensaje ha quedado registrado y lo revisaremos para intentar contactar con él. También puedes contactar directamente con nosotros: avisos@perdilost.com', 'error');
+  mostrarMensaje(textos[idiomaActual].mensajeEmailPropietarioNoEnviado, 'error');
   return;
 }
 
@@ -460,7 +629,7 @@ document.getElementById('nombre-encontrado').value = '';
 document.getElementById('telefono-encontrado').value = '';
 document.getElementById('contacto-encontrado').value = '';
 document.getElementById('mensaje-encontrado').value = '';      
-mostrarMensaje('Aviso guardado y email enviado correctamente', 'ok');
+mostrarMensaje(textos[idiomaActual].mensajeAvisoOk, 'ok');
     }
   </script>
 </div>

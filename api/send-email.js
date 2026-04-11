@@ -4,7 +4,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { to, subject, text } = req.body;
+const { to, subject, text, language } = req.body;
+    const idiomaEmail = language === 'en' ? 'en' : 'es';
     const apiKey = process.env.RESEND_API_KEY;
 
     if (!apiKey) {
@@ -16,10 +17,38 @@ export default async function handler(req, res) {
     const lineas = text.split('\n').map(l => l.trim());
 
    const saludo = lineas[0] || 'Hola,';
-const indiceMensaje = lineas.findIndex(l => l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:'));
-const esEmailRegistro = subject.toLowerCase().includes('has registrado correctamente tu código perdilost');
-const indiceDatos = lineas.findIndex(l => l.toLowerCase().includes('datos de contacto'));
-const indiceCierre = lineas.findIndex(l => l.toLowerCase().includes('te recomendamos ponerte en contacto'));
+const indiceMensaje = lineas.findIndex(l =>
+  l.toLowerCase().includes('la persona que la ha encontrado nos ha dejado el siguiente mensaje:') ||
+  l.toLowerCase().includes('the person who found it left us the following message:')
+);
+const asuntoNormalizado = subject.toLowerCase();
+const textoNormalizado = text.toLowerCase();
+
+const esEmailRegistro =
+  asuntoNormalizado.includes('has registrado correctamente tu código perdilost') ||
+  asuntoNormalizado.includes('you have successfully registered your perdilost code') ||
+  textoNormalizado.includes('bienvenido a perdilost') ||
+  textoNormalizado.includes('welcome to perdilost');
+
+const esEmailRegistroEnIngles =
+  idiomaEmail === 'en' ||
+  asuntoNormalizado.includes('you have successfully registered your perdilost code') ||
+  textoNormalizado.includes('welcome to perdilost') ||
+  textoNormalizado.startsWith('hello ');
+const indiceDatos = lineas.findIndex(l =>
+  l.toLowerCase().includes('datos de contacto') ||
+  l.toLowerCase().includes('contact details')
+);
+const indiceCierre = lineas.findIndex(l =>
+  l.toLowerCase().includes('te recomendamos ponerte en contacto') ||
+  l.toLowerCase().includes('we recommend that you get in touch')
+);
+
+const esEmailEncontradoEnIngles =
+  idiomaEmail === 'en' ||
+  asuntoNormalizado.includes('someone has found an item linked to your perdilost code') ||
+  textoNormalizado.includes('the person who found it left us the following message:') ||
+  textoNormalizado.includes('we recommend that you get in touch');
 
 const intro = indiceMensaje > 1
   ? lineas.slice(1, indiceMensaje).filter(Boolean).join(' ')
@@ -36,16 +65,36 @@ const intro = indiceMensaje > 1
     const cierre = indiceCierre >= 0
       ? lineas.slice(indiceCierre).filter(Boolean).join(' ')
       : '';
+
 const codigoRegistrado = esEmailRegistro && lineas[7] ? lineas[7] : '';
+
 const datosContactoRegistro = esEmailRegistro
-  ? lineas.slice(10, 12).filter(Boolean).join('<br>')
+  ? lineas.slice(10, 13).filter(Boolean).join('<br>')
   : '';
-const descripcionRegistro = esEmailRegistro && lineas[14]
-  ? lineas[14]
+
+const descripcionRegistro = esEmailRegistro
+  ? (esEmailRegistroEnIngles ? lineas[15] : lineas[15])
   : '';
+
 const funcionamientoRegistro = esEmailRegistro
-  ? lineas.slice(16).filter(Boolean).join(' ')
+  ? (esEmailRegistroEnIngles
+      ? lineas.slice(17).filter(Boolean).join(' ')
+      : lineas.slice(17).filter(Boolean).join(' '))
   : '';
+
+const tituloCodigoRegistrado = esEmailRegistroEnIngles ? 'Registered code' : 'Código registrado';
+const tituloDatosContacto = esEmailRegistroEnIngles ? 'Contact details' : 'Datos de contacto';
+const tituloDescripcion = esEmailRegistroEnIngles ? 'Message or description provided' : 'Mensaje o descripción indicada';
+const textoNoInformado = esEmailRegistroEnIngles ? 'Not provided.' : 'No informado.';
+const textoNoInformados = esEmailRegistroEnIngles ? 'Not provided.' : 'No informados.';
+const textoNoInformada = esEmailRegistroEnIngles ? 'Not provided.' : 'No informada.';
+const textoContactoFooter = esEmailRegistroEnIngles
+  ? 'If you have any questions or would like more information about Perdilost, you can write to'
+  : 'Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a';
+
+const textoBajaFooter = esEmailRegistroEnIngles
+  ? 'If you wish to unsubscribe from our communications, write the word unsubscribe to the following email address:'
+  : 'Si deseas darte de baja de nuestras comunicaciones, escribe la palabra baja a la siguiente dirección de email:';
     const html = `
       <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
         <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
@@ -59,41 +108,42 @@ const funcionamientoRegistro = esEmailRegistro
 
           ${esEmailRegistro ? `
           <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
-            <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Código registrado</div>
-            <div style="color:#1f2937;line-height:1.7;">${codigoRegistrado || 'No informado.'}</div>
+            <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">${tituloCodigoRegistrado}</div>
+            <div style="color:#1f2937;line-height:1.7;">${codigoRegistrado || textoNoInformado}</div>
           </div>
 
           <div style="margin:24px 0;">
-            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Datos de contacto</div>
-            <div style="color:#475569;line-height:1.7;">${datosContactoRegistro || 'No informados.'}</div>
+            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">${tituloDatosContacto}</div>
+            <div style="color:#475569;line-height:1.7;">${datosContactoRegistro || textoNoInformados}</div>
           </div>
 
           <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:18px 20px;margin:24px 0;">
-            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Mensaje o descripción indicada</div>
-            <div style="color:#475569;line-height:1.7;">${descripcionRegistro || 'No informada.'}</div>
+            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">${tituloDescripcion}</div>
+            <div style="color:#475569;line-height:1.7;">${descripcionRegistro || textoNoInformada}</div>
           </div>
 
           <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">${funcionamientoRegistro}</p>
           ` : `
           <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
-            <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Mensaje recibido</div>
-            <div style="color:#1f2937;line-height:1.7;">${mensaje || 'Sin mensaje.'}</div>
+            <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">${esEmailEncontradoEnIngles ? 'Message received' : 'Mensaje recibido'}</div>
+            <div style="color:#1f2937;line-height:1.7;">${mensaje || (esEmailEncontradoEnIngles ? 'No message.' : 'Sin mensaje.')}</div>
           </div>
 
           <div style="margin:24px 0;">
-            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Datos de contacto (si los ha facilitado)</div>
-            <div style="color:#475569;line-height:1.7;">${datosContacto || 'No facilitados.'}</div>
+            <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">${esEmailEncontradoEnIngles ? 'Contact details (if provided)' : 'Datos de contacto (si los ha facilitado)'}</div>
+            <div style="color:#475569;line-height:1.7;">${datosContacto || (esEmailEncontradoEnIngles ? 'Not provided.' : 'No facilitados.')}</div>
           </div>
 
           <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">${cierre}</p>
           `}
 
-          <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
-            Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
-            <a href="mailto:avisos@perdilost.com" style="color:#1e40af;text-decoration:none;">avisos@perdilost.com</a>.
+<div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+  ${textoContactoFooter}
+  <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+</div>
 
             <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
-              Si deseas darte de baja de nuestras comunicaciones, escribe la palabra baja a la siguiente dirección de email:
+              ${textoBajaFooter}
               <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
             </div>
           </div>
