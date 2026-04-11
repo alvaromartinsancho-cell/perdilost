@@ -718,9 +718,6 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
   })
 });
 
-try {
-  await respuestaEmail.json();
-} catch (e) {}
 
 if (!respuestaEmail.ok) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailPropietarioNoEnviado}</div>`;
