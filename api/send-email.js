@@ -39,27 +39,16 @@ const indiceMensaje = lineas.findIndex(l =>
 const asuntoNormalizado = subject.toLowerCase();
 const textoNormalizado = text.toLowerCase();
 const toNormalizado = to.toLowerCase().trim();
-    if (!toNormalizado.includes('@') || toNormalizado.startsWith('@') || toNormalizado.endsWith('@')) {
-  return res.status(400).json({
-    error: 'Email de destino no válido'
-  });
-}
-if (toNormalizado.includes('..') || toNormalizado.includes(' ')) {
-  return res.status(400).json({
-    error: 'Email de destino no válido'
-  });
-}
-    if (!toNormalizado.includes('.')) {
-  return res.status(400).json({
-    error: 'Email de destino no válido'
-  });
-}
-    if (toNormalizado.indexOf('@') > toNormalizado.lastIndexOf('.')) {
-  return res.status(400).json({
-    error: 'Email de destino no válido'
-  });
-}
-    if (toNormalizado.split('@').length !== 2) {
+ if (
+  !toNormalizado.includes('@') ||
+  toNormalizado.startsWith('@') ||
+  toNormalizado.endsWith('@') ||
+  toNormalizado.includes('..') ||
+  toNormalizado.includes(' ') ||
+  !toNormalizado.includes('.') ||
+  toNormalizado.indexOf('@') > toNormalizado.lastIndexOf('.') ||
+  toNormalizado.split('@').length !== 2
+) {
   return res.status(400).json({
     error: 'Email de destino no válido'
   });
