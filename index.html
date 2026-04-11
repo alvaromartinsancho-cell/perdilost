@@ -436,7 +436,12 @@ async function guardarCodigo() {
 
 mensajeEmailCoincide.style.display = 'none';
   mensajeRegistro.innerHTML = '';
-if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
+if (!codigo) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
+  return;
+}
+
+if (!nombre || !contacto || !contactoRepetir || !descripcion) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
   return;
 }
