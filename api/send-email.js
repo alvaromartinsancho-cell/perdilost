@@ -8,11 +8,11 @@ const { to, subject, text, language } = req.body;
     const idiomaEmail = language === 'en' ? 'en' : 'es';
     const apiKey = process.env.RESEND_API_KEY;
 
-    if (!apiKey) {
-      return res.status(500).json({
-        error: 'Falta RESEND_API_KEY en Vercel'
-      });
-    }
+if (!apiKey) {
+  return res.status(500).json({
+    error: 'Error de configuración del servidor'
+  });
+}
 
     const lineas = text.split('\n').map(l => l.trim());
 
