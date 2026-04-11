@@ -462,6 +462,12 @@ if (yaRegistrado) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoYaRegistrado}</div>`;
   return;
 }
+
+if (!nombre || !contacto || !contactoRepetir || !descripcion) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
+  return;
+}
+
 const privacyAccepted = document.getElementById('privacy-accepted')?.checked;
 if (!privacyAccepted) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
