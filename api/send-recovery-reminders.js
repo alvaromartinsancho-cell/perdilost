@@ -59,15 +59,14 @@ export default async function handler(req, res) {
     item.is_recovered === null && item.recovery_reminder_sent === false
   );
 
-  if (itemsValidos.length === 0) {
-    return res.status(200).json({
-      ok: true,
-      total_found_reports: datos.length,
-      total_candidatos_1_dia: avisosCandidatos.length,
-      total_items_validos_recordatorio: 0,
-      message: 'No hay recordatorios pendientes de envío'
-    });
-  }
+return res.status(200).json({
+  ok: true,
+  total_found_reports: datos.length,
+  total_candidatos_1_dia: avisosCandidatos.length,
+  total_items_validos_recordatorio: itemsValidos.length,
+  recovery_reminder_sent: true,
+  message: 'Recordatorio enviado correctamente'
+});
 
   const itemObjetivo = itemsValidos[0];
 
