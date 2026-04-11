@@ -10,6 +10,11 @@ const { to, subject, text, language } = req.body;
     error: 'Faltan datos obligatorios'
   });
 }
+    if (typeof to !== 'string' || typeof subject !== 'string' || typeof text !== 'string') {
+  return res.status(400).json({
+    error: 'Formato de datos no válido'
+  });
+}
     const idiomaEmail = language === 'en' ? 'en' : 'es';
     const apiKey = process.env.RESEND_API_KEY;
 
