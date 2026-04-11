@@ -418,7 +418,7 @@ function cambiarIdioma(idioma) {
 <input type="text" id="telefono-encontrado" placeholder="${textos[idiomaActual].placeholderTelefonoEncontrado}"><br><br>
 <input type="email" id="contacto-encontrado" placeholder="${textos[idiomaActual].placeholderContactoEncontrado}"><br><br>
 <textarea id="mensaje-encontrado" placeholder="${textos[idiomaActual].placeholderMensajeEncontrado}" required></textarea><br><br>
-
+<div id="mensaje-encontrado-formulario" style="margin-top:18px;"></div>
 <button onclick="comprobarCodigoEncontrado()">${textos[idiomaActual].botonEnviarAviso}</button>
         </div>
       `;
@@ -571,14 +571,17 @@ if (!respuestaEmailRegistro.ok) {
 }
 
     async function comprobarCodigoEncontrado() {
-      const codigo = document.getElementById('codigo-encontrado').value.trim();
-      const nombre = document.getElementById('nombre-encontrado').value.trim();
-      const telefono = document.getElementById('telefono-encontrado').value.trim();
-      const contacto = document.getElementById('contacto-encontrado').value.trim();
-      const mensaje = document.getElementById('mensaje-encontrado').value.trim();
+const codigo = document.getElementById('codigo-encontrado').value.trim();
+const nombre = document.getElementById('nombre-encontrado').value.trim();
+const telefono = document.getElementById('telefono-encontrado').value.trim();
+const contacto = document.getElementById('contacto-encontrado').value.trim();
+const mensaje = document.getElementById('mensaje-encontrado').value.trim();
+const mensajeEncontradoFormulario = document.getElementById('mensaje-encontrado-formulario');
+
+mensajeEncontradoFormulario.innerHTML = '';
 
 if (!codigo || !mensaje) {
-  mostrarMensaje(textos[idiomaActual].mensajeCamposEncontrado, 'error');
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   return;
 }
 
@@ -590,12 +593,12 @@ const { data, error } = await supabaseClient
 const propietario = data && data.length > 0 ? data[0] : null;
 
 if (error) {
-  mostrarMensaje('Error: ' + error.message, 'error');
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">Error: ${error.message}</div>`;
   return;
 }
 
 if (!data || data.length === 0) {
-  mostrarMensaje(textos[idiomaActual].mensajeCodigoNoRegistrado, 'error');
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoNoRegistrado}</div>`;
   return;
 }
 
@@ -614,7 +617,7 @@ if (!data || data.length === 0) {
         .select('id');
 
 if (errorGuardar) {
-  mostrarMensaje('Error al guardar el aviso: ' + errorGuardar.message, 'error');
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">Error al guardar el aviso: ${errorGuardar.message}</div>`;
   return;
 }
 
@@ -626,7 +629,7 @@ const { error: errorUpdateLastFound } = await supabaseClient
   .eq('code', codigo);
 
 if (errorUpdateLastFound) {
-  mostrarMensaje('Aviso guardado, pero no se ha podido actualizar la fecha del último hallazgo: ' + errorUpdateLastFound.message, 'error');
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">Aviso guardado, pero no se ha podido actualizar la fecha del último hallazgo: ${errorUpdateLastFound.message}</div>`;
   return;
 }
 
@@ -676,7 +679,7 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
 const resultadoEmail = await respuestaEmail.json();
 
 if (!respuestaEmail.ok) {
-  mostrarMensaje(textos[idiomaActual].mensajeEmailPropietarioNoEnviado, 'error');
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailPropietarioNoEnviado}</div>`;
   return;
 }
 
@@ -689,7 +692,7 @@ if (idReporte) {
     .eq('id', idReporte);
 
   if (errorMarcarEmailEnviado) {
-    mostrarMensaje('El email se ha enviado, pero no se ha podido actualizar el estado de envío en la base de datos: ' + errorMarcarEmailEnviado.message, 'error');
+    mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">El email se ha enviado, pero no se ha podido actualizar el estado de envío en la base de datos: ${errorMarcarEmailEnviado.message}</div>`;
     return;
   }
 }
@@ -699,7 +702,7 @@ document.getElementById('nombre-encontrado').value = '';
 document.getElementById('telefono-encontrado').value = '';
 document.getElementById('contacto-encontrado').value = '';
 document.getElementById('mensaje-encontrado').value = '';      
-mostrarMensaje(textos[idiomaActual].mensajeAvisoOk, 'ok');
+mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${textos[idiomaActual].mensajeAvisoOk}</div>`;
     }
   </script>
 </div>
