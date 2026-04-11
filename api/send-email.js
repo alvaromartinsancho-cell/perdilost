@@ -5,6 +5,11 @@ export default async function handler(req, res) {
 
   try {
 const { to, subject, text, language } = req.body;
+    if (!to || !subject || !text) {
+  return res.status(400).json({
+    error: 'Faltan datos obligatorios'
+  });
+}
     const idiomaEmail = language === 'en' ? 'en' : 'es';
     const apiKey = process.env.RESEND_API_KEY;
 
