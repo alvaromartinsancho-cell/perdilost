@@ -391,7 +391,7 @@ function cambiarIdioma(idioma) {
 <input type="email" id="contacto-repetir" placeholder="${textos[idiomaActual].placeholderContactoRepetir}" required><br><br>
 <div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">${textos[idiomaActual].mensajeEmailsNoCoinciden}</div>
 <textarea id="descripcion" placeholder="${textos[idiomaActual].placeholderDescripcion}" required></textarea><br><br>
-
+<div id="mensaje-registro" style="margin-top:18px;"></div>
 <button type="button" onclick="guardarCodigo()">${textos[idiomaActual].botonCrearRegistro}</button>
 </div>
 `;
@@ -432,18 +432,23 @@ async function guardarCodigo() {
    const contactoRepetir = document.getElementById('contacto-repetir').value.trim();
    const descripcion = document.getElementById('descripcion').value.trim();
    const mensajeEmailCoincide = document.getElementById('mensaje-email-coincide');
+   const mensajeRegistro = document.getElementById('mensaje-registro');
 
 mensajeEmailCoincide.style.display = 'none';
+  mensajeRegistro.innerHTML = '';
 const privacyAccepted = document.getElementById('privacy-accepted')?.checked;
-if (!privacyAccepted) return mostrarMensaje(textos[idiomaActual].mensajePrivacidadObligatoria, 'error');
+if (!privacyAccepted) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
+  return;
+}
 if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
-  mostrarMensaje(textos[idiomaActual].mensajeCamposRegistro, 'error');
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
   return;
 }
 
 if (contacto !== contactoRepetir) {
   mensajeEmailCoincide.style.display = 'block';
-  mostrarMensaje(textos[idiomaActual].mensajeEmailsNoCoinciden, 'error');
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailsNoCoinciden}</div>`;
   return;
 }
 
