@@ -44,7 +44,11 @@ const toNormalizado = to.toLowerCase().trim();
     error: 'Email de destino no válido'
   });
 }
-
+if (toNormalizado.includes('..') || toNormalizado.includes(' ')) {
+  return res.status(400).json({
+    error: 'Email de destino no válido'
+  });
+}
 const esEmailRegistro =
   asuntoNormalizado.includes('has registrado correctamente tu código perdilost') ||
   asuntoNormalizado.includes('you have successfully registered your perdilost code') ||
