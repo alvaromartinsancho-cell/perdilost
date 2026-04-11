@@ -434,7 +434,8 @@ async function guardarCodigo() {
    const mensajeEmailCoincide = document.getElementById('mensaje-email-coincide');
 
 mensajeEmailCoincide.style.display = 'none';
-
+const privacyAccepted = document.getElementById('privacy-accepted')?.checked;
+if (!privacyAccepted) return mostrarMensaje(textos[idiomaActual].mensajePrivacidadObligatoria, 'error');
 if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
   mostrarMensaje(textos[idiomaActual].mensajeCamposRegistro, 'error');
   return;
@@ -476,6 +477,9 @@ const { error: errorUpdate } = await supabaseClient
     contact_info: contacto,
     description: descripcion,
     preferred_language: idiomaActual,
+    privacy_accepted: true,
+privacy_accepted_at: new Date().toISOString(),
+privacy_version: 'v1',
     activated_at: new Date().toISOString()
   })
   .eq('code', codigo);
