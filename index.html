@@ -392,8 +392,8 @@ function cambiarIdioma(idioma) {
 </div>
 
 <label style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
-  <input type="checkbox" id="privacy-accepted-encontrado" style="width:auto; margin-top:3px;">
-  <span>${textos[idiomaActual].checkboxPrivacidadEncontrado}</span>
+  <input type="checkbox" id="privacy-accepted" style="width:auto; margin-top:3px;">
+  <span>${textos[idiomaActual].checkboxPrivacidadRegistro}</span>
 </label>
 
 <input type="text" id="codigo" placeholder="${textos[idiomaActual].placeholderCodigo}" required><br><br>
@@ -438,6 +438,11 @@ function cambiarIdioma(idioma) {
   <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
   <p><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
 </div>
+
+<label style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
+  <input type="checkbox" id="privacy-accepted-encontrado" style="width:auto; margin-top:3px;">
+  <span>${textos[idiomaActual].checkboxPrivacidadEncontrado}</span>
+</label>
 
 <input type="text" id="codigo-encontrado" placeholder="${textos[idiomaActual].placeholderCodigoEncontrado}" required><br><br>
 <input type="text" id="nombre-encontrado" placeholder="${textos[idiomaActual].placeholderNombreEncontrado}"><br><br>
