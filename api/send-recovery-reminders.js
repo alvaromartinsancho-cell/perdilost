@@ -225,7 +225,7 @@ if (!respuestaEmail.ok) {
     }
   );
 
-  const resultadoUpdateItem = await respuestaUpdateItem.text();
+  await respuestaUpdateItem.text();
 
 if (!respuestaUpdateItem.ok) {
   return res.status(500).json({
