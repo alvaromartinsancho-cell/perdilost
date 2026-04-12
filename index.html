@@ -646,19 +646,19 @@ if (!privacyAcceptedEncontrado) {
   return;
 }
 
-      const { data: reporteInsertado, error: errorGuardar } = await supabaseClient
-        .from('found_reports')
-        .insert([
-          {
-            code: codigo,
-            finder_name: nombre,
-            finder_phone: telefono || null,
-            finder_contact: contacto,
-            message: mensaje,
-            email_sent: false
-          }
-        ])
-        .select('id');
+const { data: reporteInsertado, error: errorGuardar } = await supabaseClient
+  .from('found_reports')
+  .insert([
+    {
+      code: codigo,
+      finder_name: nombre || null,
+      finder_phone: telefono || null,
+      finder_contact: contacto || null,
+      message: mensaje,
+      email_sent: false
+    }
+  ])
+  .select('id');
 
 if (errorGuardar) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeErrorGuardarAviso}${errorGuardar.message}</div>`;
@@ -682,9 +682,9 @@ const respuestaEmail = await fetch('/api/send-email', {
   headers: {
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify({
-    to: propietario.contact_info,
-    language: propietario.preferred_language || 'es',
+body: JSON.stringify({
+  to: propietario.contact_info || '',
+  language: propietario.preferred_language || 'es',
  subject: (propietario.preferred_language || 'es') === 'en'
   ? 'Someone has found an item linked to your Perdilost code'
   : 'Han encontrado una pertenencia asociada a tu código Perdilost',
