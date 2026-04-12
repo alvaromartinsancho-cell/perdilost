@@ -116,6 +116,7 @@ const textos = {
     boton: 'Enviar confirmación',
     errorFaltaOpcion: 'Debes indicar si has recuperado tu objeto.',
     errorGuardar: 'Error al guardar la confirmación: ',
+    errorCodigoNoInformado: 'Código no informado.',
     okGuardar: 'Confirmación guardada correctamente.',
     codigoLabel: 'Código: ',
     descripcionLabel: 'Descripción: '
@@ -133,6 +134,7 @@ const textos = {
     boton: 'Send confirmation',
     errorFaltaOpcion: 'You must indicate whether you have recovered your item.',
     errorGuardar: 'Error saving the confirmation: ',
+    errorCodigoNoInformado: 'Code not provided.',
     okGuardar: 'Confirmation saved correctly.',
     codigoLabel: 'Code: ',
     descripcionLabel: 'Description: '
@@ -188,6 +190,10 @@ document.getElementById('btn-enviar-recuperacion').addEventListener('click', asy
   const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
   const comentarios = document.getElementById('recovery-comments').value.trim();
   const mensaje = document.getElementById('mensaje-recuperacion');
+if (!code) {
+  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoInformado + '</div>';
+  return;
+}
 
 if (!opcionSeleccionada) {
   mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorFaltaOpcion + '</div>';
