@@ -117,6 +117,7 @@ const textos = {
     errorFaltaOpcion: 'Debes indicar si has recuperado tu objeto.',
     errorGuardar: 'Error al guardar la confirmación: ',
     errorCodigoNoInformado: 'Código no informado.',
+    errorCodigoNoValido: 'No se ha encontrado un objeto asociado a este código.',
     okGuardar: 'Confirmación guardada correctamente.',
     codigoLabel: 'Código: ',
     descripcionLabel: 'Descripción: '
@@ -135,6 +136,7 @@ const textos = {
     errorFaltaOpcion: 'You must indicate whether you have recovered your item.',
     errorGuardar: 'Error saving the confirmation: ',
     errorCodigoNoInformado: 'Code not provided.',
+    errorCodigoNoValido: 'No item was found for this code.',
     okGuardar: 'Confirmation saved correctly.',
     codigoLabel: 'Code: ',
     descripcionLabel: 'Description: '
@@ -175,11 +177,15 @@ if (code) {
     .eq('code', code)
     .single()
     .then(({ data, error }) => {
-      if (!error && data && data.preferred_language) {
-  idiomaActual = data.preferred_language === 'en' ? 'en' : 'es';
-  aplicarTextosRecuperacion();
-}
-if (!error && data) {
+if (error || !data) {
+  document.getElementById('descripcion-recuperacion').textContent =
+    textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
+} else {
+  if (data.preferred_language) {
+    idiomaActual = data.preferred_language === 'en' ? 'en' : 'es';
+    aplicarTextosRecuperacion();
+  }
+
   document.getElementById('descripcion-recuperacion').textContent =
     textos[idiomaActual].descripcionLabel + (data.description || textos[idiomaActual].descripcionNoInformada.replace(textos[idiomaActual].descripcionLabel, '').trim());
 }
