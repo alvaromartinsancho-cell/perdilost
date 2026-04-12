@@ -101,6 +101,7 @@
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
   let idiomaActual = 'es';
+  let codigoValidoRecuperacion = false;
 
 const textos = {
   es: {
@@ -165,6 +166,11 @@ function cambiarIdioma(idioma) {
 
   if (code) {
     document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
+
+    if (!codigoValidoRecuperacion) {
+      document.getElementById('descripcion-recuperacion').textContent =
+        textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
+    }
   }
 }
 
@@ -178,9 +184,12 @@ if (code) {
     .single()
     .then(({ data, error }) => {
 if (error || !data) {
+  codigoValidoRecuperacion = false;
   document.getElementById('descripcion-recuperacion').textContent =
     textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
 } else {
+  codigoValidoRecuperacion = true;
+
   if (data.preferred_language) {
     idiomaActual = data.preferred_language === 'en' ? 'en' : 'es';
     aplicarTextosRecuperacion();
