@@ -7,7 +7,14 @@ export default async function handler(req, res) {
   }
   const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const resendApiKey = process.env.RESEND_API_KEY;
 if (!supabaseKey) {
+  return res.status(500).json({
+    ok: false,
+    error: 'Error de configuración del servidor'
+  });
+}
+    if (!resendApiKey) {
   return res.status(500).json({
     ok: false,
     error: 'Error de configuración del servidor'
@@ -107,9 +114,9 @@ if (!itemDetalle || !itemDetalle.contact_info) {
     const respuestaEmail = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: {
-      'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json'
-    },
+  'Authorization': `Bearer ${resendApiKey}`,
+  'Content-Type': 'application/json'
+},
     body: JSON.stringify({
       from: 'Perdilost <avisos@perdilost.com>',
       to: [itemDetalle.contact_info],
