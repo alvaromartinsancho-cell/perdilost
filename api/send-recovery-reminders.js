@@ -198,12 +198,9 @@ Gracias por utilizar Perdilost.`,
     })
   });
 
-  let resultadoEmail = null;
 try {
-  resultadoEmail = await respuestaEmail.json();
-} catch (e) {
-  resultadoEmail = null;
-}
+  await respuestaEmail.json();
+} catch (e) {}
 
 if (!respuestaEmail.ok) {
   return res.status(500).json({
