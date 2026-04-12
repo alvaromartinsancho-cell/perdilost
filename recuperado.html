@@ -205,18 +205,23 @@ document.getElementById('btn-enviar-recuperacion').addEventListener('click', asy
   const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
   const comentarios = document.getElementById('recovery-comments').value.trim();
   const mensaje = document.getElementById('mensaje-recuperacion');
+  const botonEnviar = document.getElementById('btn-enviar-recuperacion');
+botonEnviar.disabled = true;
 if (!code) {
   mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoInformado + '</div>';
+  botonEnviar.disabled = false;
   return;
 }
 
 if (!codigoValidoRecuperacion) {
   mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoValido + '</div>';
+  botonEnviar.disabled = false;
   return;
 }
 
 if (!opcionSeleccionada) {
   mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorFaltaOpcion + '</div>';
+  botonEnviar.disabled = false;
   return;
 }
 
@@ -240,10 +245,12 @@ if (!opcionSeleccionada) {
 
 if (error) {
   mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + error.message + '</div>';
+  botonEnviar.disabled = false;
   return;
 }
 
   mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">' + textos[idiomaActual].okGuardar + '</div>';
+  botonEnviar.disabled = false;
 });
 </script>
 </body>
