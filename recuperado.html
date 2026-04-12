@@ -210,6 +210,11 @@ if (!code) {
   return;
 }
 
+if (!codigoValidoRecuperacion) {
+  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoValido + '</div>';
+  return;
+}
+
 if (!opcionSeleccionada) {
   mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorFaltaOpcion + '</div>';
   return;
