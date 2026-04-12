@@ -476,7 +476,7 @@ if (!codigo) {
 
 const { data: encontrados, error: errorConsulta } = await supabaseClient
   .from('items')
-  .select('*')
+  .select('code, owner_name, contact_info')
   .eq('code', codigo);
 
 if (errorConsulta) {
@@ -620,7 +620,7 @@ if (!codigo) {
 
 const { data, error } = await supabaseClient
   .from('items')
-  .select('*')
+  .select('code, owner_name, contact_info, preferred_language')
   .eq('code', codigo);
 
 const propietario = data && data.length > 0 ? data[0] : null;
