@@ -62,15 +62,6 @@ if (!respuestaItems.ok) {
     item.is_recovered === null && item.recovery_reminder_sent === false
   );
 
-return res.status(200).json({
-  ok: true,
-  total_found_reports: datos.length,
-  total_candidatos_1_dia: avisosCandidatos.length,
-  total_items_validos_recordatorio: itemsValidos.length,
-  recovery_reminder_sent: true,
-  message: 'Recordatorio enviado correctamente'
-});
-
   const itemObjetivo = itemsValidos[0];
 
 const respuestaItemDetalle = await fetch(
@@ -96,13 +87,14 @@ if (!respuestaItemDetalle.ok) {
   const idiomaReminder = itemDetalle?.preferred_language === 'en' ? 'en' : 'es';
 
   if (!itemDetalle || !itemDetalle.contact_info) {
-    return res.status(200).json({
-      ok: true,
-      total_found_reports: datos.length,
-      total_candidatos_1_dia: avisosCandidatos.length,
-      total_items_validos_recordatorio: itemsValidos.length,
-      message: 'No se ha encontrado un email válido para el recordatorio'
-    });
+return res.status(200).json({
+  ok: true,
+  total_found_reports: datos.length,
+  total_candidatos_1_dia: avisosCandidatos.length,
+  total_items_validos_recordatorio: itemsValidos.length,
+  recovery_reminder_sent: true,
+  message: 'Recordatorio enviado correctamente'
+});
   }
 
     const respuestaEmail = await fetch('https://api.resend.com/emails', {
