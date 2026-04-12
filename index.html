@@ -723,6 +723,11 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
 
 if (!respuestaEmail.ok) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailPropietarioNoEnviado}</div>`;
+  document.getElementById('codigo-encontrado').value = '';
+  document.getElementById('nombre-encontrado').value = '';
+  document.getElementById('telefono-encontrado').value = '';
+  document.getElementById('contacto-encontrado').value = '';
+  document.getElementById('mensaje-encontrado').value = '';
   return;
 }
 
