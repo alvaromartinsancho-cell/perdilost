@@ -61,7 +61,15 @@ if (!respuestaItems.ok) {
   const itemsValidos = items.filter(item =>
     item.is_recovered === null && item.recovery_reminder_sent === false
   );
-
+if (itemsValidos.length === 0) {
+  return res.status(200).json({
+    ok: true,
+    total_found_reports: datos.length,
+    total_candidatos_1_dia: avisosCandidatos.length,
+    total_items_validos_recordatorio: 0,
+    message: 'No hay recordatorios pendientes de envío'
+  });
+}
   const itemObjetivo = itemsValidos[0];
 
 const respuestaItemDetalle = await fetch(
@@ -86,16 +94,15 @@ if (!respuestaItemDetalle.ok) {
   const itemDetalle = itemDetalleArray && itemDetalleArray.length > 0 ? itemDetalleArray[0] : null;
   const idiomaReminder = itemDetalle?.preferred_language === 'en' ? 'en' : 'es';
 
-  if (!itemDetalle || !itemDetalle.contact_info) {
-return res.status(200).json({
-  ok: true,
-  total_found_reports: datos.length,
-  total_candidatos_1_dia: avisosCandidatos.length,
-  total_items_validos_recordatorio: itemsValidos.length,
-  recovery_reminder_sent: true,
-  message: 'Recordatorio enviado correctamente'
-});
-  }
+if (!itemDetalle || !itemDetalle.contact_info) {
+  return res.status(200).json({
+    ok: true,
+    total_found_reports: datos.length,
+    total_candidatos_1_dia: avisosCandidatos.length,
+    total_items_validos_recordatorio: itemsValidos.length,
+    message: 'No se ha encontrado un email válido para el recordatorio'
+  });
+}
 
     const respuestaEmail = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -218,13 +225,12 @@ if (!respuestaUpdateItem.ok) {
   });
 }
 
-  return res.status(200).json({
-    ok: true,
-    total_found_reports: datos.length,
-    total_candidatos_1_dia: avisosCandidatos.length,
-    total_items_validos_recordatorio: itemsValidos.length,
-    reminder_sent_to: itemDetalle.contact_info,
-    reminder_sent_code: itemDetalle.code,
-    recovery_reminder_sent: true
-  });
+return res.status(200).json({
+  ok: true,
+  total_found_reports: datos.length,
+  total_candidatos_1_dia: avisosCandidatos.length,
+  total_items_validos_recordatorio: itemsValidos.length,
+  recovery_reminder_sent: true,
+  message: 'Recordatorio enviado correctamente'
+});
 }
