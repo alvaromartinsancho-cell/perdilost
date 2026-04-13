@@ -209,6 +209,86 @@ Email: ${finderContactNormalizado || 'No facilitado'}
 
 Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`;
 
+const html = idiomaPropietario === 'en'
+  ? `
+    <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
+      <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+        <div style="margin-bottom:24px;">
+          <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
+          <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
+        </div>
+
+        <p style="margin:0 0 16px 0;">Hello ${propietario.owner_name || ''},</p>
+
+        <p style="margin:0 0 20px 0;line-height:1.7;">
+          We would like to let you know that someone has found an item linked to your Perdilost code: <strong>${codeNormalizado}</strong>.
+        </p>
+
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
+          <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Message received</div>
+          <div style="color:#1f2937;line-height:1.7;white-space:pre-line;">${messageNormalizado}</div>
+        </div>
+
+        <div style="margin:24px 0;">
+          <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Contact details (if provided)</div>
+          <div style="color:#475569;line-height:1.7;">
+            Name: ${finderNameNormalizado || 'Not provided'}<br>
+            Phone: ${finderPhoneNormalizado || 'Not provided'}<br>
+            Email: ${finderContactNormalizado || 'Not provided'}
+          </div>
+        </div>
+
+        <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">
+          We recommend that you get in touch as soon as possible so you can recover it.
+        </p>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+          If you have any questions or would like more information about Perdilost, you can write to
+          <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+        </div>
+      </div>
+    </div>
+  `
+  : `
+    <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
+      <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+        <div style="margin-bottom:24px;">
+          <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
+          <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
+        </div>
+
+        <p style="margin:0 0 16px 0;">Hola ${propietario.owner_name || ''},</p>
+
+        <p style="margin:0 0 20px 0;line-height:1.7;">
+          Te informamos de que alguien ha encontrado una pertenencia asociada a tu código de Perdilost: <strong>${codeNormalizado}</strong>.
+        </p>
+
+        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
+          <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Mensaje recibido</div>
+          <div style="color:#1f2937;line-height:1.7;white-space:pre-line;">${messageNormalizado}</div>
+        </div>
+
+        <div style="margin:24px 0;">
+          <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Datos de contacto (si los ha facilitado)</div>
+          <div style="color:#475569;line-height:1.7;">
+            Nombre: ${finderNameNormalizado || 'No facilitado'}<br>
+            Teléfono: ${finderPhoneNormalizado || 'No facilitado'}<br>
+            Email: ${finderContactNormalizado || 'No facilitado'}
+          </div>
+        </div>
+
+        <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">
+          Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.
+        </p>
+
+        <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+          Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
+          <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+        </div>
+      </div>
+    </div>
+  `;
+
 const respuestaEmail = await fetch('https://api.resend.com/emails', {
   method: 'POST',
   headers: {
@@ -219,7 +299,8 @@ const respuestaEmail = await fetch('https://api.resend.com/emails', {
     from: 'Perdilost <avisos@perdilost.com>',
     to: [propietario.contact_info],
     subject,
-    text
+    text,
+    html
   })
 });
 
