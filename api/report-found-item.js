@@ -108,7 +108,7 @@ if (!supabaseUrl || !serviceRoleKey || !resendApiKey) {
 
     if (!respuestaItem.ok) {
       return res.status(500).json({
-        error: textos[idioma].invalidCode
+        error: textos[idioma].serverConfig
       });
     }
 
