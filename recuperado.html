@@ -225,33 +225,38 @@ if (!opcionSeleccionada) {
   return;
 }
 
-  const recuperado = opcionSeleccionada.value === 'si';
+   const recuperado = opcionSeleccionada.value === 'si';
 
-  const datosActualizar = {
-    is_recovered: recuperado,
-    recovery_comments: comentarios || null
-  };
+  const respuesta = await fetch('/api/confirm-recovery', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      code,
+      recovered: recuperado,
+      comments: comentarios,
+      language: idiomaActual
+    })
+  });
 
-  if (recuperado) {
-    datosActualizar.recovered_at = new Date().toISOString();
-  } else {
-    datosActualizar.recovered_at = null;
+  let resultado = null;
+
+  try {
+    resultado = await respuesta.json();
+  } catch (e) {
+    resultado = null;
   }
 
-  const { error } = await supabaseClient
-    .from('items')
-    .update(datosActualizar)
-    .eq('code', code);
+  if (!respuesta.ok) {
+    const textoError = resultado?.error || textos[idiomaActual].errorGuardar;
+    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textoError + '</div>';
+    botonEnviar.disabled = false;
+    return;
+  }
 
-if (error) {
-  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + error.message + '</div>';
-  botonEnviar.disabled = false;
-  return;
-}
-
-mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">' + textos[idiomaActual].okGuardar + '</div>';
-botonEnviar.disabled = true;
-});
+  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">' + (resultado?.message || textos[idiomaActual].okGuardar) + '</div>';
+  botonEnviar.disabled = true;
 </script>
 </body>
 </html>
