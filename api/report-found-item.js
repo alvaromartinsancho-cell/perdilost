@@ -72,14 +72,15 @@ export default async function handler(req, res) {
       });
     }
 
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabaseUrl = process.env.SUPABASE_URL;
+const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const resendApiKey = process.env.RESEND_API_KEY;
 
-    if (!supabaseUrl || !serviceRoleKey) {
-      return res.status(500).json({
-        error: textos[idioma].serverConfig
-      });
-    }
+if (!supabaseUrl || !serviceRoleKey || !resendApiKey) {
+  return res.status(500).json({
+    error: textos[idioma].serverConfig
+  });
+}
 
     const codeNormalizado = code.trim();
     const messageNormalizado = message.trim();
@@ -208,34 +209,15 @@ Email: ${finderContactNormalizado || 'No facilitado'}
 
 Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`;
 
-const currentHost = req.headers['x-forwarded-host'] || req.headers.host;
-const currentProtocol = req.headers['x-forwarded-proto'] || 'https';
-
-if (!currentHost) {
-  return res.status(500).json({
-    error: textos[idioma].serverConfig
-  });
-}
-
-const respuestaEmail = await fetch(`${currentProtocol}://${currentHost}/api/send-email`, {
+const respuestaEmail = await fetch('https://api.resend.com/emails', {
   method: 'POST',
   headers: {
+    'Authorization': `Bearer ${resendApiKey}`,
     'Content-Type': 'application/json'
   },
   body: JSON.stringify({
-    to: propietario.contact_info,
-    language: idiomaPropietario,
-    subject,
-    text
-  })
-});
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    to: propietario.contact_info,
-    language: idiomaPropietario,
+    from: 'Perdilost <avisos@perdilost.com>',
+    to: [propietario.contact_info],
     subject,
     text
   })
