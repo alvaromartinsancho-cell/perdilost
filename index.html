@@ -618,23 +618,6 @@ if (!codigo) {
   return;
 }
 
-const { data, error } = await supabaseClient
-  .from('items')
-  .select('code, owner_name, contact_info, preferred_language')
-  .eq('code', codigo);
-
-const propietario = data && data.length > 0 ? data[0] : null;
-
-if (error) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeErrorGenericoEncontrado}${error.message}</div>`;
-  return;
-}
-
-if (!data || data.length === 0) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoNoRegistrado}</div>`;
-  return;
-}
-
 if (!mensaje) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   return;
@@ -646,111 +629,58 @@ if (!privacyAcceptedEncontrado) {
   return;
 }
 
-const { data: reporteInsertado, error: errorGuardar } = await supabaseClient
-  .from('found_reports')
-  .insert([
-    {
-      code: codigo,
-      finder_name: nombre || null,
-      finder_phone: telefono || null,
-      finder_contact: contacto || null,
-      message: mensaje,
-      email_sent: false
-    }
-  ])
-  .select('id');
-
-if (errorGuardar) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeErrorGuardarAviso}${errorGuardar.message}</div>`;
-  return;
-}
-
-const { error: errorUpdateLastFound } = await supabaseClient
-  .from('items')
-  .update({
-    last_found_at: new Date().toISOString()
-  })
-  .eq('code', codigo);
-
-if (errorUpdateLastFound) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeErrorActualizarLastFound}${errorUpdateLastFound.message}</div>`;
-  return;
-}
-
-const respuestaEmail = await fetch('/api/send-email', {
+const respuesta = await fetch('/api/report-found-item', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
   },
-body: JSON.stringify({
-  to: propietario.contact_info || '',
-  language: propietario.preferred_language || 'es',
- subject: (propietario.preferred_language || 'es') === 'en'
-  ? 'Someone has found an item linked to your Perdilost code'
-  : 'Han encontrado una pertenencia asociada a tu código Perdilost',
-text: (propietario.preferred_language || 'es') === 'en'
-  ? `Hello ${propietario.owner_name || ''},
-
-We would like to let you know that someone has found an item linked to your Perdilost code: ${codigo}.
-
-The person who found it left us the following message:
-
-${mensaje}
-
-Contact details (if provided):
-Name: ${nombre || 'Not provided'}
-Phone: ${telefono || 'Not provided'}
-Email: ${contacto || 'Not provided'}
-
-We recommend that you get in touch as soon as possible so you can recover it.`
-  : `Hola ${propietario.owner_name || ''},
-
-Te informamos de que alguien ha encontrado una pertenencia asociada a tu código de Perdilost: ${codigo}.
-
-La persona que la ha encontrado nos ha dejado el siguiente mensaje:
-
-${mensaje}
-
-Datos de contacto (si los ha facilitado):
-Nombre: ${nombre || 'No facilitado'}
-Teléfono: ${telefono || 'No facilitado'}
-Email: ${contacto || 'No facilitado'}
-
-Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`
+  body: JSON.stringify({
+    code: codigo,
+    finder_name: nombre || '',
+    finder_phone: telefono || '',
+    finder_contact: contacto || '',
+    message: mensaje,
+    language: idiomaActual
   })
 });
 
+let resultado = null;
 
-if (!respuestaEmail.ok) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailPropietarioNoEnviado}</div>`;
-  document.getElementById('codigo-encontrado').value = '';
-  document.getElementById('nombre-encontrado').value = '';
-  document.getElementById('telefono-encontrado').value = '';
-  document.getElementById('contacto-encontrado').value = '';
-  document.getElementById('mensaje-encontrado').value = '';
+try {
+  resultado = await respuesta.json();
+} catch (e) {
+  resultado = null;
+}
+
+if (!respuesta.ok) {
+  const textoError = resultado?.error || textos[idiomaActual].mensajeErrorGenericoEncontrado;
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
   return;
 }
 
-const idReporte = reporteInsertado && reporteInsertado.length > 0 ? reporteInsertado[0].id : null;
+if (resultado?.message) {
+  if (resultado.ok === true && resultado.emailSent === true) {
+    document.getElementById('codigo-encontrado').value = '';
+    document.getElementById('nombre-encontrado').value = '';
+    document.getElementById('telefono-encontrado').value = '';
+    document.getElementById('contacto-encontrado').value = '';
+    document.getElementById('mensaje-encontrado').value = '';
+    mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${resultado.message}</div>`;
+    return;
+  }
 
-if (idReporte) {
-  const { error: errorMarcarEmailEnviado } = await supabaseClient
-    .from('found_reports')
-    .update({ email_sent: true })
-    .eq('id', idReporte);
-
-  if (errorMarcarEmailEnviado) {
-    mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeErrorActualizarEstadoEmail}${errorMarcarEmailEnviado.message}</div>`;
+  if (resultado.ok === false) {
+    document.getElementById('codigo-encontrado').value = '';
+    document.getElementById('nombre-encontrado').value = '';
+    document.getElementById('telefono-encontrado').value = '';
+    document.getElementById('contacto-encontrado').value = '';
+    document.getElementById('mensaje-encontrado').value = '';
+    mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${resultado.message}</div>`;
     return;
   }
 }
 
-document.getElementById('codigo-encontrado').value = '';
-document.getElementById('nombre-encontrado').value = '';
-document.getElementById('telefono-encontrado').value = '';
-document.getElementById('contacto-encontrado').value = '';
-document.getElementById('mensaje-encontrado').value = '';      
-mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${textos[idiomaActual].mensajeAvisoOk}</div>`;
+mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeErrorGenericoEncontrado}</div>`;
     }
   </script>
 </div>
