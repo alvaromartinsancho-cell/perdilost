@@ -177,27 +177,41 @@ function cambiarIdioma(idioma) {
 if (code) {
   document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
 
-  supabaseClient
-    .from('items')
-    .select('description, preferred_language')
-    .eq('code', code)
-    .single()
-    .then(({ data, error }) => {
-if (error || !data) {
-  codigoValidoRecuperacion = false;
-  document.getElementById('descripcion-recuperacion').textContent =
-    textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
-} else {
-  codigoValidoRecuperacion = true;
+  fetch(`/api/get-recovery-item?code=${encodeURIComponent(code)}&language=${encodeURIComponent(idiomaActual)}`)
+    .then(async (response) => {
+      let resultado = null;
 
-  if (data.preferred_language) {
-    idiomaActual = data.preferred_language === 'en' ? 'en' : 'es';
-    aplicarTextosRecuperacion();
-  }
+      try {
+        resultado = await response.json();
+      } catch (e) {
+        resultado = null;
+      }
 
-  document.getElementById('descripcion-recuperacion').textContent =
-    textos[idiomaActual].descripcionLabel + (data.description || textos[idiomaActual].descripcionNoInformada.replace(textos[idiomaActual].descripcionLabel, '').trim());
-}
+      if (!response.ok || !resultado?.ok) {
+        codigoValidoRecuperacion = false;
+        document.getElementById('descripcion-recuperacion').textContent =
+          textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
+        return;
+      }
+
+      codigoValidoRecuperacion = true;
+
+      if (resultado.preferred_language) {
+        idiomaActual = resultado.preferred_language === 'en' ? 'en' : 'es';
+        aplicarTextosRecuperacion();
+      }
+
+      const descripcionTexto = resultado.description ||
+        textos[idiomaActual].descripcionNoInformada.replace(textos[idiomaActual].descripcionLabel, '').trim();
+
+      document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
+      document.getElementById('descripcion-recuperacion').textContent =
+        textos[idiomaActual].descripcionLabel + descripcionTexto;
+    })
+    .catch(() => {
+      codigoValidoRecuperacion = false;
+      document.getElementById('descripcion-recuperacion').textContent =
+        textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
     });
 }
 aplicarTextosRecuperacion();
