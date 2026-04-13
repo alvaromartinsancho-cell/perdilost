@@ -176,7 +176,9 @@ function cambiarIdioma(idioma) {
 }
 
 async function cargarDatosRecuperacion() {
-  if (token && !code) {
+  if (token) {
+    code = null;
+
     try {
       const respuestaToken = await fetch(`/api/resolve-recovery-token?token=${encodeURIComponent(token)}&language=${encodeURIComponent(idiomaActual)}`);
       let resultadoToken = null;
