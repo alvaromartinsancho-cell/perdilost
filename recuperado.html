@@ -175,46 +175,79 @@ function cambiarIdioma(idioma) {
   }
 }
 
-if (code) {
-  document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
-
-  fetch(`/api/get-recovery-item?code=${encodeURIComponent(code)}&language=${encodeURIComponent(idiomaActual)}`)
-    .then(async (response) => {
-      let resultado = null;
+async function cargarDatosRecuperacion() {
+  if (token && !code) {
+    try {
+      const respuestaToken = await fetch(`/api/resolve-recovery-token?token=${encodeURIComponent(token)}&language=${encodeURIComponent(idiomaActual)}`);
+      let resultadoToken = null;
 
       try {
-        resultado = await response.json();
+        resultadoToken = await respuestaToken.json();
       } catch (e) {
-        resultado = null;
+        resultadoToken = null;
       }
 
-      if (!response.ok || !resultado?.ok) {
+      if (!respuestaToken.ok || !resultadoToken?.ok || !resultadoToken.code) {
         codigoValidoRecuperacion = false;
+        document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
         document.getElementById('descripcion-recuperacion').textContent =
-          textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
+          textos[idiomaActual].descripcionLabel + (resultadoToken?.error || textos[idiomaActual].errorCodigoNoValido);
         return;
       }
 
-      codigoValidoRecuperacion = true;
-
-      if (resultado.preferred_language) {
-        idiomaActual = resultado.preferred_language === 'en' ? 'en' : 'es';
-        aplicarTextosRecuperacion();
-      }
-
-      const descripcionTexto = resultado.description ||
-        textos[idiomaActual].descripcionNoInformada.replace(textos[idiomaActual].descripcionLabel, '').trim();
-
-      document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
-      document.getElementById('descripcion-recuperacion').textContent =
-        textos[idiomaActual].descripcionLabel + descripcionTexto;
-    })
-    .catch(() => {
+      code = resultadoToken.code;
+    } catch (e) {
       codigoValidoRecuperacion = false;
+      document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
       document.getElementById('descripcion-recuperacion').textContent =
         textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
-    });
+      return;
+    }
+  }
+
+  if (code) {
+    document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
+
+    fetch(`/api/get-recovery-item?code=${encodeURIComponent(code)}&language=${encodeURIComponent(idiomaActual)}`)
+      .then(async (response) => {
+        let resultado = null;
+
+        try {
+          resultado = await response.json();
+        } catch (e) {
+          resultado = null;
+        }
+
+        if (!response.ok || !resultado?.ok) {
+          codigoValidoRecuperacion = false;
+          document.getElementById('descripcion-recuperacion').textContent =
+            textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
+          return;
+        }
+
+        codigoValidoRecuperacion = true;
+
+        if (resultado.preferred_language) {
+          idiomaActual = resultado.preferred_language === 'en' ? 'en' : 'es';
+          aplicarTextosRecuperacion();
+        }
+
+        const descripcionTexto = resultado.description ||
+          textos[idiomaActual].descripcionNoInformada.replace(textos[idiomaActual].descripcionLabel, '').trim();
+
+        document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
+        document.getElementById('descripcion-recuperacion').textContent =
+          textos[idiomaActual].descripcionLabel + descripcionTexto;
+      })
+      .catch(() => {
+        codigoValidoRecuperacion = false;
+        document.getElementById('descripcion-recuperacion').textContent =
+          textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
+      });
+  }
 }
+
+cargarDatosRecuperacion();
 aplicarTextosRecuperacion();
 document.getElementById('btn-enviar-recuperacion').addEventListener('click', async function () {
   const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
