@@ -208,21 +208,18 @@ Email: ${finderContactNormalizado || 'No facilitado'}
 
 Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`;
 
-    const protocol = req.headers['x-forwarded-proto'] || 'https';
-    const host = req.headers.host;
-
-    const respuestaEmail = await fetch(`${protocol}://${host}/api/send-email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        to: propietario.contact_info,
-        language: idiomaPropietario,
-        subject,
-        text
-      })
-    });
+ const respuestaEmail = await fetch('https://perdilost.com/api/send-email', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    to: propietario.contact_info,
+    language: idiomaPropietario,
+    subject,
+    text
+  })
+});
 
     if (!respuestaEmail.ok) {
       return res.status(200).json({
