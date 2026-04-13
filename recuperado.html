@@ -99,7 +99,8 @@
   const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
 
   const params = new URLSearchParams(window.location.search);
-  const code = params.get('code');
+  const token = params.get('token');
+  let code = params.get('code');
   let idiomaActual = 'es';
   let codigoValidoRecuperacion = false;
 
