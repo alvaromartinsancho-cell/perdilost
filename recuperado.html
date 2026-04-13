@@ -248,7 +248,6 @@ async function cargarDatosRecuperacion() {
 }
 
 cargarDatosRecuperacion();
-aplicarTextosRecuperacion();
 document.getElementById('btn-enviar-recuperacion').addEventListener('click', async function () {
   const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
   const comentarios = document.getElementById('recovery-comments').value.trim();
