@@ -208,15 +208,16 @@ Email: ${finderContactNormalizado || 'No facilitado'}
 
 Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`;
 
- const appBaseUrl = process.env.APP_BASE_URL;
+const currentHost = req.headers['x-forwarded-host'] || req.headers.host;
+const currentProtocol = req.headers['x-forwarded-proto'] || 'https';
 
-if (!appBaseUrl) {
+if (!currentHost) {
   return res.status(500).json({
     error: textos[idioma].serverConfig
   });
 }
 
-const respuestaEmail = await fetch(`${appBaseUrl}/api/send-email`, {
+const respuestaEmail = await fetch(`${currentProtocol}://${currentHost}/api/send-email`, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json'
