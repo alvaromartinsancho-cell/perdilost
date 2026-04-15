@@ -474,28 +474,6 @@ if (!codigo) {
   return;
 }
 
-const { data: encontrados, error: errorConsulta } = await supabaseClient
-  .from('items')
-  .select('code, owner_name, contact_info')
-  .eq('code', codigo);
-
-if (errorConsulta) {
-  mostrarMensaje('Error al comprobar el código: ' + errorConsulta.message, 'error');
-  return;
-}
-
-if (!encontrados || encontrados.length === 0) {
-  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoNoValido}</div>`;
-  return;
-}
-
-const yaRegistrado = encontrados.some(item => item.owner_name || item.contact_info);
-
-if (yaRegistrado) {
-  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCodigoYaRegistrado}</div>`;
-  return;
-}
-
 if (!nombre || !contacto || !contactoRepetir || !descripcion) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
   return;
@@ -513,23 +491,34 @@ if (contacto !== contactoRepetir) {
   return;
 }
 
-const { error: errorUpdate } = await supabaseClient
-  .from('items')
-  .update({
+const respuestaRegistro = await fetch('/api/register-code', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    code: codigo,
     owner_name: nombre,
-    owner_phone: telefono || null,
+    owner_phone: telefono || '',
     contact_info: contacto,
+    contact_info_repeat: contactoRepetir,
     description: descripcion,
-    preferred_language: idiomaActual,
-    privacy_accepted: true,
-privacy_accepted_at: new Date().toISOString(),
-privacy_version: 'v1',
-    activated_at: new Date().toISOString()
+    language: idiomaActual,
+    privacy_accepted: !!privacyAccepted
   })
-  .eq('code', codigo);
+});
 
-if (errorUpdate) {
-  mensajeRegistro.innerHTML = `<div class="mensaje-error">Error al guardar: ${errorUpdate.message}</div>`;
+let resultadoRegistro = null;
+
+try {
+  resultadoRegistro = await respuestaRegistro.json();
+} catch (e) {
+  resultadoRegistro = null;
+}
+
+if (!respuestaRegistro.ok) {
+  const textoError = resultadoRegistro?.error || 'Error al guardar el registro.';
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
   return;
 }
 
