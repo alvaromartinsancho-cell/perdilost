@@ -187,16 +187,94 @@ export default async function handler(req, res) {
       });
     }
 
+    const resendApiKey = process.env.RESEND_API_KEY;
+
+    if (!resendApiKey) {
+      return res.status(200).json({
+        ok: false,
+        emailSent: false,
+        message: textos[idioma].emailSendError
+      });
+    }
+
+    const subject = idioma === 'en'
+      ? 'You have successfully registered your Perdilost code'
+      : 'Has registrado correctamente tu código Perdilost';
+
+    const text = idioma === 'en'
+      ? `Hello ${ownerNameNormalizado},
+
+Welcome to Perdilost and thank you for trusting our service.
+
+Your Perdilost code registration has been completed successfully.
+
+Registered code:
+${codeNormalizado}
+
+Contact details:
+Name: ${ownerNameNormalizado}
+Phone: ${ownerPhoneNormalizado || 'Not provided'}
+Email: ${contactInfoNormalizado}
+
+Message or description provided:
+${descriptionNormalizada || 'Not provided'}
+
+How your code works:
+If someone finds your item and uses this code on our website to notify us, they will not have access to your personal data. We will send you their message to this same email address so you can contact them and recover your item.
+
+Thank you for using Perdilost.`
+      : `Hola ${ownerNameNormalizado},
+
+Bienvenido a Perdilost y gracias por confiar en nuestro servicio.
+
+El registro de tu código en Perdilost se ha completado correctamente.
+
+Código registrado:
+${codeNormalizado}
+
+Datos de contacto:
+Nombre: ${ownerNameNormalizado}
+Teléfono: ${ownerPhoneNormalizado || 'No informado'}
+Email: ${contactInfoNormalizado}
+
+Mensaje o descripción indicada:
+${descriptionNormalizada || 'No informada'}
+
+Funcionamiento de tu código:
+Si en algún momento alguien encuentra tu objeto y utiliza este código en nuestra web para comunicarlo, esa persona no tendrá acceso a tus datos personales. Nosotros te enviaremos a este mismo correo el mensaje que nos haya dejado para que puedas ponerte en contacto y recuperarlo.
+
+Gracias por utilizar Perdilost.`;
+
+    const respuestaEmail = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Perdilost <avisos@perdilost.com>',
+        to: [contactInfoNormalizado],
+        subject,
+        text
+      })
+    });
+
+    try {
+      await respuestaEmail.json();
+    } catch (e) {}
+
+    if (!respuestaEmail.ok) {
+      return res.status(200).json({
+        ok: false,
+        emailSent: false,
+        message: textos[idioma].emailSendError
+      });
+    }
+
     return res.status(200).json({
       ok: true,
-      emailSent: null,
-      message: textos[idioma].success,
-      owner_name: ownerNameNormalizado,
-      owner_phone: ownerPhoneNormalizado || null,
-      contact_info: contactInfoNormalizado,
-      description: descriptionNormalizada,
-      code: codeNormalizado,
-      language: idioma
+      emailSent: true,
+      message: textos[idioma].success
     });
   } catch (error) {
     return res.status(500).json({
