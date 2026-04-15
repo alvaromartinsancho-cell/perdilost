@@ -22,16 +22,6 @@ export default async function handler(req, res) {
     ? authorizationHeader.slice(bearerPrefix.length).trim()
     : '';
 
-  console.log('[send-recovery-reminders] auth debug', {
-    hasCronSecret: !!cronSecret,
-    hasQuerySecret: !!secretRecibidoPorQuery,
-    hasAuthorizationHeader: !!authorizationHeader,
-    authorizationStartsWithBearer: authorizationHeader.startsWith(bearerPrefix),
-    queryMatchesSecret: !!cronSecret && secretRecibidoPorQuery === cronSecret,
-    headerMatchesSecret: !!cronSecret && authorizationHeader === `Bearer ${cronSecret}`,
-    userAgent: req.headers?.['user-agent'] || ''
-  });
-
   if (!cronSecret) {
     return res.status(500).json({
       ok: false,
