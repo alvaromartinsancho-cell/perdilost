@@ -51,8 +51,10 @@ export default async function handler(req, res) {
       code: resultado.code
     });
   } catch (error) {
+    const idiomaError = req.query?.language === 'en' ? 'en' : 'es';
+
     return res.status(500).json({
-      error: 'Error interno'
+      error: idiomaError === 'en' ? 'Internal error' : 'Error interno'
     });
   }
 }
