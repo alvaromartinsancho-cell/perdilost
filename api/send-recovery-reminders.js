@@ -4,7 +4,7 @@ export default async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({
       ok: false,
-      error: 'Método no permitido'
+      error: textos[idioma].methodNotAllowed
     });
   }
 
@@ -21,11 +21,40 @@ export default async function handler(req, res) {
   const secretRecibidoPorHeader = authorizationHeader.startsWith(bearerPrefix)
     ? authorizationHeader.slice(bearerPrefix.length).trim()
     : '';
+  const idioma = req.query?.language === 'en' ? 'en' : 'es';
 
+  const textos = {
+    es: {
+      methodNotAllowed: 'Método no permitido',
+      serverConfig: 'Error de configuración del servidor',
+      unauthorized: 'No autorizado',
+      readFoundReportsError: 'Error al leer found_reports',
+      readItemsError: 'Error al leer items',
+      noPendingReminders: 'No hay recordatorios pendientes de envío',
+      noValidEmail: 'No se ha encontrado un email válido para el recordatorio',
+      readItemDetailError: 'Error al leer el detalle del item',
+      sendReminderError: 'Error al enviar el recordatorio',
+      updateItemsError: 'Email enviado, pero no se pudo actualizar items',
+      success: 'Recordatorio enviado correctamente'
+    },
+    en: {
+      methodNotAllowed: 'Method not allowed',
+      serverConfig: 'Server configuration error',
+      unauthorized: 'Unauthorized',
+      readFoundReportsError: 'Error reading found_reports',
+      readItemsError: 'Error reading items',
+      noPendingReminders: 'There are no pending reminders to send',
+      noValidEmail: 'No valid email was found for the reminder',
+      readItemDetailError: 'Error reading the item details',
+      sendReminderError: 'Error sending the reminder',
+      updateItemsError: 'Email sent, but items could not be updated',
+      success: 'Reminder sent correctly'
+    }
+  };
   if (!cronSecret) {
     return res.status(500).json({
       ok: false,
-      error: 'Error de configuración del servidor'
+      error: textos[idioma].serverConfig
     });
   }
 
