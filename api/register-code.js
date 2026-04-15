@@ -245,6 +245,114 @@ Si en algún momento alguien encuentra tu objeto y utiliza este código en nuest
 
 Gracias por utilizar Perdilost.`;
 
+    const html = idioma === 'en'
+      ? `
+        <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
+          <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+            <div style="margin-bottom:24px;">
+              <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
+              <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
+            </div>
+
+            <p style="margin:0 0 16px 0;">Hello ${ownerNameNormalizado},</p>
+
+            <p style="margin:0 0 20px 0;line-height:1.7;">
+              Welcome to Perdilost and thank you for trusting our service.
+            </p>
+
+            <p style="margin:0 0 20px 0;line-height:1.7;">
+              Your Perdilost code registration has been completed successfully.
+            </p>
+
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
+              <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Registered code</div>
+              <div style="color:#1f2937;line-height:1.7;">${codeNormalizado}</div>
+            </div>
+
+            <div style="margin:24px 0;">
+              <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Contact details</div>
+              <div style="color:#475569;line-height:1.7;">
+                Name: ${ownerNameNormalizado}<br>
+                Phone: ${ownerPhoneNormalizado || 'Not provided'}<br>
+                Email: ${contactInfoNormalizado}
+              </div>
+            </div>
+
+            <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:18px 20px;margin:24px 0;">
+              <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Message or description provided</div>
+              <div style="color:#475569;line-height:1.7;white-space:pre-line;">${descriptionNormalizada || 'Not provided'}</div>
+            </div>
+
+            <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">
+              If someone finds your item and uses this code on our website to notify us, they will not have access to your personal data. We will send you their message to this same email address so you can contact them and recover your item.
+            </p>
+
+            <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+              If you have any questions or would like more information about Perdilost, you can write to
+              <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+            </div>
+
+            <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
+              If you wish to unsubscribe from our communications, write the word unsubscribe to the following email address:
+              <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
+            </div>
+          </div>
+        </div>
+      `
+      : `
+        <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
+          <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+            <div style="margin-bottom:24px;">
+              <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
+              <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
+            </div>
+
+            <p style="margin:0 0 16px 0;">Hola ${ownerNameNormalizado},</p>
+
+            <p style="margin:0 0 20px 0;line-height:1.7;">
+              Bienvenido a Perdilost y gracias por confiar en nuestro servicio.
+            </p>
+
+            <p style="margin:0 0 20px 0;line-height:1.7;">
+              El registro de tu código en Perdilost se ha completado correctamente.
+            </p>
+
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
+              <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Código registrado</div>
+              <div style="color:#1f2937;line-height:1.7;">${codeNormalizado}</div>
+            </div>
+
+            <div style="margin:24px 0;">
+              <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Datos de contacto</div>
+              <div style="color:#475569;line-height:1.7;">
+                Nombre: ${ownerNameNormalizado}<br>
+                Teléfono: ${ownerPhoneNormalizado || 'No informado'}<br>
+                Email: ${contactInfoNormalizado}
+              </div>
+            </div>
+
+            <div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:18px 20px;margin:24px 0;">
+              <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Mensaje o descripción indicada</div>
+              <div style="color:#475569;line-height:1.7;white-space:pre-line;">${descriptionNormalizada || 'No informada'}</div>
+            </div>
+
+            <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">
+              Si en algún momento alguien encuentra tu objeto y utiliza este código en nuestra web para comunicarlo, esa persona no tendrá acceso a tus datos personales. Nosotros te enviaremos a este mismo correo el mensaje que nos haya dejado para que puedas ponerte en contacto y recuperarlo.
+            </p>
+
+            <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+              Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
+              <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+            </div>
+
+            <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
+              Si deseas darte de baja de nuestras comunicaciones, escribe la palabra baja a la siguiente dirección de email:
+              <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
+            </div>
+          </div>
+        </div>
+      `;
+
     const respuestaEmail = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
@@ -255,7 +363,8 @@ Gracias por utilizar Perdilost.`;
         from: 'Perdilost <avisos@perdilost.com>',
         to: [contactInfoNormalizado],
         subject,
-        text
+        text,
+        html
       })
     });
 
