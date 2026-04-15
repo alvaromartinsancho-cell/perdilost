@@ -386,8 +386,10 @@ Gracias por utilizar Perdilost.`;
       message: textos[idioma].success
     });
   } catch (error) {
+    const idiomaError = req.body?.language === 'en' ? 'en' : 'es';
+
     return res.status(500).json({
-      error: 'Error interno'
+      error: idiomaError === 'en' ? 'Internal error' : 'Error interno'
     });
   }
 }
