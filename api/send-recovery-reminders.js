@@ -8,6 +8,23 @@ export default async function handler(req, res) {
     });
   }
 
+  const cronSecret = process.env.RECOVERY_REMINDER_CRON_SECRET;
+  const secretRecibido = typeof req.query?.secret === 'string' ? req.query.secret : '';
+
+  if (!cronSecret) {
+    return res.status(500).json({
+      ok: false,
+      error: 'Error de configuración del servidor'
+    });
+  }
+
+  if (!secretRecibido || secretRecibido !== cronSecret) {
+    return res.status(401).json({
+      ok: false,
+      error: 'No autorizado'
+    });
+  }
+
   const supabaseUrl = 'https://ihpwcqkmqdlmowqkjamq.supabase.co';
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const resendApiKey = process.env.RESEND_API_KEY;
