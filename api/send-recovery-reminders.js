@@ -65,7 +65,7 @@ export default async function handler(req, res) {
   if (!autorizado) {
     return res.status(401).json({
       ok: false,
-      error: 'No autorizado'
+      error: textos[idioma].unauthorized
     });
   }
 
