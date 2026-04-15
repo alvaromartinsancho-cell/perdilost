@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const cronSecret =
+    const cronSecret =
     process.env.CRON_SECRET || process.env.RECOVERY_REMINDER_CRON_SECRET;
 
   const secretRecibidoPorQuery =
@@ -21,6 +21,16 @@ export default async function handler(req, res) {
   const secretRecibidoPorHeader = authorizationHeader.startsWith(bearerPrefix)
     ? authorizationHeader.slice(bearerPrefix.length).trim()
     : '';
+
+  console.log('[send-recovery-reminders] auth debug', {
+    hasCronSecret: !!cronSecret,
+    hasQuerySecret: !!secretRecibidoPorQuery,
+    hasAuthorizationHeader: !!authorizationHeader,
+    authorizationStartsWithBearer: authorizationHeader.startsWith(bearerPrefix),
+    queryMatchesSecret: !!cronSecret && secretRecibidoPorQuery === cronSecret,
+    headerMatchesSecret: !!cronSecret && authorizationHeader === `Bearer ${cronSecret}`,
+    userAgent: req.headers?.['user-agent'] || ''
+  });
 
   if (!cronSecret) {
     return res.status(500).json({
