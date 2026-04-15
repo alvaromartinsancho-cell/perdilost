@@ -73,17 +73,17 @@ export default async function handler(req, res) {
   const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const resendApiKey = process.env.RESEND_API_KEY;
 
-  if (!supabaseKey) {
+   if (!supabaseKey) {
     return res.status(500).json({
       ok: false,
-      error: 'Error de configuración del servidor'
+      error: textos[idioma].serverConfig
     });
   }
 
   if (!resendApiKey) {
     return res.status(500).json({
       ok: false,
-      error: 'Error de configuración del servidor'
+      error: textos[idioma].serverConfig
     });
   }
 
@@ -102,7 +102,7 @@ export default async function handler(req, res) {
   if (!respuesta.ok) {
     return res.status(500).json({
       ok: false,
-      error: 'Error al leer found_reports'
+      error: textos[idioma].readFoundReportsError
     });
   }
 
@@ -130,7 +130,7 @@ export default async function handler(req, res) {
   if (!respuestaItems.ok) {
     return res.status(500).json({
       ok: false,
-      error: 'Error al leer items'
+      error: textos[idioma].readItemsError
     });
   }
 
