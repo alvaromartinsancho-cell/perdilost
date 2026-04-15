@@ -8,8 +8,19 @@ export default async function handler(req, res) {
     });
   }
 
-  const cronSecret = process.env.RECOVERY_REMINDER_CRON_SECRET;
-  const secretRecibido = typeof req.query?.secret === 'string' ? req.query.secret : '';
+  const cronSecret =
+    process.env.CRON_SECRET || process.env.RECOVERY_REMINDER_CRON_SECRET;
+
+  const secretRecibidoPorQuery =
+    typeof req.query?.secret === 'string' ? req.query.secret : '';
+
+  const authorizationHeader =
+    typeof req.headers?.authorization === 'string' ? req.headers.authorization : '';
+
+  const bearerPrefix = 'Bearer ';
+  const secretRecibidoPorHeader = authorizationHeader.startsWith(bearerPrefix)
+    ? authorizationHeader.slice(bearerPrefix.length).trim()
+    : '';
 
   if (!cronSecret) {
     return res.status(500).json({
@@ -18,7 +29,11 @@ export default async function handler(req, res) {
     });
   }
 
-  if (!secretRecibido || secretRecibido !== cronSecret) {
+  const autorizado =
+    secretRecibidoPorQuery === cronSecret ||
+    secretRecibidoPorHeader === cronSecret;
+
+  if (!autorizado) {
     return res.status(401).json({
       ok: false,
       error: 'No autorizado'
