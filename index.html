@@ -517,7 +517,7 @@ try {
 }
 
 if (!respuestaRegistro.ok) {
-  const textoError = resultadoRegistro?.error || 'Error al guardar el registro.';
+    const textoError = resultadoRegistro?.error || (idiomaActual === 'en' ? 'Error saving the registration.' : 'Error al guardar el registro.');
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
   return;
 }
