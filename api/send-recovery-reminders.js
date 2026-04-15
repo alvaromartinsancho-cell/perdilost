@@ -144,7 +144,7 @@ export default async function handler(req, res) {
       total_found_reports: datos.length,
       total_candidatos_1_dia: avisosCandidatos.length,
       total_items_validos_recordatorio: 0,
-      message: 'No hay recordatorios pendientes de envío'
+      message: textos[idioma].noPendingReminders
     });
   }
 
@@ -165,7 +165,7 @@ export default async function handler(req, res) {
   if (!respuestaItemDetalle.ok) {
     return res.status(500).json({
       ok: false,
-      error: 'Error al leer el detalle del item'
+      error: textos[idioma].readItemDetailError
     });
   }
 
@@ -178,7 +178,7 @@ export default async function handler(req, res) {
       total_found_reports: datos.length,
       total_candidatos_1_dia: avisosCandidatos.length,
       total_items_validos_recordatorio: itemsValidos.length,
-      message: 'No se ha encontrado un email válido para el recordatorio'
+      message: textos[idioma].noValidEmail
     });
   }
 
