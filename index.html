@@ -522,74 +522,19 @@ if (!respuestaRegistro.ok) {
   return;
 }
 
-  const respuestaEmailRegistro = await fetch('/api/send-email', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-  to: contacto,
-  language: idiomaActual,
-     subject: idiomaActual === 'en'
-  ? 'You have successfully registered your Perdilost code'
-  : 'Has registrado correctamente tu código Perdilost',
-text: idiomaActual === 'en'
-  ? `Hello ${nombre},
-
-Welcome to Perdilost and thank you for trusting our service.
-
-Your Perdilost code registration has been completed successfully.
-
-Registered code:
-${codigo}
-
-Contact details:
-Name: ${nombre}
-Phone: ${telefono || 'Not provided'}
-Email: ${contacto}
-
-Message or description provided:
-${descripcion || 'Not provided'}
-
-How your code works:
-If someone finds your item and uses this code on our website to notify us, they will not have access to your personal data. We will send you their message to this same email address so you can contact them and recover your item.
-
-Thank you for using Perdilost.`
-  : `Hola ${nombre},
-
-Bienvenido a Perdilost y gracias por confiar en nuestro servicio.
-
-El registro de tu código en Perdilost se ha completado correctamente.
-
-Código registrado:
-${codigo}
-
-Datos de contacto:
-Nombre: ${nombre}
-Teléfono: ${telefono || 'No informado'}
-Email: ${contacto}
-
-Mensaje o descripción indicada:
-${descripcion || 'No informada'}
-
-Funcionamiento de tu código:
-Si en algún momento alguien encuentra tu objeto y utiliza este código en nuestra web para comunicarlo, esa persona no tendrá acceso a tus datos personales. Nosotros te enviaremos a este mismo correo el mensaje que nos haya dejado para que puedas ponerte en contacto y recuperarlo.
-
-Gracias por utilizar Perdilost.`
-    })
-  });
-if (!respuestaEmailRegistro.ok) {
-  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailRegistroNoEnviado}</div>`;
+if (resultadoRegistro?.ok === false && resultadoRegistro?.emailSent === false) {
+  mensajeRegistro.innerHTML = `<div class="mensaje-error">${resultadoRegistro.message || textos[idiomaActual].mensajeEmailRegistroNoEnviado}</div>`;
   return;
 }
-  document.getElementById('codigo').value = '';
-  document.getElementById('nombre').value = '';
-  document.getElementById('telefono').value = '';
-  document.getElementById('contacto').value = '';
-  document.getElementById('contacto-repetir').value = '';
-  document.getElementById('descripcion').value = '';
-  
-  mensajeRegistro.innerHTML = `<div class="mensaje-ok">${textos[idiomaActual].mensajeRegistroOk}</div>`;
+
+document.getElementById('codigo').value = '';
+document.getElementById('nombre').value = '';
+document.getElementById('telefono').value = '';
+document.getElementById('contacto').value = '';
+document.getElementById('contacto-repetir').value = '';
+document.getElementById('descripcion').value = '';
+
+mensajeRegistro.innerHTML = `<div class="mensaje-ok">${resultadoRegistro?.message || textos[idiomaActual].mensajeRegistroOk}</div>`;
 }
 
     async function comprobarCodigoEncontrado() {
