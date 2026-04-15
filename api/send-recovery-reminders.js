@@ -1,26 +1,6 @@
 import { createRecoveryToken } from './_recovery-token.js';
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({
-      ok: false,
-      error: textos[idioma].methodNotAllowed
-    });
-  }
-
-    const cronSecret =
-    process.env.CRON_SECRET || process.env.RECOVERY_REMINDER_CRON_SECRET;
-
-  const secretRecibidoPorQuery =
-    typeof req.query?.secret === 'string' ? req.query.secret : '';
-
-  const authorizationHeader =
-    typeof req.headers?.authorization === 'string' ? req.headers.authorization : '';
-
-  const bearerPrefix = 'Bearer ';
-  const secretRecibidoPorHeader = authorizationHeader.startsWith(bearerPrefix)
-    ? authorizationHeader.slice(bearerPrefix.length).trim()
-    : '';
   const idioma = req.query?.language === 'en' ? 'en' : 'es';
 
   const textos = {
@@ -51,6 +31,28 @@ export default async function handler(req, res) {
       success: 'Reminder sent correctly'
     }
   };
+
+  if (req.method !== 'GET') {
+    return res.status(405).json({
+      ok: false,
+      error: textos[idioma].methodNotAllowed
+    });
+  }
+
+  const cronSecret =
+    process.env.CRON_SECRET || process.env.RECOVERY_REMINDER_CRON_SECRET;
+
+  const secretRecibidoPorQuery =
+    typeof req.query?.secret === 'string' ? req.query.secret : '';
+
+  const authorizationHeader =
+    typeof req.headers?.authorization === 'string' ? req.headers.authorization : '';
+
+  const bearerPrefix = 'Bearer ';
+  const secretRecibidoPorHeader = authorizationHeader.startsWith(bearerPrefix)
+    ? authorizationHeader.slice(bearerPrefix.length).trim()
+    : '';
+
   if (!cronSecret) {
     return res.status(500).json({
       ok: false,
@@ -279,7 +281,7 @@ Gracias por utilizar Perdilost.`,
   if (!respuestaEmail.ok) {
     return res.status(500).json({
       ok: false,
-      error: 'Error al enviar el recordatorio'
+      error: textos[idioma].sendReminderError
     });
   }
 
@@ -304,7 +306,7 @@ Gracias por utilizar Perdilost.`,
   if (!respuestaUpdateItem.ok) {
     return res.status(500).json({
       ok: false,
-      error: 'Email enviado, pero no se pudo actualizar items'
+      error: textos[idioma].updateItemsError
     });
   }
 
@@ -314,6 +316,6 @@ Gracias por utilizar Perdilost.`,
     total_candidatos_1_dia: avisosCandidatos.length,
     total_items_validos_recordatorio: itemsValidos.length,
     recovery_reminder_sent: true,
-    message: 'Recordatorio enviado correctamente'
+    message: textos[idioma].success
   });
 }
