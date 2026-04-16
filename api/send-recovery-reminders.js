@@ -39,8 +39,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const cronSecret =
-    process.env.CRON_SECRET || process.env.RECOVERY_REMINDER_CRON_SECRET;
+  const cronSecret = process.env.CRON_SECRET;
 
   const secretRecibidoPorQuery =
     typeof req.query?.secret === 'string' ? req.query.secret : '';
