@@ -3,7 +3,8 @@ import { createRecoveryToken } from './_recovery-token.js';
 export default async function handler(req, res) {
   const idioma = req.query?.language === 'en' ? 'en' : 'es';
 
-  const textos = {
+  try {
+    const textos = {
     es: {
       methodNotAllowed: 'Método no permitido',
       serverConfig: 'Error de configuración del servidor',
@@ -115,6 +116,16 @@ export default async function handler(req, res) {
   });
 
   const codigosCandidatos = [...new Set(avisosCandidatos.map(aviso => aviso.code))];
+
+  if (codigosCandidatos.length === 0) {
+    return res.status(200).json({
+      ok: true,
+      total_found_reports: datos.length,
+      total_candidatos_1_dia: 0,
+      total_items_validos_recordatorio: 0,
+      message: textos[idioma].noPendingReminders
+    });
+  }
 
   const respuestaItems = await fetch(
     `${supabaseUrl}/rest/v1/items?select=code,is_recovered,recovery_reminder_sent&code=in.(${codigosCandidatos.map(code => `"${code}"`).join(',')})`,
@@ -317,4 +328,12 @@ Gracias por utilizar Perdilost.`,
     recovery_reminder_sent: true,
     message: textos[idioma].success
   });
+} catch (error) {
+  const idiomaError = req.query?.language === 'en' ? 'en' : 'es';
+
+  return res.status(500).json({
+    ok: false,
+    error: idiomaError === 'en' ? 'Internal error' : 'Error interno'
+  });
+}
 }
