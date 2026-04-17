@@ -582,7 +582,7 @@ if (resultado?.message) {
   }
 }
 
-mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeErrorGenericoEncontrado}</div>`;
+mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.'}</div>`;
     }
   </script>
 </div>
