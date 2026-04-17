@@ -536,6 +536,7 @@ try {
 }
 
 if (!respuestaRegistro.ok) {
+  marcarCampoError('codigo');
   const textoError = resultadoRegistro?.error || (idiomaActual === 'en' ? 'Error saving the registration.' : 'Error al guardar el registro.');
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
   return;
@@ -620,6 +621,7 @@ try {
 }
 
 if (!respuesta.ok) {
+  marcarCampoError('codigo-encontrado');
   const textoError = resultado?.error || (idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
   return;
