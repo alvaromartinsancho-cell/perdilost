@@ -50,9 +50,21 @@ button.activo {
   margin-top: 20px;
 }
 
-  button:hover {
-    background: #1d4ed8;
-  }
+button:hover {
+  background: #1d4ed8;
+}
+
+button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
 
   input, textarea {
     width: 100%;
@@ -237,6 +249,7 @@ placeholderContactoEncontrado: 'Tu email (opcional)',
 placeholderMensajeEncontrado: 'Escribe aquí el mensaje que quieres que reciba el propietario para poder recuperar su pertenencia. Puedes indicar cómo contactarte o en qué lugar has dejado el objeto para que pueda pasar a recogerlo.',
 botonCrearRegistro: 'Crear registro',
 botonEnviarAviso: 'Enviar aviso',
+botonEnviando: 'Enviando...',
 mensajeCamposRegistro: 'Debes completar todos los campos para registrar tu código.',
 mensajeEmailsNoCoinciden: 'Los emails no coinciden. Revisa ambos campos.',
 mensajeEmailRegistroNoEnviado: 'Código activado correctamente, pero no hemos podido enviarte el email de confirmación.',
@@ -293,6 +306,7 @@ placeholderContactoEncontrado: 'Your email (optional)',
 placeholderMensajeEncontrado: 'Write here the message you want the owner to receive so they can recover their item. You can indicate how to contact you or where you left it.',
 botonCrearRegistro: 'Create record',
 botonEnviarAviso: 'Send notice',
+botonEnviando: 'Sending...',
 mensajeCamposRegistro: 'You must complete all fields to register your code.',
 mensajeEmailsNoCoinciden: 'The email addresses do not match. Please check both fields.',
 mensajeEmailRegistroNoEnviado: 'Code activated correctly, but we could not send you the confirmation email.',
@@ -412,7 +426,7 @@ function limpiarGrupoError(id) {
 <div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">${textos[idiomaActual].mensajeEmailsNoCoinciden}</div>
 <textarea id="descripcion" placeholder="${textos[idiomaActual].placeholderDescripcion}" required></textarea><br><br>
 <div id="mensaje-registro" style="margin-top:18px;"></div>
-<button type="button" onclick="guardarCodigo()">${textos[idiomaActual].botonCrearRegistro}</button>
+<button type="button" id="btn-guardar-codigo" onclick="guardarCodigo()">${textos[idiomaActual].botonCrearRegistro}</button>
 </div>
 `;
     }
@@ -458,7 +472,7 @@ function limpiarGrupoError(id) {
 <input type="email" id="contacto-encontrado" placeholder="${textos[idiomaActual].placeholderContactoEncontrado}"><br><br>
 <textarea id="mensaje-encontrado" placeholder="${textos[idiomaActual].placeholderMensajeEncontrado}" required></textarea><br><br>
 <div id="mensaje-encontrado-formulario" style="margin-top:18px;"></div>
-<button type="button" onclick="comprobarCodigoEncontrado()">${textos[idiomaActual].botonEnviarAviso}</button>
+<button type="button" id="btn-enviar-aviso" onclick="comprobarCodigoEncontrado()">${textos[idiomaActual].botonEnviarAviso}</button>
         </div>
       `;
     }
@@ -472,6 +486,7 @@ async function guardarCodigo() {
    const descripcion = document.getElementById('descripcion').value.trim();
    const mensajeEmailCoincide = document.getElementById('mensaje-email-coincide');
    const mensajeRegistro = document.getElementById('mensaje-registro');
+   const botonGuardarCodigo = document.getElementById('btn-guardar-codigo');
 
 mensajeEmailCoincide.style.display = 'none';
 mensajeRegistro.innerHTML = '';
@@ -484,6 +499,11 @@ limpiarCampoError('contacto-repetir');
 limpiarCampoError('descripcion');
 limpiarGrupoError('grupo-privacy-accepted');
 
+if (botonGuardarCodigo) {
+  botonGuardarCodigo.disabled = true;
+  botonGuardarCodigo.textContent = textos[idiomaActual].botonEnviando;
+}
+  
 if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
   if (!codigo) marcarCampoError('codigo');
   if (!nombre) marcarCampoError('nombre');
@@ -492,6 +512,10 @@ if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
   if (!descripcion) marcarCampoError('descripcion');
 
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
+  if (botonGuardarCodigo) {
+    botonGuardarCodigo.disabled = false;
+    botonGuardarCodigo.textContent = textos[idiomaActual].botonCrearRegistro;
+  }
   return;
 }
 
@@ -499,6 +523,10 @@ const privacyAccepted = document.getElementById('privacy-accepted')?.checked;
 if (!privacyAccepted) {
   marcarGrupoError('grupo-privacy-accepted');
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
+  if (botonGuardarCodigo) {
+    botonGuardarCodigo.disabled = false;
+    botonGuardarCodigo.textContent = textos[idiomaActual].botonCrearRegistro;
+  }
   return;
 }
 
@@ -507,6 +535,10 @@ if (contacto !== contactoRepetir) {
   marcarCampoError('contacto-repetir');
   mensajeEmailCoincide.style.display = 'block';
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailsNoCoinciden}</div>`;
+  if (botonGuardarCodigo) {
+    botonGuardarCodigo.disabled = false;
+    botonGuardarCodigo.textContent = textos[idiomaActual].botonCrearRegistro;
+  }
   return;
 }
 
@@ -539,11 +571,19 @@ if (!respuestaRegistro.ok) {
   marcarCampoError('codigo');
   const textoError = resultadoRegistro?.error || (idiomaActual === 'en' ? 'Error saving the registration.' : 'Error al guardar el registro.');
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
+  if (botonGuardarCodigo) {
+    botonGuardarCodigo.disabled = false;
+    botonGuardarCodigo.textContent = textos[idiomaActual].botonCrearRegistro;
+  }
   return;
 }
 
 if (resultadoRegistro?.ok === false) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${resultadoRegistro.message || textos[idiomaActual].mensajeEmailRegistroNoEnviado}</div>`;
+  if (botonGuardarCodigo) {
+    botonGuardarCodigo.disabled = false;
+    botonGuardarCodigo.textContent = textos[idiomaActual].botonCrearRegistro;
+  }
   return;
 } else {
 document.getElementById('codigo').value = '';
@@ -562,6 +602,11 @@ limpiarCampoError('contacto-repetir');
 limpiarCampoError('descripcion');
 limpiarGrupoError('grupo-privacy-accepted');
 
+if (botonGuardarCodigo) {
+  botonGuardarCodigo.disabled = false;
+  botonGuardarCodigo.textContent = textos[idiomaActual].botonCrearRegistro;
+}
+
 mensajeRegistro.innerHTML = `<div class="mensaje-ok">${resultadoRegistro?.message || textos[idiomaActual].mensajeRegistroOk}</div>`;
 }
 }
@@ -572,6 +617,7 @@ const telefono = document.getElementById('telefono-encontrado').value.trim();
 const contacto = document.getElementById('contacto-encontrado').value.trim();
 const mensaje = document.getElementById('mensaje-encontrado').value.trim();
 const mensajeEncontradoFormulario = document.getElementById('mensaje-encontrado-formulario');
+const botonEnviarAviso = document.getElementById('btn-enviar-aviso');
 
 mensajeEncontradoFormulario.innerHTML = '';
 
@@ -582,11 +628,20 @@ limpiarCampoError('contacto-encontrado');
 limpiarCampoError('mensaje-encontrado');
 limpiarGrupoError('grupo-privacy-accepted-encontrado');
 
+if (botonEnviarAviso) {
+  botonEnviarAviso.disabled = true;
+  botonEnviarAviso.textContent = textos[idiomaActual].botonEnviando;
+}
+
 if (!codigo || !mensaje) {
   if (!codigo) marcarCampoError('codigo-encontrado');
   if (!mensaje) marcarCampoError('mensaje-encontrado');
 
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
+  if (botonEnviarAviso) {
+    botonEnviarAviso.disabled = false;
+    botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
+  }
   return;
 }
 
@@ -594,6 +649,10 @@ const privacyAcceptedEncontrado = document.getElementById('privacy-accepted-enco
 if (!privacyAcceptedEncontrado) {
   marcarGrupoError('grupo-privacy-accepted-encontrado');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoriaEncontrado}</div>`;
+  if (botonEnviarAviso) {
+    botonEnviarAviso.disabled = false;
+    botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
+  }
   return;
 }
 
@@ -624,6 +683,10 @@ if (!respuesta.ok) {
   marcarCampoError('codigo-encontrado');
   const textoError = resultado?.error || (idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
+  if (botonEnviarAviso) {
+    botonEnviarAviso.disabled = false;
+    botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
+  }
   return;
 }
 
@@ -643,12 +706,25 @@ limpiarCampoError('mensaje-encontrado');
 limpiarGrupoError('grupo-privacy-accepted-encontrado');
 
 if (resultado.ok === true && resultado.emailSent === true) {
+    if (botonEnviarAviso) {
+      botonEnviarAviso.disabled = false;
+      botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
+    }
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${resultado.message}</div>`;
     return;
   } else if (resultado.ok === false) {
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${resultado.message}</div>`;
+    if (botonEnviarAviso) {
+      botonEnviarAviso.disabled = false;
+      botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
+    }
     return;
   }
+}
+
+if (botonEnviarAviso) {
+  botonEnviarAviso.disabled = false;
+  botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
 }
 
 mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.'}</div>`;
