@@ -173,9 +173,9 @@ h1 i {
   Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong><span class="salto-suave">Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>Devolver a su dueño</strong>.</span>
 </div>
   <hr>
-  <div class="texto-secundario" id="texto-privacidad">
-    Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a infoperdilost@gmail.com
-  </div>
+<div class="texto-secundario" id="texto-privacidad">
+  Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>
+</div>
 </div>
 
 <p id="texto-selecciona-opcion">Selecciona una opción:</p>
@@ -446,12 +446,7 @@ async function guardarCodigo() {
 
 mensajeEmailCoincide.style.display = 'none';
   mensajeRegistro.innerHTML = '';
-if (!codigo) {
-  mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
-  return;
-}
-
-if (!nombre || !contacto || !contactoRepetir || !descripcion) {
+if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
   return;
 }
@@ -525,12 +520,7 @@ const mensajeEncontradoFormulario = document.getElementById('mensaje-encontrado-
 
 mensajeEncontradoFormulario.innerHTML = '';
 
-if (!codigo) {
-  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
-  return;
-}
-
-if (!mensaje) {
+if (!codigo || !mensaje) {
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   return;
 }
