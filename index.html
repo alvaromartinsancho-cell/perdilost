@@ -481,23 +481,22 @@ if (!respuestaRegistro.ok) {
   return;
 }
 
-if (resultadoRegistro?.ok === false && resultadoRegistro?.emailSent === false) {
+if (resultadoRegistro?.ok === false) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${resultadoRegistro.message || textos[idiomaActual].mensajeEmailRegistroNoEnviado}</div>`;
   return;
+} else {
+  document.getElementById('codigo').value = '';
+  document.getElementById('nombre').value = '';
+  document.getElementById('telefono').value = '';
+  document.getElementById('contacto').value = '';
+  document.getElementById('contacto-repetir').value = '';
+  document.getElementById('descripcion').value = '';
+  document.getElementById('privacy-accepted').checked = false;
+
+  mensajeRegistro.innerHTML = `<div class="mensaje-ok">${resultadoRegistro?.message || textos[idiomaActual].mensajeRegistroOk}</div>`;
 }
-
-document.getElementById('codigo').value = '';
-document.getElementById('nombre').value = '';
-document.getElementById('telefono').value = '';
-document.getElementById('contacto').value = '';
-document.getElementById('contacto-repetir').value = '';
-document.getElementById('descripcion').value = '';
-document.getElementById('privacy-accepted').checked = false;
-
-mensajeRegistro.innerHTML = `<div class="mensaje-ok">${resultadoRegistro?.message || textos[idiomaActual].mensajeRegistroOk}</div>`;
 }
-
-    async function comprobarCodigoEncontrado() {
+async function comprobarCodigoEncontrado() {
 const codigo = document.getElementById('codigo-encontrado').value.trim();
 const nombre = document.getElementById('nombre-encontrado').value.trim();
 const telefono = document.getElementById('telefono-encontrado').value.trim();
@@ -548,24 +547,17 @@ if (!respuesta.ok) {
 }
 
 if (resultado?.message) {
+  document.getElementById('codigo-encontrado').value = '';
+  document.getElementById('nombre-encontrado').value = '';
+  document.getElementById('telefono-encontrado').value = '';
+  document.getElementById('contacto-encontrado').value = '';
+  document.getElementById('mensaje-encontrado').value = '';
+  document.getElementById('privacy-accepted-encontrado').checked = false;
+
   if (resultado.ok === true && resultado.emailSent === true) {
-    document.getElementById('codigo-encontrado').value = '';
-    document.getElementById('nombre-encontrado').value = '';
-    document.getElementById('telefono-encontrado').value = '';
-    document.getElementById('contacto-encontrado').value = '';
-    document.getElementById('mensaje-encontrado').value = '';
-    document.getElementById('privacy-accepted-encontrado').checked = false;
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${resultado.message}</div>`;
     return;
-  }
-
-  if (resultado.ok === false) {
-    document.getElementById('codigo-encontrado').value = '';
-    document.getElementById('nombre-encontrado').value = '';
-    document.getElementById('telefono-encontrado').value = '';
-    document.getElementById('contacto-encontrado').value = '';
-    document.getElementById('mensaje-encontrado').value = '';
-    document.getElementById('privacy-accepted-encontrado').checked = false;
+  } else if (resultado.ok === false) {
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${resultado.message}</div>`;
     return;
   }
