@@ -62,11 +62,25 @@ button.activo {
     border-radius: 10px;
     box-sizing: border-box;
     font-size: 14px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   }
 
   textarea {
     min-height: 100px;
     resize: vertical;
+  }
+
+  .campo-error {
+    border-color: #dc2626 !important;
+    background: #fef2f2;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+  }
+
+  .grupo-error {
+    padding: 10px 12px;
+    border: 1px solid #fca5a5;
+    border-radius: 12px;
+    background: #fef2f2;
   }
 
 #zona {
@@ -324,6 +338,35 @@ function cambiarIdioma(idioma) {
     mostrarEncontrado();
   }
 }
+
+function marcarCampoError(id) {
+  const elemento = document.getElementById(id);
+  if (elemento) {
+    elemento.classList.add('campo-error');
+  }
+}
+
+function limpiarCampoError(id) {
+  const elemento = document.getElementById(id);
+  if (elemento) {
+    elemento.classList.remove('campo-error');
+  }
+}
+
+function marcarGrupoError(id) {
+  const elemento = document.getElementById(id);
+  if (elemento) {
+    elemento.classList.add('grupo-error');
+  }
+}
+
+function limpiarGrupoError(id) {
+  const elemento = document.getElementById(id);
+  if (elemento) {
+    elemento.classList.remove('grupo-error');
+  }
+}
+
     aplicarTextosGenerales();
     
     function mostrarPropietario() {
@@ -356,7 +399,7 @@ function cambiarIdioma(idioma) {
   <p><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
 </div>
 
-<label style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
+<label id="grupo-privacy-accepted" class="grupo-checkbox-privacidad" style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
   <input type="checkbox" id="privacy-accepted" style="width:auto; margin-top:3px;">
   <span>${textos[idiomaActual].checkboxPrivacidadRegistro}</span>
 </label>
@@ -404,7 +447,7 @@ function cambiarIdioma(idioma) {
   <p><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
 </div>
 
-<label style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
+<label id="grupo-privacy-accepted-encontrado" class="grupo-checkbox-privacidad" style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
   <input type="checkbox" id="privacy-accepted-encontrado" style="width:auto; margin-top:3px;">
   <span>${textos[idiomaActual].checkboxPrivacidadEncontrado}</span>
 </label>
@@ -433,18 +476,35 @@ async function guardarCodigo() {
 mensajeEmailCoincide.style.display = 'none';
 mensajeRegistro.innerHTML = '';
 
+limpiarCampoError('codigo');
+limpiarCampoError('nombre');
+limpiarCampoError('telefono');
+limpiarCampoError('contacto');
+limpiarCampoError('contacto-repetir');
+limpiarCampoError('descripcion');
+limpiarGrupoError('grupo-privacy-accepted');
+
 if (!codigo || !nombre || !contacto || !contactoRepetir || !descripcion) {
+  if (!codigo) marcarCampoError('codigo');
+  if (!nombre) marcarCampoError('nombre');
+  if (!contacto) marcarCampoError('contacto');
+  if (!contactoRepetir) marcarCampoError('contacto-repetir');
+  if (!descripcion) marcarCampoError('descripcion');
+
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposRegistro}</div>`;
   return;
 }
 
 const privacyAccepted = document.getElementById('privacy-accepted')?.checked;
 if (!privacyAccepted) {
+  marcarGrupoError('grupo-privacy-accepted');
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoria}</div>`;
   return;
 }
 
 if (contacto !== contactoRepetir) {
+  marcarCampoError('contacto');
+  marcarCampoError('contacto-repetir');
   mensajeEmailCoincide.style.display = 'block';
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeEmailsNoCoinciden}</div>`;
   return;
@@ -485,15 +545,23 @@ if (resultadoRegistro?.ok === false) {
   mensajeRegistro.innerHTML = `<div class="mensaje-error">${resultadoRegistro.message || textos[idiomaActual].mensajeEmailRegistroNoEnviado}</div>`;
   return;
 } else {
-  document.getElementById('codigo').value = '';
-  document.getElementById('nombre').value = '';
-  document.getElementById('telefono').value = '';
-  document.getElementById('contacto').value = '';
-  document.getElementById('contacto-repetir').value = '';
-  document.getElementById('descripcion').value = '';
-  document.getElementById('privacy-accepted').checked = false;
+document.getElementById('codigo').value = '';
+document.getElementById('nombre').value = '';
+document.getElementById('telefono').value = '';
+document.getElementById('contacto').value = '';
+document.getElementById('contacto-repetir').value = '';
+document.getElementById('descripcion').value = '';
+document.getElementById('privacy-accepted').checked = false;
 
-  mensajeRegistro.innerHTML = `<div class="mensaje-ok">${resultadoRegistro?.message || textos[idiomaActual].mensajeRegistroOk}</div>`;
+limpiarCampoError('codigo');
+limpiarCampoError('nombre');
+limpiarCampoError('telefono');
+limpiarCampoError('contacto');
+limpiarCampoError('contacto-repetir');
+limpiarCampoError('descripcion');
+limpiarGrupoError('grupo-privacy-accepted');
+
+mensajeRegistro.innerHTML = `<div class="mensaje-ok">${resultadoRegistro?.message || textos[idiomaActual].mensajeRegistroOk}</div>`;
 }
 }
 async function comprobarCodigoEncontrado() {
@@ -506,13 +574,24 @@ const mensajeEncontradoFormulario = document.getElementById('mensaje-encontrado-
 
 mensajeEncontradoFormulario.innerHTML = '';
 
+limpiarCampoError('codigo-encontrado');
+limpiarCampoError('nombre-encontrado');
+limpiarCampoError('telefono-encontrado');
+limpiarCampoError('contacto-encontrado');
+limpiarCampoError('mensaje-encontrado');
+limpiarGrupoError('grupo-privacy-accepted-encontrado');
+
 if (!codigo || !mensaje) {
+  if (!codigo) marcarCampoError('codigo-encontrado');
+  if (!mensaje) marcarCampoError('mensaje-encontrado');
+
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   return;
 }
 
 const privacyAcceptedEncontrado = document.getElementById('privacy-accepted-encontrado')?.checked;
 if (!privacyAcceptedEncontrado) {
+  marcarGrupoError('grupo-privacy-accepted-encontrado');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoriaEncontrado}</div>`;
   return;
 }
@@ -547,14 +626,21 @@ if (!respuesta.ok) {
 }
 
 if (resultado?.message) {
-  document.getElementById('codigo-encontrado').value = '';
-  document.getElementById('nombre-encontrado').value = '';
-  document.getElementById('telefono-encontrado').value = '';
-  document.getElementById('contacto-encontrado').value = '';
-  document.getElementById('mensaje-encontrado').value = '';
-  document.getElementById('privacy-accepted-encontrado').checked = false;
+document.getElementById('codigo-encontrado').value = '';
+document.getElementById('nombre-encontrado').value = '';
+document.getElementById('telefono-encontrado').value = '';
+document.getElementById('contacto-encontrado').value = '';
+document.getElementById('mensaje-encontrado').value = '';
+document.getElementById('privacy-accepted-encontrado').checked = false;
 
-  if (resultado.ok === true && resultado.emailSent === true) {
+limpiarCampoError('codigo-encontrado');
+limpiarCampoError('nombre-encontrado');
+limpiarCampoError('telefono-encontrado');
+limpiarCampoError('contacto-encontrado');
+limpiarCampoError('mensaje-encontrado');
+limpiarGrupoError('grupo-privacy-accepted-encontrado');
+
+if (resultado.ok === true && resultado.emailSent === true) {
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${resultado.message}</div>`;
     return;
   } else if (resultado.ok === false) {
