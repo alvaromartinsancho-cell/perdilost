@@ -247,18 +247,22 @@ export default async function handler(req, res) {
           text: idiomaReminder === 'en'
             ? `Hello ${itemDetalle.owner_name || ''},
 
-We are writing to ask whether you have already recovered the item associated with code ${itemDetalle.code}.
+We have detected that the Perdilost code linked to your item (${itemDetalle.code}) has been used recently.
+
+For this reason, we would like to ask whether you have already recovered it or whether you have arranged with the person who found it to recover it soon.
 
 Registered description:
 ${itemDetalle.description || 'Not provided'}
 
-If you have already recovered it, or you have arranged to recover it soon, please confirm it here so we can improve the service and keep a record that you were able to recover it:
+If you have already recovered it, or if you have arranged to recover it soon, we would appreciate it if you could confirm it here so we can improve the service and keep a record that you were able to recover it:
 ${recoveryUrl}
 
 Thank you for using Perdilost.`
             : `Hola ${itemDetalle.owner_name || ''},
 
-Te escribimos para saber si finalmente has recuperado tu objeto asociado al código ${itemDetalle.code}.
+Hemos detectado que el código de tu objeto asociado a Perdilost (${itemDetalle.code}) ha sido utilizado recientemente.
+
+Por eso, queríamos preguntarte si ya has podido recuperarlo o si has quedado con la persona que lo encontró para recuperarlo próximamente.
 
 Descripción registrada:
 ${itemDetalle.description || 'No informada'}
@@ -279,8 +283,14 @@ Gracias por utilizar Perdilost.`,
 
                 <p style="margin:0 0 20px 0;line-height:1.7;">
                   ${idiomaReminder === 'en'
-                    ? `We are writing to ask whether you have already recovered the item associated with code <strong>${itemDetalle.code}</strong>.`
-                    : `Te escribimos para saber si finalmente has recuperado tu objeto asociado al código <strong>${itemDetalle.code}</strong>.`}
+                    ? `We have detected that the Perdilost code linked to your item (<strong>${itemDetalle.code}</strong>) has been used recently.`
+                    : `Hemos detectado que el código de tu objeto asociado a Perdilost (<strong>${itemDetalle.code}</strong>) ha sido utilizado recientemente.`}
+                </p>
+
+                <p style="margin:0 0 20px 0;line-height:1.7;">
+                  ${idiomaReminder === 'en'
+                    ? 'For this reason, we would like to ask whether you have already recovered it or whether you have arranged with the person who found it to recover it soon.'
+                    : 'Por eso, queríamos preguntarte si ya has podido recuperarlo o si has quedado con la persona que lo encontró para recuperarlo próximamente.'}
                 </p>
 
                 <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
@@ -290,7 +300,7 @@ Gracias por utilizar Perdilost.`,
 
                 <p style="margin:24px 0;line-height:1.7;color:#475569;">
                   ${idiomaReminder === 'en'
-                    ? 'If you have already recovered it, or you have arranged to recover it soon, please confirm it so we can improve the service and keep a record that you were able to recover it.'
+                    ? 'If you have already recovered it, or if you have arranged to recover it soon, we would appreciate it if you could confirm it so we can improve the service and keep a record that you were able to recover it.'
                     : 'Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, te rogamos que nos lo confirmes para ayudarnos a mejorar el servicio y para que quede registrado que has podido recuperarlo.'}
                 </p>
 
