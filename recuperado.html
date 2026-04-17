@@ -165,7 +165,17 @@ function cambiarIdioma(idioma) {
     if (!codigoValidoRecuperacion) {
       document.getElementById('descripcion-recuperacion').textContent =
         textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
+    } else {
+      const descripcionActual = document.getElementById('descripcion-recuperacion').textContent
+        .replace(/^Descripción:\s*/, '')
+        .replace(/^Description:\s*/, '');
+
+      document.getElementById('descripcion-recuperacion').textContent =
+        textos[idiomaActual].descripcionLabel + descripcionActual;
     }
+  } else if (!codigoValidoRecuperacion && token) {
+    document.getElementById('descripcion-recuperacion').textContent =
+      textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
   }
 }
 
@@ -228,12 +238,12 @@ async function cargarDatosRecuperacion() {
           aplicarTextosRecuperacion();
         }
 
-        const descripcionTexto = resultado.description ||
-          textos[idiomaActual].descripcionNoInformada.replace(textos[idiomaActual].descripcionLabel, '').trim();
+        const descripcionTexto = resultado.description || '';
+        const descripcionFallback = idiomaActual === 'en' ? 'not provided' : 'no informada';
 
         document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
         document.getElementById('descripcion-recuperacion').textContent =
-          textos[idiomaActual].descripcionLabel + descripcionTexto;
+          textos[idiomaActual].descripcionLabel + (descripcionTexto || descripcionFallback);
       })
       .catch(() => {
         codigoValidoRecuperacion = false;
