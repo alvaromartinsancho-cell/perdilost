@@ -89,9 +89,6 @@ button.activo {
   margin-top: 0;
   color: #1f2d3d;
 }
-#mensaje {
-  margin-top: 20px;
-}
 
 .mensaje-ok,
 .mensaje-error {
@@ -172,9 +169,9 @@ h1 i {
 <div class="bloque-info">
   <strong id="bienvenida-titulo">Bienvenido a Perdilost</strong><hr>
   <span id="bienvenida-texto">En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.</span>
-  <div class="texto-secundario" id="bienvenida-secundario">
-    Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong>.Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>Devolver a su dueño</strong>
-  </div>
+<div class="texto-secundario" id="bienvenida-secundario">
+  Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong><span class="salto-suave">Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>Devolver a su dueño</strong>.</span>
+</div>
   <hr>
   <div class="texto-secundario" id="texto-privacidad">
     Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a infoperdilost@gmail.com
@@ -188,7 +185,6 @@ h1 i {
 <button id="btn-encontrado" onclick="mostrarEncontrado()">Devolver a su dueño</button>
 </div>
 
-    <div id="mensaje"></div>
     <div id="zona"></div>
 
 <script>
