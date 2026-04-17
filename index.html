@@ -233,7 +233,6 @@ mensajeCamposEncontrado: 'Debes completar todos los campos obligatorios para env
 mensajeCodigoNoRegistrado: 'Este código no está registrado',
 mensajeEmailPropietarioNoEnviado: 'Aviso guardado correctamente. No hemos podido entregar el email al propietario en este momento, pero tu mensaje ha quedado registrado y lo revisaremos para intentar contactar con él. También puedes contactar directamente con nosotros: avisos@perdilost.com',
 mensajeAvisoOk: 'Aviso guardado y email enviado correctamente',
-mensajeErrorGenericoEncontrado: 'Error: ',
 
 proteccionDatosTitulo: 'Información básica sobre protección de datos',
 proteccionDatosResponsableLabel: 'Responsable:',
@@ -295,7 +294,6 @@ mensajeCamposEncontrado: 'You must complete all required fields to send the noti
 mensajeCodigoNoRegistrado: 'This code is not registered',
 mensajeEmailPropietarioNoEnviado: 'Notice saved correctly. We could not deliver the email to the owner at this time, but your message has been recorded and we will review the issue to try to contact them. You can also contact us directly at: avisos@perdilost.com',
 mensajeAvisoOk: 'Notice saved and email sent correctly',
-mensajeErrorGenericoEncontrado: 'Error: ',
 
 proteccionDatosTitulo: 'Basic information on data protection',
 proteccionDatosResponsableLabel: 'Controller:',
@@ -555,7 +553,7 @@ try {
 }
 
 if (!respuesta.ok) {
-  const textoError = resultado?.error || textos[idiomaActual].mensajeErrorGenericoEncontrado;
+  const textoError = resultado?.error || (idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
   return;
 }
