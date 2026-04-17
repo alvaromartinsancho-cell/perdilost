@@ -238,9 +238,6 @@ mensajeCodigoNoRegistrado: 'Este código no está registrado',
 mensajeEmailPropietarioNoEnviado: 'Aviso guardado correctamente. No hemos podido entregar el email al propietario en este momento, pero tu mensaje ha quedado registrado y lo revisaremos para intentar contactar con él. También puedes contactar directamente con nosotros: avisos@perdilost.com',
 mensajeAvisoOk: 'Aviso guardado y email enviado correctamente',
 mensajeErrorGenericoEncontrado: 'Error: ',
-mensajeErrorGuardarAviso: 'Error al guardar el aviso: ',
-mensajeErrorActualizarLastFound: 'Aviso guardado, pero no se ha podido actualizar la fecha del último hallazgo: ',
-mensajeErrorActualizarEstadoEmail: 'El email se ha enviado, pero no se ha podido actualizar el estado de envío en la base de datos: ',
 
 proteccionDatosTitulo: 'Información básica sobre protección de datos',
 proteccionDatosResponsableLabel: 'Responsable:',
@@ -303,9 +300,6 @@ mensajeCodigoNoRegistrado: 'This code is not registered',
 mensajeEmailPropietarioNoEnviado: 'Notice saved correctly. We could not deliver the email to the owner at this time, but your message has been recorded and we will review the issue to try to contact them. You can also contact us directly at: avisos@perdilost.com',
 mensajeAvisoOk: 'Notice saved and email sent correctly',
 mensajeErrorGenericoEncontrado: 'Error: ',
-mensajeErrorGuardarAviso: 'Error saving the notice: ',
-mensajeErrorActualizarLastFound: 'The notice was saved, but the last found date could not be updated: ',
-mensajeErrorActualizarEstadoEmail: 'The email was sent, but the delivery status could not be updated in the database: ',
 
 proteccionDatosTitulo: 'Basic information on data protection',
 proteccionDatosResponsableLabel: 'Controller:',
@@ -350,15 +344,6 @@ function cambiarIdioma(idioma) {
 }
     aplicarTextosGenerales();
     
-    function mostrarMensaje(texto, tipo) {
-  const mensaje = document.getElementById('mensaje');
-
-  if (tipo === 'ok') {
-    mensaje.innerHTML = `<div class="mensaje-ok">${texto}</div>`;
-  } else {
-    mensaje.innerHTML = `<div class="mensaje-error">${texto}</div>`;
-  }
-}
     function mostrarPropietario() {
       document.getElementById('btn-propietario').classList.add('activo');
       formularioActivo = 'propietario';
@@ -529,6 +514,7 @@ document.getElementById('telefono').value = '';
 document.getElementById('contacto').value = '';
 document.getElementById('contacto-repetir').value = '';
 document.getElementById('descripcion').value = '';
+document.getElementById('privacy-accepted').checked = false;
 
 mensajeRegistro.innerHTML = `<div class="mensaje-ok">${resultadoRegistro?.message || textos[idiomaActual].mensajeRegistroOk}</div>`;
 }
@@ -595,6 +581,7 @@ if (resultado?.message) {
     document.getElementById('telefono-encontrado').value = '';
     document.getElementById('contacto-encontrado').value = '';
     document.getElementById('mensaje-encontrado').value = '';
+    document.getElementById('privacy-accepted-encontrado').checked = false;
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${resultado.message}</div>`;
     return;
   }
@@ -605,6 +592,7 @@ if (resultado?.message) {
     document.getElementById('telefono-encontrado').value = '';
     document.getElementById('contacto-encontrado').value = '';
     document.getElementById('mensaje-encontrado').value = '';
+    document.getElementById('privacy-accepted-encontrado').checked = false;
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${resultado.message}</div>`;
     return;
   }
