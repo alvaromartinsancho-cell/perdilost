@@ -302,19 +302,20 @@ background: var(--color-fondo);
       border: 0;
     }
 
-    h1 {
-      font-size: 34px;
-    }
+h1 {
+  font-size: 30px;
+}
 
-    .bloque-info {
-      padding: 16px;
-      margin-top: 18px;
-    }
+.bloque-info {
+  padding: 14px;
+  margin-top: 14px;
+}
 
-    .botones-principales {
-      grid-template-columns: 1fr;
-      gap: 8px;
-    }
+.botones-principales {
+  grid-template-columns: 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
 
     .botones-principales button {
       min-height: 50px;
