@@ -224,6 +224,9 @@ background: var(--color-fondo);
   margin-top: 18px;
   line-height: 1.5;
 }
+.bloque-bienvenida {
+  border-left: 1px solid #dbeafe;
+}
 
   .bloque-info p {
     color: #1e3a8a;
