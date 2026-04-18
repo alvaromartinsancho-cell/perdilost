@@ -102,10 +102,12 @@ background: var(--color-fondo);
     box-shadow: none;
   }
 
-  button.activo {
-    background: var(--color-primario-activo);
-    box-shadow: 0 10px 20px rgba(30, 58, 138, 0.18);
-  }
+button.activo {
+  background: var(--color-primario-activo);
+  box-shadow: 0 12px 26px rgba(30, 58, 138, 0.24);
+  outline: 3px solid rgba(37, 99, 235, 0.16);
+  transform: translateY(-1px);
+}
 
   .botones-principales {
     display: grid;
@@ -114,10 +116,11 @@ background: var(--color-fondo);
     margin-top: 18px;
   }
 
-  .botones-principales button {
-    width: 100%;
-    min-height: 48px;
-  }
+.botones-principales button {
+  width: 100%;
+  min-height: 50px;
+  font-size: 16px;
+}
 
   input,
   textarea {
