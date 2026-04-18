@@ -327,7 +327,8 @@ button.activo {
   margin-top: 12px;
 }
 
-.detalle-legal-contenido p:last-child {
+.enlace-politica-completa {
+  margin-top: 10px;
   margin-bottom: 0;
 }
   @media (max-width: 720px) {
