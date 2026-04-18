@@ -308,7 +308,28 @@ button.activo {
   .grupo-checkbox-privacidad input {
     flex: 0 0 auto;
   }
+.detalle-legal {
+  margin-top: 10px;
+}
 
+.detalle-legal summary {
+  cursor: pointer;
+  color: var(--color-primario-activo);
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.detalle-legal summary:hover {
+  text-decoration: underline;
+}
+
+.detalle-legal-contenido {
+  margin-top: 12px;
+}
+
+.detalle-legal-contenido p:last-child {
+  margin-bottom: 0;
+}
   @media (max-width: 720px) {
     body {
       background: var(--color-fondo);
