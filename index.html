@@ -168,6 +168,10 @@ mensajePrivacidadObligatoriaEncontrado: 'You must accept the data protection inf
 
 function cambiarIdioma(idioma) {
   idiomaActual = idioma;
+
+  document.getElementById('btn-idioma-es')?.classList.toggle('idioma-activo', idioma === 'es');
+  document.getElementById('btn-idioma-en')?.classList.toggle('idioma-activo', idioma === 'en');
+
   aplicarTextosGenerales();
 
   if (formularioActivo === 'propietario') {
