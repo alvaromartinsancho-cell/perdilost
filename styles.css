@@ -109,6 +109,25 @@ button.activo {
   transform: translateY(-1px);
 }
 
+.boton-idioma {
+  background: #ffffff;
+  color: var(--color-primario);
+  border: 1px solid #bfdbfe;
+  box-shadow: none;
+}
+
+.boton-idioma:hover {
+  background: #eff6ff;
+  color: var(--color-primario-activo);
+  box-shadow: none;
+}
+
+.boton-idioma.idioma-activo {
+  background: var(--color-primario-activo);
+  color: #ffffff;
+  border-color: var(--color-primario-activo);
+  box-shadow: 0 8px 18px rgba(30, 58, 138, 0.18);
+}
   .botones-principales {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
