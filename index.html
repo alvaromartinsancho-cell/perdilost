@@ -28,6 +28,35 @@
   </div>
 </div>
 
+</div>
+
+<section class="pasos-servicio" aria-labelledby="pasos-titulo">
+  <h2 id="pasos-titulo"></h2>
+
+  <div class="pasos-lista">
+    <div class="paso-card">
+      <div class="paso-icono"><i class="fa-solid fa-tag"></i></div>
+      <div class="paso-numero">1</div>
+      <h3 id="paso1-titulo"></h3>
+      <p id="paso1-texto"></p>
+    </div>
+
+    <div class="paso-card">
+      <div class="paso-icono"><i class="fa-solid fa-pen-to-square"></i></div>
+      <div class="paso-numero">2</div>
+      <h3 id="paso2-titulo"></h3>
+      <p id="paso2-texto"></p>
+    </div>
+
+    <div class="paso-card">
+      <div class="paso-icono"><i class="fa-solid fa-envelope-circle-check"></i></div>
+      <div class="paso-numero">3</div>
+      <h3 id="paso3-titulo"></h3>
+      <p id="paso3-texto"></p>
+    </div>
+  </div>
+</section>
+
 <p id="texto-selecciona-opcion">Selecciona una opción:</p>
 
 <div class="botones-principales">
@@ -49,6 +78,13 @@ let formularioActivo = '';
     botonRegistrar: 'Registrar mi código',
     botonEncontrado: 'Devolver a su dueño',
     privacidadTexto: 'Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
+pasosTitulo: 'Cómo funciona',
+paso1Titulo: 'Pega',
+paso1Texto: 'Coloca tu etiqueta, llavero o código Perdilost en tus objetos personales.',
+paso2Titulo: 'Registra',
+paso2Texto: 'Activa tu código gratis con el email donde quieres recibir los avisos.',
+paso3Titulo: 'Recupera',
+paso3Texto: 'Si alguien encuentra tu objeto, podrá enviarte un mensaje a través de Perdilost.',,
 formPropietarioTitulo: 'Registrar mi código',
 formPropietarioIntro: 'Introduce tu código y tus datos de contacto.',
 formPropietarioTexto1: 'Registra tu código en nuestra web de manera que, si alguien encuentra esta pertenencia y accede a Perdilost, te enviaremos un aviso al email que indiques en esta cuenta.',
@@ -106,6 +142,13 @@ mensajePrivacidadObligatoriaEncontrado: 'Debes aceptar la información de protec
     botonRegistrar: 'Register my code',
     botonEncontrado: 'Return it to its owner',
     privacidadTexto: 'Privacy and security: no one will be able to access your data through this code or contact you directly. If someone finds your item, they will send a message with the instructions for recovering it to Perdilost, and we will forward it to the email address you provided when registering the code. If you would like Perdilost codes to place on your belongings, write to us at <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
+pasosTitulo: 'How it works',
+paso1Titulo: 'Stick',
+paso1Texto: 'Attach your Perdilost label, keyring or code to your personal belongings.',
+paso2Titulo: 'Register',
+paso2Texto: 'Activate your code for free with the email where you want to receive notifications.',
+paso3Titulo: 'Recover',
+paso3Texto: 'If someone finds your item, they can send you a message through Perdilost.',
 formPropietarioTitulo: 'Register my code',
 formPropietarioIntro: 'Enter your code and your contact details.',
 formPropietarioTexto1: 'Register your code on our website so that, if someone finds this item and accesses Perdilost, we can send you a notice to the email address you provide.',
@@ -160,6 +203,13 @@ mensajePrivacidadObligatoriaEncontrado: 'You must accept the data protection inf
   document.getElementById('bienvenida-titulo').innerHTML = textos[idiomaActual].bienvenidaTitulo;
   document.getElementById('bienvenida-texto').innerHTML = textos[idiomaActual].bienvenidaTexto;
   document.getElementById('bienvenida-secundario').innerHTML = textos[idiomaActual].bienvenidaSecundario;
+  document.getElementById('pasos-titulo').innerHTML = textos[idiomaActual].pasosTitulo;
+document.getElementById('paso1-titulo').innerHTML = textos[idiomaActual].paso1Titulo;
+document.getElementById('paso1-texto').innerHTML = textos[idiomaActual].paso1Texto;
+document.getElementById('paso2-titulo').innerHTML = textos[idiomaActual].paso2Titulo;
+document.getElementById('paso2-texto').innerHTML = textos[idiomaActual].paso2Texto;
+document.getElementById('paso3-titulo').innerHTML = textos[idiomaActual].paso3Titulo;
+document.getElementById('paso3-texto').innerHTML = textos[idiomaActual].paso3Texto;
   document.getElementById('texto-selecciona-opcion').innerHTML = textos[idiomaActual].seleccionaOpcion;
   document.getElementById('btn-propietario').innerHTML = textos[idiomaActual].botonRegistrar;
   document.getElementById('btn-encontrado').innerHTML = textos[idiomaActual].botonEncontrado;
