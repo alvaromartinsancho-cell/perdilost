@@ -244,9 +244,7 @@ function limpiarGrupoError(id) {
 <div class="bloque-info bloque-legal-resumido" style="margin-top:18px;">
   <strong>${textos[idiomaActual].proteccionDatosTitulo}</strong>
   <p>${textos[idiomaActual].formPropietarioTextoLegal || ''}</p>
-  <p><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
-
-  <details class="detalle-legal">
+    <details class="detalle-legal">
     <summary>${idiomaActual === 'en' ? 'View basic data protection details' : 'Ver información básica de protección de datos'}</summary>
     <div class="detalle-legal-contenido">
       <p><strong>${textos[idiomaActual].proteccionDatosResponsableLabel}</strong> ${textos[idiomaActual].proteccionDatosResponsableValor}</p>
@@ -257,6 +255,8 @@ function limpiarGrupoError(id) {
       <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
     </div>
   </details>
+
+  <p class="enlace-politica-completa"><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
 </div>
 
 <label id="grupo-privacy-accepted" class="grupo-checkbox-privacidad" style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
