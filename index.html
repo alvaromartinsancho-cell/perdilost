@@ -40,7 +40,7 @@
   }
 
   .contenedor {
-    max-width: 760px;
+    max-width: 860px;
     margin: 34px auto;
     background: var(--color-superficie);
     padding: 32px;
@@ -189,13 +189,18 @@
     margin-bottom: 8px;
   }
 
-.tarjeta-formulario > p:first-child strong {
-  display: inline-block;
-  color: #0f172a;
-  font-size: 22px;
-  letter-spacing: -0.02em;
-  margin-bottom: 2px;
-}
+  .tarjeta-formulario > p:first-child strong {
+    display: inline-block;
+    color: #0f172a;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .bloque-info p strong,
+  .texto-explicativo-formulario strong {
+    font-size: inherit;
+  }
 
   .mensaje-ok,
   .mensaje-error {
@@ -322,6 +327,15 @@
     .tarjeta-formulario {
       padding: 18px;
       border-radius: 16px;
+    }
+
+    .tarjeta-formulario > p:first-child strong {
+      font-size: 19px;
+    }
+
+    .bloque-info p strong,
+    .texto-explicativo-formulario strong {
+      font-size: inherit;
     }
 
     button {
