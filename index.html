@@ -241,15 +241,22 @@ function limpiarGrupoError(id) {
   </div>
 </div>
 
-<div class="bloque-info" style="margin-top:18px;">
+<div class="bloque-info bloque-legal-resumido" style="margin-top:18px;">
   <strong>${textos[idiomaActual].proteccionDatosTitulo}</strong>
-  <p><strong>${textos[idiomaActual].proteccionDatosResponsableLabel}</strong> ${textos[idiomaActual].proteccionDatosResponsableValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosFinalidadLabel}</strong> ${textos[idiomaActual].proteccionDatosFinalidadValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosBaseLabel}</strong> ${textos[idiomaActual].proteccionDatosBaseValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosDestinatariosLabel}</strong> ${textos[idiomaActual].proteccionDatosDestinatariosValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosDerechosLabel}</strong> ${textos[idiomaActual].proteccionDatosDerechosValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
+  <p>${textos[idiomaActual].formPropietarioTextoLegal || ''}</p>
   <p><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
+
+  <details class="detalle-legal">
+    <summary>${idiomaActual === 'en' ? 'View basic data protection details' : 'Ver información básica de protección de datos'}</summary>
+    <div class="detalle-legal-contenido">
+      <p><strong>${textos[idiomaActual].proteccionDatosResponsableLabel}</strong> ${textos[idiomaActual].proteccionDatosResponsableValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosFinalidadLabel}</strong> ${textos[idiomaActual].proteccionDatosFinalidadValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosBaseLabel}</strong> ${textos[idiomaActual].proteccionDatosBaseValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosDestinatariosLabel}</strong> ${textos[idiomaActual].proteccionDatosDestinatariosValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosDerechosLabel}</strong> ${textos[idiomaActual].proteccionDatosDerechosValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
+    </div>
+  </details>
 </div>
 
 <label id="grupo-privacy-accepted" class="grupo-checkbox-privacidad" style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
