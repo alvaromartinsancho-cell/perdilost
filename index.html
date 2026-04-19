@@ -235,6 +235,27 @@ function desplazarAFormularioEnMovil() {
     }, 80);
   }
 }
+
+function avanzarCarruselPasos() {
+  const lista = document.getElementById('pasos-lista');
+  const tarjetas = lista?.querySelectorAll('.paso-card');
+
+  if (!lista || !tarjetas || tarjetas.length === 0) {
+    return;
+  }
+
+  const primeraTarjeta = tarjetas[0];
+  const estilosLista = window.getComputedStyle(lista);
+  const separacion = parseFloat(estilosLista.columnGap || estilosLista.gap || 0);
+  const anchoPaso = primeraTarjeta.offsetWidth + separacion;
+  const indiceActual = Math.round(lista.scrollLeft / anchoPaso);
+  const siguienteIndice = indiceActual >= tarjetas.length - 1 ? 0 : indiceActual + 1;
+
+  lista.scrollTo({
+    left: siguienteIndice * anchoPaso,
+    behavior: 'smooth'
+  });
+}
 function cambiarIdioma(idioma) {
   idiomaActual = idioma;
 
