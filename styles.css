@@ -341,20 +341,6 @@ button.activo {
   display: block;
 }
 
-.paso-ilustracion {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 8px auto 16px;
-}
-
-.paso-ilustracion svg {
-  width: 118px;
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
 .paso-numero {
   width: 48px;
   height: 48px;
@@ -515,14 +501,6 @@ h1 {
 .paso-icono svg {
   width: 40px;
   height: 40px;
-}
-    
-.paso-ilustracion {
-  margin: 6px auto 14px;
-}
-
-.paso-ilustracion svg {
-  width: 108px;
 }
     
 .paso-numero {
