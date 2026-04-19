@@ -4,195 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perdilost</title>
-  <style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #f4f7fb;
-    margin: 0;
-    padding: 0;
-  }
-
-  .contenedor {
-    max-width: 700px;
-    margin: 60px auto;
-    background: white;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-  }
-
-  h1 {
-    margin-top: 0;
-    color: #1f2d3d;
-  }
-
-  p {
-    color: #444;
-  }
-
-button {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-top: 10px;
-}
-button.activo {
-  background: #1e3a8a;
-}
-
-.botones-principales {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-top: 20px;
-}
-
-button:hover {
-  background: #1d4ed8;
-}
-
-button:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-  input, textarea {
-    width: 100%;
-    max-width: 100%;
-    padding: 12px;
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
-    box-sizing: border-box;
-    font-size: 14px;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-  }
-
-  textarea {
-    min-height: 100px;
-    resize: vertical;
-  }
-
-  .campo-error {
-    border-color: #dc2626 !important;
-    background: #fef2f2;
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
-  }
-
-  .grupo-error {
-    padding: 10px 12px;
-    border: 1px solid #fca5a5;
-    border-radius: 12px;
-    background: #fef2f2;
-  }
-
-#zona {
-  margin-top: 30px;
-}
-
-.tarjeta-formulario {
-  background: #f8fafc;
-  padding: 20px;
-  border: 1px solid #e5e7eb;
-  border-radius: 14px;
-}
-
-.tarjeta-formulario input,
-.tarjeta-formulario textarea {
-  margin-top: 14px;
-}
-
-.tarjeta-formulario h2 {
-  margin-top: 0;
-  color: #1f2d3d;
-}
-
-.mensaje-ok,
-.mensaje-error {
-  padding: 14px 16px;
-  border-radius: 12px;
-  margin-top: 20px;
-  font-weight: bold;
-}
-
-.mensaje-ok {
-  background: #dcfce7;
-  color: #166534;
-  border: 1px solid #86efac;
-}
-
-.mensaje-error {
-  background: #fee2e2;
-  color: #991b1b;
-  border: 1px solid #fca5a5;
-}
-.bloque-info {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #1e3a8a;
-  padding: 18px 20px;
-  border-radius: 14px;
-  margin-top: 18px;
-  line-height: 1.6;
-}
-
-#bienvenida-titulo {
-  display: block;
-  margin-bottom: 8px;
-  font-size: 16px;
-  color: #1e40af;
-}
-
-.texto-secundario {
-  margin-top: 0px;
-  color: #475569;
-  line-height: 1.6;
-}
-
-#bienvenida-secundario {
-  margin-top: 12px;
-  margin-bottom: 12px;
-}
-.texto-explicativo-formulario {
-  margin-top: 14px;
-  margin-bottom: 18px;
-  line-height: 1.6;
-  color: #334155;
-}
-
-.texto-explicativo-formulario strong {
-  color: #1f2937;
-}
-h1 i {
-  margin-right: 6px;
-  color: #2563eb;
-}
-    .salto-suave {
-  display: block;
-  margin-top: 8px;
-}
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <div class="contenedor">
 <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
   <h1 style="margin-bottom:0;"><i class="fa-solid fa-location-crosshairs"></i> Perdilost</h1>
   <div>
-    <button type="button" onclick="cambiarIdioma('es')">ES</button>
-    <button type="button" onclick="cambiarIdioma('en')">EN</button>
+<button type="button" id="btn-idioma-es" class="boton-idioma idioma-activo" onclick="cambiarIdioma('es')">ES</button>
+<button type="button" id="btn-idioma-en" class="boton-idioma" onclick="cambiarIdioma('en')">EN</button>
   </div>
 </div>
-<div class="bloque-info">
+<div class="bloque-info bloque-bienvenida">
   <strong id="bienvenida-titulo">Bienvenido a Perdilost</strong><hr>
   <span id="bienvenida-texto">En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.</span>
   <div class="texto-secundario" id="bienvenida-secundario">
@@ -203,6 +27,51 @@ h1 i {
     Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>
   </div>
 </div>
+
+<section class="pasos-servicio" aria-labelledby="pasos-titulo">
+  <h2 id="pasos-titulo"></h2>
+
+  <div class="pasos-lista" id="pasos-lista">
+    <div class="paso-card">
+      <button type="button" class="boton-carrusel-pasos" aria-label="Ver siguiente paso" onclick="avanzarCarruselPasos()">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+
+      <div class="paso-cabecera">
+        <div class="paso-numero">1</div>
+<div class="paso-icono"><i class="fa-solid fa-tag"></i></div>
+      </div>
+      <h3 id="paso1-titulo"></h3>
+      <p id="paso1-texto"></p>
+    </div>
+
+    <div class="paso-card">
+      <button type="button" class="boton-carrusel-pasos" aria-label="Ver siguiente paso" onclick="avanzarCarruselPasos()">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+
+      <div class="paso-cabecera">
+        <div class="paso-numero">2</div>
+        <div class="paso-icono"><i class="fa-solid fa-mobile-screen-button"></i></div>
+      </div>
+      <h3 id="paso2-titulo"></h3>
+      <p id="paso2-texto"></p>
+    </div>
+
+    <div class="paso-card">
+      <button type="button" class="boton-carrusel-pasos" aria-label="Ver siguiente paso" onclick="avanzarCarruselPasos()">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+
+      <div class="paso-cabecera">
+        <div class="paso-numero">3</div>
+        <div class="paso-icono"><i class="fa-solid fa-handshake-angle"></i></div>
+      </div>
+      <h3 id="paso3-titulo"></h3>
+      <p id="paso3-texto"></p>
+    </div>
+  </div>
+</section>
 
 <p id="texto-selecciona-opcion">Selecciona una opción:</p>
 
@@ -225,6 +94,13 @@ let formularioActivo = '';
     botonRegistrar: 'Registrar mi código',
     botonEncontrado: 'Devolver a su dueño',
     privacidadTexto: 'Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
+pasosTitulo: 'Cómo funciona',
+paso1Titulo: 'Pega',
+paso1Texto: 'Coloca tu etiqueta, llavero o código Perdilost en tus objetos personales.',
+paso2Titulo: 'Registra',
+paso2Texto: 'Activa tu código gratis con el email donde quieres recibir los avisos.',
+paso3Titulo: 'Recupera',
+paso3Texto: 'Si alguien encuentra tu objeto, podrá enviarte un mensaje a través de Perdilost.',
 formPropietarioTitulo: 'Registrar mi código',
 formPropietarioIntro: 'Introduce tu código y tus datos de contacto.',
 formPropietarioTexto1: 'Registra tu código en nuestra web de manera que, si alguien encuentra esta pertenencia y accede a Perdilost, te enviaremos un aviso al email que indiques en esta cuenta.',
@@ -282,6 +158,13 @@ mensajePrivacidadObligatoriaEncontrado: 'Debes aceptar la información de protec
     botonRegistrar: 'Register my code',
     botonEncontrado: 'Return it to its owner',
     privacidadTexto: 'Privacy and security: no one will be able to access your data through this code or contact you directly. If someone finds your item, they will send a message with the instructions for recovering it to Perdilost, and we will forward it to the email address you provided when registering the code. If you would like Perdilost codes to place on your belongings, write to us at <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
+pasosTitulo: 'How it works',
+paso1Titulo: 'Stick',
+paso1Texto: 'Attach your Perdilost label, keyring or code to your personal belongings.',
+paso2Titulo: 'Register',
+paso2Texto: 'Activate your code for free with the email where you want to receive notifications.',
+paso3Titulo: 'Recover',
+paso3Texto: 'If someone finds your item, they can send you a message through Perdilost.',
 formPropietarioTitulo: 'Register my code',
 formPropietarioIntro: 'Enter your code and your contact details.',
 formPropietarioTexto1: 'Register your code on our website so that, if someone finds this item and accesses Perdilost, we can send you a notice to the email address you provide.',
@@ -336,14 +219,57 @@ mensajePrivacidadObligatoriaEncontrado: 'You must accept the data protection inf
   document.getElementById('bienvenida-titulo').innerHTML = textos[idiomaActual].bienvenidaTitulo;
   document.getElementById('bienvenida-texto').innerHTML = textos[idiomaActual].bienvenidaTexto;
   document.getElementById('bienvenida-secundario').innerHTML = textos[idiomaActual].bienvenidaSecundario;
+  document.getElementById('pasos-titulo').innerHTML = textos[idiomaActual].pasosTitulo;
+document.getElementById('paso1-titulo').innerHTML = textos[idiomaActual].paso1Titulo;
+document.getElementById('paso1-texto').innerHTML = textos[idiomaActual].paso1Texto;
+document.getElementById('paso2-titulo').innerHTML = textos[idiomaActual].paso2Titulo;
+document.getElementById('paso2-texto').innerHTML = textos[idiomaActual].paso2Texto;
+document.getElementById('paso3-titulo').innerHTML = textos[idiomaActual].paso3Titulo;
+document.getElementById('paso3-texto').innerHTML = textos[idiomaActual].paso3Texto;
   document.getElementById('texto-selecciona-opcion').innerHTML = textos[idiomaActual].seleccionaOpcion;
   document.getElementById('btn-propietario').innerHTML = textos[idiomaActual].botonRegistrar;
   document.getElementById('btn-encontrado').innerHTML = textos[idiomaActual].botonEncontrado;
   document.getElementById('texto-privacidad').innerHTML = textos[idiomaActual].privacidadTexto;
 }
+function desplazarAFormularioEnMovil() {
+  const zona = document.getElementById('zona');
 
+  if (zona && window.matchMedia('(max-width: 720px)').matches) {
+    setTimeout(() => {
+      zona.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }, 80);
+  }
+}
+
+function avanzarCarruselPasos() {
+  const lista = document.getElementById('pasos-lista');
+  const tarjetas = lista?.querySelectorAll('.paso-card');
+
+  if (!lista || !tarjetas || tarjetas.length === 0) {
+    return;
+  }
+
+  const primeraTarjeta = tarjetas[0];
+  const estilosLista = window.getComputedStyle(lista);
+  const separacion = parseFloat(estilosLista.columnGap || estilosLista.gap || 0);
+  const anchoPaso = primeraTarjeta.offsetWidth + separacion;
+  const indiceActual = Math.round(lista.scrollLeft / anchoPaso);
+  const siguienteIndice = indiceActual >= tarjetas.length - 1 ? 0 : indiceActual + 1;
+
+  lista.scrollTo({
+    left: siguienteIndice * anchoPaso,
+    behavior: 'smooth'
+  });
+}
 function cambiarIdioma(idioma) {
   idiomaActual = idioma;
+
+  document.getElementById('btn-idioma-es')?.classList.toggle('idioma-activo', idioma === 'es');
+  document.getElementById('btn-idioma-en')?.classList.toggle('idioma-activo', idioma === 'en');
+
   aplicarTextosGenerales();
 
   if (formularioActivo === 'propietario') {
@@ -402,15 +328,22 @@ function limpiarGrupoError(id) {
   </div>
 </div>
 
-<div class="bloque-info" style="margin-top:18px;">
+<div class="bloque-info bloque-legal-resumido" style="margin-top:18px;">
   <strong>${textos[idiomaActual].proteccionDatosTitulo}</strong>
-  <p><strong>${textos[idiomaActual].proteccionDatosResponsableLabel}</strong> ${textos[idiomaActual].proteccionDatosResponsableValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosFinalidadLabel}</strong> ${textos[idiomaActual].proteccionDatosFinalidadValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosBaseLabel}</strong> ${textos[idiomaActual].proteccionDatosBaseValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosDestinatariosLabel}</strong> ${textos[idiomaActual].proteccionDatosDestinatariosValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosDerechosLabel}</strong> ${textos[idiomaActual].proteccionDatosDerechosValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
-  <p><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
+  <p>${textos[idiomaActual].formPropietarioTextoLegal || ''}</p>
+    <details class="detalle-legal">
+    <summary>${idiomaActual === 'en' ? 'View basic data protection details' : 'Ver información básica de protección de datos'}</summary>
+    <div class="detalle-legal-contenido">
+      <p><strong>${textos[idiomaActual].proteccionDatosResponsableLabel}</strong> ${textos[idiomaActual].proteccionDatosResponsableValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosFinalidadLabel}</strong> ${textos[idiomaActual].proteccionDatosFinalidadValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosBaseLabel}</strong> ${textos[idiomaActual].proteccionDatosBaseValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosDestinatariosLabel}</strong> ${textos[idiomaActual].proteccionDatosDestinatariosValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosDerechosLabel}</strong> ${textos[idiomaActual].proteccionDatosDerechosValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
+    </div>
+  </details>
+
+  <p class="enlace-politica-completa"><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
 </div>
 
 <label id="grupo-privacy-accepted" class="grupo-checkbox-privacidad" style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
@@ -429,6 +362,7 @@ function limpiarGrupoError(id) {
 <button type="button" id="btn-guardar-codigo" onclick="guardarCodigo()">${textos[idiomaActual].botonCrearRegistro}</button>
 </div>
 `;
+      desplazarAFormularioEnMovil();
     }
 
     function mostrarEncontrado() {
@@ -450,15 +384,23 @@ function limpiarGrupoError(id) {
   </div>
 </div>
 
-<div class="bloque-info" style="margin-top:18px;">
+<div class="bloque-info bloque-legal-resumido" style="margin-top:18px;">
   <strong>${textos[idiomaActual].proteccionDatosTitulo}</strong>
-  <p><strong>${textos[idiomaActual].proteccionDatosResponsableLabel}</strong> ${textos[idiomaActual].proteccionDatosResponsableValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosFinalidadLabel}</strong> ${textos[idiomaActual].proteccionDatosFinalidadValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosBaseLabel}</strong> ${textos[idiomaActual].proteccionDatosBaseValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosDestinatariosLabel}</strong> ${textos[idiomaActual].proteccionDatosDestinatariosValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosDerechosLabel}</strong> ${textos[idiomaActual].proteccionDatosDerechosValor}</p>
-  <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
-  <p><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
+  <p>${textos[idiomaActual].formEncontradoTextoLegal || ''}</p>
+
+  <details class="detalle-legal">
+    <summary>${idiomaActual === 'en' ? 'View basic data protection details' : 'Ver información básica de protección de datos'}</summary>
+    <div class="detalle-legal-contenido">
+      <p><strong>${textos[idiomaActual].proteccionDatosResponsableLabel}</strong> ${textos[idiomaActual].proteccionDatosResponsableValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosFinalidadLabel}</strong> ${textos[idiomaActual].proteccionDatosFinalidadValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosBaseLabel}</strong> ${textos[idiomaActual].proteccionDatosBaseValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosDestinatariosLabel}</strong> ${textos[idiomaActual].proteccionDatosDestinatariosValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosDerechosLabel}</strong> ${textos[idiomaActual].proteccionDatosDerechosValor}</p>
+      <p><strong>${textos[idiomaActual].proteccionDatosInfoAdicional}</strong> ${textos[idiomaActual].proteccionDatosInfoAdicionalValor}</p>
+    </div>
+  </details>
+
+  <p class="enlace-politica-completa"><a href="privacidad.html" target="_blank" rel="noopener noreferrer">${textos[idiomaActual].proteccionDatosPoliticaTexto}</a></p>
 </div>
 
 <label id="grupo-privacy-accepted-encontrado" class="grupo-checkbox-privacidad" style="display:flex; gap:10px; align-items:flex-start; margin-top:16px; color:#334155;">
@@ -475,6 +417,7 @@ function limpiarGrupoError(id) {
 <button type="button" id="btn-enviar-aviso" onclick="comprobarCodigoEncontrado()">${textos[idiomaActual].botonEnviarAviso}</button>
         </div>
       `;
+      desplazarAFormularioEnMovil();
     }
 
 async function guardarCodigo() {
