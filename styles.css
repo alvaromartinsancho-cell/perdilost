@@ -460,25 +460,6 @@ h1 {
   position: relative;
 }
 
-.pasos-servicio::after {
-  content: "›";
-  position: absolute;
-  top: 52%;
-  right: 8px;
-  width: 34px;
-  height: 34px;
-  border-radius: 999px;
-  background: rgba(30, 58, 138, 0.9);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 30px;
-  line-height: 1;
-  pointer-events: none;
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.16);
-}
-
 .pasos-lista::-webkit-scrollbar {
   height: 6px;
 }
@@ -493,7 +474,8 @@ h1 {
 }
 
 .paso-card {
-  padding: 15px 14px;
+  position: relative;
+  padding: 15px 58px 15px 14px;
 }
 
 .paso-cabecera {
@@ -520,6 +502,34 @@ h1 {
 .paso-card p {
   font-size: 14px;
 }
+
+    .boton-carrusel-pasos {
+  display: flex;
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: #eff6ff;
+  color: var(--color-primario-activo);
+  border: 1px solid #bfdbfe;
+  font-size: 16px;
+  box-shadow: none;
+  z-index: 2;
+}
+
+.boton-carrusel-pasos:hover {
+  background: #dbeafe;
+  color: var(--color-primario-activo);
+  transform: none;
+  box-shadow: none;
+}
+    
 .botones-principales {
   grid-template-columns: 1fr;
   gap: 8px;
