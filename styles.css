@@ -504,13 +504,13 @@ h1 {
   font-size: 14px;
 }
 
-    .boton-carrusel-pasos {
+  .boton-carrusel-pasos {
   display: flex;
   position: absolute;
   top: 14px;
   right: 14px;
-  width: 38px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
   border-radius: 999px;
   align-items: center;
   justify-content: center;
@@ -519,9 +519,14 @@ h1 {
   background: #eff6ff;
   color: var(--color-primario-activo);
   border: 1px solid #bfdbfe;
-  font-size: 16px;
+  font-size: 20px;
   box-shadow: none;
   z-index: 2;
+}
+
+    .boton-carrusel-pasos i {
+  font-weight: 900;
+  transform: scale(1.08);
 }
 
 .boton-carrusel-pasos:hover {
