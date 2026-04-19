@@ -437,8 +437,30 @@ h1 {
 }
 
 .pasos-lista {
-  grid-template-columns: 1fr;
-  gap: 10px;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 8px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.paso-card {
+  min-width: 82%;
+  scroll-snap-align: start;
+}
+
+.pasos-lista::-webkit-scrollbar {
+  height: 6px;
+}
+
+.pasos-lista::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 999px;
+}
+
+.pasos-lista::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .paso-card {
