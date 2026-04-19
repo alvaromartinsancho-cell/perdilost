@@ -335,11 +335,6 @@ button.activo {
   font-size: 22px;
 }
 
-.paso-icono svg {
-  width: 44px;
-  height: 44px;
-  display: block;
-}
 
 .paso-numero {
   width: 54px;
@@ -465,10 +460,6 @@ h1 {
   scroll-snap-align: start;
 }
 
-.pasos-servicio {
-  position: relative;
-}
-
 .pasos-lista::-webkit-scrollbar {
   height: 6px;
 }
@@ -498,11 +489,6 @@ h1 {
   font-size: 19px;
 }
 
-.paso-icono svg {
-  width: 40px;
-  height: 40px;
-}
-    
 .paso-numero {
   width: 48px;
   height: 48px;
