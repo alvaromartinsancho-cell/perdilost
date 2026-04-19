@@ -342,8 +342,8 @@ button.activo {
 }
 
 .paso-numero {
-  width: 48px;
-  height: 48px;
+  width: 54px;
+  height: 54px;
   border-radius: 999px;
   background: #dcfce7;
   color: #14532d;
@@ -351,7 +351,7 @@ button.activo {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 23px;
+  font-size: 27px;
   font-weight: 950;
   line-height: 1;
   flex: 0 0 auto;
@@ -504,9 +504,9 @@ h1 {
 }
     
 .paso-numero {
-  width: 42px;
-  height: 42px;
-  font-size: 20px;
+  width: 48px;
+  height: 48px;
+  font-size: 24px;
 }
 
 .paso-card h3 {
