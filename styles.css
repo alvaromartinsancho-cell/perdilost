@@ -325,15 +325,13 @@ button.activo {
 }
 
 .paso-icono {
-  width: 56px;
-  height: 56px;
-  border-radius: 18px;
-  background: #eff6ff;
+  width: auto;
+  height: auto;
   color: var(--color-primario);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 34px;
 }
 
 
@@ -485,9 +483,9 @@ h1 {
 }
 
 .paso-icono {
-  width: 50px;
-  height: 50px;
-  font-size: 19px;
+  width: auto;
+  height: auto;
+  font-size: 30px;
 }
 
 .paso-numero {
