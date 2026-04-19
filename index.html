@@ -31,7 +31,7 @@
 <section class="pasos-servicio" aria-labelledby="pasos-titulo">
   <h2 id="pasos-titulo"></h2>
 
-  <div class="pasos-lista">
+  <div class="pasos-lista" id="pasos-lista">
     <div class="paso-card">
       <div class="paso-cabecera">
         <div class="paso-numero">1</div>
@@ -59,6 +59,10 @@
       <p id="paso3-texto"></p>
     </div>
   </div>
+
+  <button type="button" class="boton-carrusel-pasos" aria-label="Ver siguiente paso" onclick="avanzarCarruselPasos()">
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
 </section>
 
 <p id="texto-selecciona-opcion">Selecciona una opción:</p>
