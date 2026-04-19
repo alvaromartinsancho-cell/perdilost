@@ -502,10 +502,12 @@ h1 {
     background: transparent;
   }
 
-  .paso-cabecera {
-    min-height: 52px;
-    margin-bottom: 10px;
-  }
+.paso-cabecera {
+  min-height: 52px;
+  margin-bottom: 10px;
+  justify-content: flex-start;
+  padding-left: 62px;
+}
 
   .paso-icono {
     width: auto;
