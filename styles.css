@@ -362,6 +362,11 @@ button.activo {
   line-height: 1.45;
   color: var(--color-texto-suave);
 }
+
+.boton-carrusel-pasos {
+  display: none;
+}
+
   #texto-selecciona-opcion {
     margin-top: 24px;
     margin-bottom: 0;
@@ -427,7 +432,8 @@ h1 {
   margin-top: 14px;
 }
 
-    .pasos-servicio {
+.pasos-servicio {
+  position: relative;
   margin-top: 18px;
 }
 
