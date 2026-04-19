@@ -102,6 +102,7 @@ let formularioActivo = '';
     botonEncontrado: 'Devolver a su dueño',
     privacidadTexto: 'Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
 pasosTitulo: 'Cómo funciona',
+carruselSiguienteLabel: 'Ver siguiente paso',
 paso1Titulo: 'Pega',
 paso1Texto: 'Coloca tu etiqueta, llavero o código Perdilost en tus objetos personales.',
 paso2Titulo: 'Registra',
@@ -166,6 +167,7 @@ mensajePrivacidadObligatoriaEncontrado: 'Debes aceptar la información de protec
     botonEncontrado: 'Return it to its owner',
     privacidadTexto: 'Privacy and security: no one will be able to access your data through this code or contact you directly. If someone finds your item, they will send a message with the instructions for recovering it to Perdilost, and we will forward it to the email address you provided when registering the code. If you would like Perdilost codes to place on your belongings, write to us at <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
 pasosTitulo: 'How it works',
+carruselSiguienteLabel: 'View next step',
 paso1Titulo: 'Stick',
 paso1Texto: 'Attach your Perdilost label, keyring or code to your personal belongings.',
 paso2Titulo: 'Register',
@@ -233,6 +235,11 @@ document.getElementById('paso2-titulo').innerHTML = textos[idiomaActual].paso2Ti
 document.getElementById('paso2-texto').innerHTML = textos[idiomaActual].paso2Texto;
 document.getElementById('paso3-titulo').innerHTML = textos[idiomaActual].paso3Titulo;
 document.getElementById('paso3-texto').innerHTML = textos[idiomaActual].paso3Texto;
+
+document.querySelectorAll('.boton-carrusel-pasos').forEach((boton) => {
+  boton.setAttribute('aria-label', textos[idiomaActual].carruselSiguienteLabel);
+});
+
   document.getElementById('texto-selecciona-opcion').innerHTML = textos[idiomaActual].seleccionaOpcion;
   document.getElementById('btn-propietario').innerHTML = textos[idiomaActual].botonRegistrar;
   document.getElementById('btn-encontrado').innerHTML = textos[idiomaActual].botonEncontrado;
