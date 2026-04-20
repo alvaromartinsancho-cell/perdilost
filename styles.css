@@ -131,21 +131,27 @@ button.activo {
 }
 
 .selector-idioma {
-  min-width: 96px;
-  background: #ffffff;
+  min-width: 104px;
+  background-color: #ffffff;
   color: var(--color-primario-activo);
   border: 1.5px solid #bfdbfe;
   border-radius: 999px;
-  padding: 10px 38px 10px 16px;
+  padding: 10px 44px 10px 16px;
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 8px 18px rgba(30, 58, 138, 0.08);
-  appearance: auto;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.5 1.5L6 6L10.5 1.5' stroke='%231e3a8a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 12px 8px;
 }
 
 .selector-idioma:hover {
-  background: #eff6ff;
+  background-color: #eff6ff;
   border-color: #93c5fd;
 }
 
@@ -642,9 +648,10 @@ h1 {
     padding: 10px 12px;
   }
 
-  div[style*="justify-content:space-between"] > div .selector-idioma {
+div[style*="justify-content:space-between"] > div .selector-idioma {
   width: 100%;
-  padding: 11px 16px;
+  padding: 11px 44px 11px 16px;
+  background-position: right 18px center;
 }
   
 }
