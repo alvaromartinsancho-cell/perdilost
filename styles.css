@@ -290,10 +290,13 @@ textarea:focus {
 }
 
 .texto-destacado-gratuito {
+  display: block;
   text-align: center;
   color: #0f172a;
   font-size: 17px;
-  margin-bottom: 10px;
+  font-weight: 700;
+  margin-top: 12px;
+  margin-bottom: 2px;
 }
 
 #bienvenida-secundario {
@@ -323,9 +326,9 @@ textarea:focus {
 
 .pasos-servicio h2 {
   margin: 0 0 14px;
-  font-size: 20px;
+  font-size: 17px;
   color: #0f172a;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .pasos-lista {
@@ -403,6 +406,7 @@ textarea:focus {
 #texto-selecciona-opcion {
   margin-top: 24px;
   margin-bottom: 0;
+  font-size: 17px;
   font-weight: 700;
   color: #0f172a;
 }
@@ -475,10 +479,10 @@ h1 {
     margin-top: 18px;
   }
 
-  .pasos-servicio h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-  }
+.pasos-servicio h2 {
+  font-size: 17px;
+  margin-bottom: 10px;
+}
 
   .pasos-lista {
     display: flex;
