@@ -3,29 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perdilost</title>
+  <title>perdilost.com</title>
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
   <div class="contenedor">
 <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
-  <h1 style="margin-bottom:0;"><i class="fa-solid fa-location-crosshairs"></i> Perdilost</h1>
+  <h1 style="margin-bottom:0;"><i class="fa-solid fa-location-crosshairs"></i> perdilost.com</h1>
   <div>
 <button type="button" id="btn-idioma-es" class="boton-idioma idioma-activo" onclick="cambiarIdioma('es')">ES</button>
 <button type="button" id="btn-idioma-en" class="boton-idioma" onclick="cambiarIdioma('en')">EN</button>
   </div>
 </div>
+
 <div class="bloque-info bloque-bienvenida">
-  <strong id="bienvenida-titulo">Bienvenido a Perdilost</strong><hr>
-  <span id="bienvenida-texto">En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.</span>
-  <div class="texto-secundario" id="bienvenida-secundario">
-    Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong><span class="salto-suave">Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>Devolver a su dueño</strong>.</span>
-  </div>
+  <strong id="bienvenida-titulo">Bienvenido a Perdilost</strong>
   <hr>
-  <div class="texto-secundario" id="texto-privacidad">
-    Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>
-  </div>
+  <span id="bienvenida-texto">Con perdilost.com ayudamos a que los objetos perdidos puedan ser recuperados por sus dueños, simplificando el contacto entre personas sin tener que escribir datos personales directamente en las pertenencias.<span class="salto-suave">Es muy sencillo: solo tienes que colocar una etiqueta con un código de perdilost.com en tus objetos personales y registrar ese código en la web.</span><span class="texto-destacado-gratuito">Todo el servicio es gratuito.</span></span>
 </div>
 
 <section class="pasos-servicio" aria-labelledby="pasos-titulo">
@@ -39,7 +34,7 @@
 
       <div class="paso-cabecera">
         <div class="paso-numero">1</div>
-<div class="paso-icono"><i class="fa-solid fa-tag"></i></div>
+        <div class="paso-icono"><i class="fa-solid fa-tag"></i></div>
       </div>
       <h3 id="paso1-titulo"></h3>
       <p id="paso1-texto"></p>
@@ -65,7 +60,7 @@
 
       <div class="paso-cabecera">
         <div class="paso-numero">3</div>
-        <div class="paso-icono"><i class="fa-solid fa-handshake-angle"></i></div>
+        <div class="paso-icono"><i class="fa-solid fa-handshake"></i></div>
       </div>
       <h3 id="paso3-titulo"></h3>
       <p id="paso3-texto"></p>
@@ -73,11 +68,23 @@
   </div>
 </section>
 
+<div class="bloque-info bloque-opciones">
+<div class="texto-secundario" id="texto-privacidad">
+    Una de las bases de perdilost.com es la privacidad. Si alguien encuentra tu objeto, no podrá acceder nunca a los datos que hayas introducido al registrar tu código. Solo podrá enviar un mensaje a través de perdilost.com para que podamos hacértelo llegar.<span class="salto-suave">También protegemos la privacidad de quien encuentra el objeto: el propietario solo recibirá la información que esa persona decida escribir en el mensaje para facilitar la recuperación. No recibirá su email, teléfono u otros datos salvo que los incluya voluntariamente.</span>
+  </div>
+
+  <hr>
+
+  <div class="texto-secundario" id="bienvenida-secundario">
+    Si estás colocando una etiqueta o código de perdilost.com en una pertenencia tuya, registra tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong><span class="salto-suave">Si has encontrado una pertenencia con una etiqueta o código de perdilost.com, puedes enviar un aviso para que ayudemos a su propietario a recuperarla. Para ello, pulsa en: <strong>Devolver a su dueño</strong>.</span><span class="salto-suave">Próximamente habilitaremos un formulario para solicitar códigos y etiquetas. Mientras tanto, puedes escribirnos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>.</span>
+  </div>
+</div>
+
 <p id="texto-selecciona-opcion">Selecciona una opción:</p>
 
 <div class="botones-principales">
-<button id="btn-propietario" onclick="mostrarPropietario()">Registrar mi código</button>
-<button id="btn-encontrado" onclick="mostrarEncontrado()">Devolver a su dueño</button>
+  <button id="btn-propietario" onclick="mostrarPropietario()">Registrar mi código</button>
+  <button id="btn-encontrado" onclick="mostrarEncontrado()">Devolver a su dueño</button>
 </div>
 
     <div id="zona"></div>
@@ -88,13 +95,14 @@ let formularioActivo = '';
     const textos = {
   es: {
     bienvenidaTitulo: 'Bienvenido a Perdilost',
-    bienvenidaTexto: 'En Perdilost ayudamos a que los objetos perdidos puedan volver a sus propietarios gracias a la colaboración de quien los encuentra.',
-    bienvenidaSecundario: 'Si estás colocando esta etiqueta en una pertenencia tuya, debes registrar tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong><span class="salto-suave">Si has encontrado una pertenencia con una etiqueta de Perdilost y quieres que avisemos al propietario para que pueda recuperarlo, pulsa en: <strong>Devolver a su dueño</strong>.</span>',
+    bienvenidaTexto: 'Con perdilost.com ayudamos a que los objetos perdidos puedan ser recuperados por sus dueños, simplificando el contacto entre personas sin tener que escribir datos personales directamente en las pertenencias.<span class="salto-suave">Es muy sencillo: solo tienes que colocar una etiqueta con un código de perdilost.com en tus objetos personales y registrar ese código en la web.</span><span class="texto-destacado-gratuito">Todo el servicio es gratuito.</span>',
+    bienvenidaSecundario: 'Si estás colocando una etiqueta o código de perdilost.com en una pertenencia tuya, registra tu código para asociarlo a tus datos de contacto. Para ello, pulsa en: <strong>Registrar mi código</strong><span class="salto-suave">Si has encontrado una pertenencia con una etiqueta o código de perdilost.com, puedes enviar un aviso para que ayudemos a su propietario a recuperarla. Para ello, pulsa en: <strong>Devolver a su dueño</strong>.</span><span class="salto-suave">Próximamente habilitaremos un formulario para solicitar códigos y etiquetas. Mientras tanto, puedes escribirnos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>.</span>',
     seleccionaOpcion: 'Selecciona una opción:',
     botonRegistrar: 'Registrar mi código',
     botonEncontrado: 'Devolver a su dueño',
-    privacidadTexto: 'Privacidad y seguridad: ninguna persona podrá acceder a tus datos a través de este código ni contactar directamente contigo. Si alguien encuentra tu objeto, enviará un mensaje con las instrucciones para recuperarlo a Perdilost y te lo haremos llegar a la dirección de correo que nos has facilitado al registrar el código. Si deseas conseguir códigos de Perdilost para poner en tus pertenencias, escríbenos a <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
+    privacidadTexto: 'Una de las bases de perdilost.com es la privacidad. Si alguien encuentra tu objeto, no podrá acceder nunca a los datos que hayas introducido al registrar tu código. Solo podrá enviar un mensaje a través de perdilost.com para que podamos hacértelo llegar.<span class="salto-suave">También protegemos la privacidad de quien encuentra el objeto: el propietario solo recibirá la información que esa persona decida escribir en el mensaje para facilitar la recuperación. No recibirá su email, teléfono u otros datos salvo que los incluya voluntariamente.</span>',
 pasosTitulo: 'Cómo funciona',
+carruselSiguienteLabel: 'Ver siguiente paso',
 paso1Titulo: 'Pega',
 paso1Texto: 'Coloca tu etiqueta, llavero o código Perdilost en tus objetos personales.',
 paso2Titulo: 'Registra',
@@ -117,7 +125,7 @@ placeholderNombre: 'Escribe tu nombre completo',
 placeholderTelefono: 'Escribe tu teléfono (opcional)',
 placeholderContacto: 'Escribe tu email',
 placeholderContactoRepetir: 'Repite tu email',
-placeholderDescripcion: 'Describe el objeto y añade indicaciones sobre cómo devolverlo en caso de que alguien lo encuentre',
+placeholderDescripcion: 'Añade cualquier otra información que pueda sernos útil en caso de que pierdas el objeto',
 placeholderCodigoEncontrado: 'Introduce el código de la etiqueta',
 placeholderNombreEncontrado: 'Tu nombre (opcional)',
 placeholderTelefonoEncontrado: 'Tu teléfono (opcional)',
@@ -152,13 +160,14 @@ mensajePrivacidadObligatoriaEncontrado: 'Debes aceptar la información de protec
   },
   en: {
     bienvenidaTitulo: 'Welcome to Perdilost',
-    bienvenidaTexto: 'At Perdilost, we help lost belongings find their way back to their owners thanks to the collaboration of the person who finds them.',
-    bienvenidaSecundario: 'If you are placing this tag on one of your belongings, you must register your code to link it to your contact details. To do so, click: <strong>Register my code</strong><span class="salto-suave">If you have found an item with a Perdilost tag and want us to notify the owner so they can recover it, click: <strong>Return it to its owner</strong>.</span>',
+    bienvenidaTexto: 'With perdilost.com, we help lost belongings be recovered by their owners, making contact between people easier without having to write personal details directly on belongings.<span class="salto-suave">It is very simple: just place a tag with a perdilost.com code on your personal belongings and register that code on the website.</span><span class="texto-destacado-gratuito">The whole service is free.</span>',
+    bienvenidaSecundario: 'If you are placing a perdilost.com tag or code on one of your belongings, register your code to link it to your contact details. To do so, click: <strong>Register my code</strong><span class="salto-suave">If you have found an item with a perdilost.com tag or code, you can send a notice so we can help its owner recover it. To do so, click: <strong>Return it to its owner</strong>.</span><span class="salto-suave">We will soon add a form to request codes and tags. Until then, you can write to us at <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>.</span>',
     seleccionaOpcion: 'Choose an option:',
     botonRegistrar: 'Register my code',
     botonEncontrado: 'Return it to its owner',
-    privacidadTexto: 'Privacy and security: no one will be able to access your data through this code or contact you directly. If someone finds your item, they will send a message with the instructions for recovering it to Perdilost, and we will forward it to the email address you provided when registering the code. If you would like Perdilost codes to place on your belongings, write to us at <a href="mailto:infoperdilost@gmail.com">infoperdilost@gmail.com</a>',
+    privacidadTexto: 'One of the foundations of perdilost.com is privacy. If someone finds your item, they will never be able to access the details you entered when registering your code. They can only send a message through perdilost.com so we can forward it to you.<span class="salto-suave">We also protect the privacy of the person who finds the item: the owner will only receive the information that person chooses to write in the message to help recover the item. They will not receive their email, phone number or other details unless they include them voluntarily.</span>',
 pasosTitulo: 'How it works',
+carruselSiguienteLabel: 'View next step',
 paso1Titulo: 'Stick',
 paso1Texto: 'Attach your Perdilost label, keyring or code to your personal belongings.',
 paso2Titulo: 'Register',
@@ -181,7 +190,7 @@ placeholderNombre: 'Enter your full name',
 placeholderTelefono: 'Enter your phone number (optional)',
 placeholderContacto: 'Enter your email',
 placeholderContactoRepetir: 'Repeat your email',
-placeholderDescripcion: 'Describe the item and add instructions on how to return it if someone finds it',
+placeholderDescripcion: 'Add any other information that may be useful if you lose the item',
 placeholderCodigoEncontrado: 'Enter the code on the tag',
 placeholderNombreEncontrado: 'Your name (optional)',
 placeholderTelefonoEncontrado: 'Your phone number (optional)',
@@ -226,6 +235,11 @@ document.getElementById('paso2-titulo').innerHTML = textos[idiomaActual].paso2Ti
 document.getElementById('paso2-texto').innerHTML = textos[idiomaActual].paso2Texto;
 document.getElementById('paso3-titulo').innerHTML = textos[idiomaActual].paso3Titulo;
 document.getElementById('paso3-texto').innerHTML = textos[idiomaActual].paso3Texto;
+
+document.querySelectorAll('.boton-carrusel-pasos').forEach((boton) => {
+  boton.setAttribute('aria-label', textos[idiomaActual].carruselSiguienteLabel);
+});
+
   document.getElementById('texto-selecciona-opcion').innerHTML = textos[idiomaActual].seleccionaOpcion;
   document.getElementById('btn-propietario').innerHTML = textos[idiomaActual].botonRegistrar;
   document.getElementById('btn-encontrado').innerHTML = textos[idiomaActual].botonEncontrado;
