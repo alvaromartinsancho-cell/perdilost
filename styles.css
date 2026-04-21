@@ -424,6 +424,17 @@ textarea:focus {
   flex: 0 0 auto;
 }
 
+.grupo-checkbox-privacidad.grupo-error {
+  background: #fef2f2;
+  border-color: #dc2626;
+  color: #991b1b;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.10);
+}
+
+.grupo-checkbox-privacidad.grupo-error input {
+  accent-color: #dc2626;
+}
+
 .detalle-legal {
   margin-top: 10px;
 }
