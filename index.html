@@ -248,7 +248,7 @@ document.querySelectorAll('.boton-carrusel-pasos').forEach((boton) => {
 function desplazarAFormularioEnMovil() {
   const zona = document.getElementById('zona');
 
-  if (zona && window.matchMedia('(max-width: 720px)').matches) {
+  if (zona) {
     setTimeout(() => {
       zona.scrollIntoView({
         behavior: 'smooth',
@@ -371,9 +371,9 @@ function limpiarGrupoError(id) {
 <input type="email" id="contacto" placeholder="${textos[idiomaActual].placeholderContacto}" required><br><br>
 <input type="email" id="contacto-repetir" placeholder="${textos[idiomaActual].placeholderContactoRepetir}" required><br><br>
 <div id="mensaje-email-coincide" style="display:none; color:#991b1b; margin-top:-8px; margin-bottom:14px; font-size:14px;">${textos[idiomaActual].mensajeEmailsNoCoinciden}</div>
-<textarea id="descripcion" placeholder="${textos[idiomaActual].placeholderDescripcion}" required></textarea><br><br>
-<div id="mensaje-registro" style="margin-top:18px;"></div>
+<textarea id="descripcion" placeholder="${textos[idiomaActual].placeholderDescripcion}" required></textarea>
 <button type="button" id="btn-guardar-codigo" onclick="guardarCodigo()">${textos[idiomaActual].botonCrearRegistro}</button>
+<div id="mensaje-registro" style="margin-top:18px;"></div>
 </div>
 `;
       desplazarAFormularioEnMovil();
@@ -426,9 +426,9 @@ function limpiarGrupoError(id) {
 <input type="text" id="nombre-encontrado" placeholder="${textos[idiomaActual].placeholderNombreEncontrado}"><br><br>
 <input type="text" id="telefono-encontrado" placeholder="${textos[idiomaActual].placeholderTelefonoEncontrado}"><br><br>
 <input type="email" id="contacto-encontrado" placeholder="${textos[idiomaActual].placeholderContactoEncontrado}"><br><br>
-<textarea id="mensaje-encontrado" placeholder="${textos[idiomaActual].placeholderMensajeEncontrado}" required></textarea><br><br>
-<div id="mensaje-encontrado-formulario" style="margin-top:18px;"></div>
+<textarea id="mensaje-encontrado" placeholder="${textos[idiomaActual].placeholderMensajeEncontrado}" required></textarea>
 <button type="button" id="btn-enviar-aviso" onclick="comprobarCodigoEncontrado()">${textos[idiomaActual].botonEnviarAviso}</button>
+<div id="mensaje-encontrado-formulario" style="margin-top:18px;"></div>
         </div>
       `;
       desplazarAFormularioEnMovil();

@@ -309,6 +309,16 @@
     botonEnviar.textContent = textos[idiomaActual].botonEnviando;
   }
 
+    if (!opcionSeleccionada) {
+      marcarGrupoError('grupo-recuperado');
+      mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorFaltaOpcion + '</div>';
+      if (botonEnviar) {
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = textos[idiomaActual].boton;
+      }
+      return;
+    }
+
 if (!code) {
   mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoInformado + '</div>';
   if (botonEnviar) {
@@ -326,16 +336,6 @@ if (!codigoValidoRecuperacion) {
   }
   return;
 }
-
-    if (!opcionSeleccionada) {
-      marcarGrupoError('grupo-recuperado');
-      mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorFaltaOpcion + '</div>';
-      if (botonEnviar) {
-        botonEnviar.disabled = false;
-        botonEnviar.textContent = textos[idiomaActual].boton;
-      }
-      return;
-    }
 
     const recuperado = opcionSeleccionada.value === 'si';
 
