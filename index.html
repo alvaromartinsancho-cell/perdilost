@@ -248,7 +248,7 @@ document.querySelectorAll('.boton-carrusel-pasos').forEach((boton) => {
 function desplazarAFormularioEnMovil() {
   const zona = document.getElementById('zona');
 
-  if (zona && window.matchMedia('(max-width: 720px)').matches) {
+  if (zona) {
     setTimeout(() => {
       zona.scrollIntoView({
         behavior: 'smooth',
