@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Perdilost - Mantenimiento</title>
+  <title>Perdilost - Mantenimiento / Maintenance</title>
   <style>
     body {
       margin: 0;
@@ -27,16 +27,15 @@
       border: 1px solid #e5e7eb;
     }
 
-    h1 {
+    .section-title {
       margin-top: 0;
       color: #1e3a8a;
       font-size: 28px;
+      line-height: 1.25;
     }
 
-    h2 {
-      margin-top: 28px;
-      color: #1e3a8a;
-      font-size: 22px;
+    .english-title {
+      margin-top: 34px;
     }
 
     p {
@@ -45,6 +44,7 @@
     }
 
     .brand {
+      margin-top: 28px;
       font-weight: bold;
       color: #2563eb;
     }
@@ -52,23 +52,28 @@
 </head>
 <body>
   <main class="card">
-    <h1>Perdilost está temporalmente en mantenimiento</h1>
-    <p>
-      Estamos preparando mejoras en el servicio para gestionar los códigos y las etiquetas de forma más segura y ordenada.
-    </p>
-    <p>
-      La web volverá a estar disponible próximamente.
-    </p>
-    <p class="brand">
-      Perdilost
-    </p>
+    <section aria-label="Mensaje de mantenimiento en español">
+      <h1 class="section-title">Perdilost está temporalmente en mantenimiento</h1>
+      <p>
+        Estamos preparando mejoras en el servicio para gestionar los códigos y las etiquetas de forma más segura y ordenada.
+      </p>
+      <p>
+        La web volverá a estar disponible próximamente.
+      </p>
+    </section>
 
-    <h2>Perdilost is temporarily under maintenance</h2>
-    <p>
-      We are preparing improvements to manage codes and labels in a safer and more organized way.
-    </p>
-    <p>
-      The website will be available again soon.
+    <section aria-label="Maintenance message in English">
+      <h2 class="section-title english-title">Perdilost is temporarily under maintenance</h2>
+      <p>
+        We are preparing improvements to manage codes and labels in a safer and more organized way.
+      </p>
+      <p>
+        The website will be available again soon.
+      </p>
+    </section>
+
+    <p class="brand">
+      perdilost.com
     </p>
   </main>
 </body>
