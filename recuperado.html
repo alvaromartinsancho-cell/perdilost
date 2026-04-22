@@ -82,10 +82,10 @@
     </div>
 
     <div class="codigo" id="codigo-recuperacion">
-      Código: no informado
+      Cargando datos...
     </div>
     <div class="codigo" id="descripcion-recuperacion" style="font-weight: normal;">
-      Descripción: no informada
+      Estamos comprobando la información del objeto.
     </div>
 
     <div id="grupo-recuperado" style="margin-top: 24px;">
@@ -122,13 +122,16 @@
   let code = null;
   let idiomaActual = 'es';
   let codigoValidoRecuperacion = false;
+  let cargandoDatosRecuperacion = true;
 
   const textos = {
     es: {
       titulo: 'Confirmar recuperación',
       info: 'En esta página podrás confirmar si finalmente has recuperado tu objeto.',
-      codigoNoInformado: 'Cargando datos...',
-      descripcionNoInformada: 'Estamos comprobando la información del objeto.',
+      cargandoCodigo: 'Cargando datos...',
+      cargandoDescripcion: 'Estamos comprobando la información del objeto.',
+      codigoNoInformado: 'Código: no informado',
+      descripcionNoInformada: 'Descripción: no informada',
       pregunta: '¿Has recuperado ya el objeto (o has quedado con la persona para recuperarlo próximamente)?',
       opcionSi: 'Sí, ya lo he recuperado',
       opcionNo: 'No, todavía no lo he recuperado',
@@ -147,8 +150,10 @@
     en: {
       titulo: 'Confirm recovery',
       info: 'On this page you can confirm whether you have finally recovered your item.',
-      codigoNoInformado: 'Loading data...',
-      descripcionNoInformada: 'We are checking the item information.',
+      cargandoCodigo: 'Loading data...',
+      cargandoDescripcion: 'We are checking the item information.',
+      codigoNoInformado: 'Code: not provided',
+      descripcionNoInformada: 'Description: not provided',
       pregunta: 'Have you already recovered the item (or arranged to recover it soon)?',
       opcionSi: 'Yes, I have already recovered it',
       opcionNo: 'No, I have not recovered it yet',
@@ -180,6 +185,16 @@
     }
   }
 
+  function pintarEstadoCargaRecuperacion() {
+    document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].cargandoCodigo;
+    document.getElementById('descripcion-recuperacion').textContent = textos[idiomaActual].cargandoDescripcion;
+  }
+
+  function pintarEstadoNoInformadoRecuperacion() {
+    document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
+    document.getElementById('descripcion-recuperacion').textContent = textos[idiomaActual].descripcionNoInformada;
+  }
+
   function aplicarTextosRecuperacion() {
     document.getElementById('titulo-recuperacion').textContent = textos[idiomaActual].titulo;
     document.getElementById('texto-info-recuperacion').textContent = textos[idiomaActual].info;
@@ -191,8 +206,11 @@
     document.getElementById('btn-enviar-recuperacion').textContent = textos[idiomaActual].boton;
 
     if (!code) {
-      document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
-      document.getElementById('descripcion-recuperacion').textContent = textos[idiomaActual].descripcionNoInformada;
+      if (cargandoDatosRecuperacion) {
+        pintarEstadoCargaRecuperacion();
+      } else {
+        pintarEstadoNoInformadoRecuperacion();
+      }
     }
   }
 
@@ -214,13 +232,17 @@
         document.getElementById('descripcion-recuperacion').textContent =
           textos[idiomaActual].descripcionLabel + descripcionActual;
       }
-    } else if (!codigoValidoRecuperacion && token) {
+    } else if (!codigoValidoRecuperacion && token && !cargandoDatosRecuperacion) {
+      document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
       document.getElementById('descripcion-recuperacion').textContent =
         textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
     }
   }
 
   async function cargarDatosRecuperacion() {
+    cargandoDatosRecuperacion = true;
+    pintarEstadoCargaRecuperacion();
+
     if (token) {
       code = null;
 
@@ -235,6 +257,7 @@
         }
 
         if (!respuestaToken.ok || !resultadoToken?.ok || !resultadoToken.code) {
+          cargandoDatosRecuperacion = false;
           codigoValidoRecuperacion = false;
           document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
           document.getElementById('descripcion-recuperacion').textContent =
@@ -244,12 +267,18 @@
 
         code = resultadoToken.code;
       } catch (e) {
+        cargandoDatosRecuperacion = false;
         codigoValidoRecuperacion = false;
         document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
         document.getElementById('descripcion-recuperacion').textContent =
           textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
         return;
       }
+    } else {
+      cargandoDatosRecuperacion = false;
+      codigoValidoRecuperacion = false;
+      pintarEstadoNoInformadoRecuperacion();
+      return;
     }
 
     if (code) {
@@ -266,12 +295,14 @@
           }
 
           if (!response.ok || !resultado?.ok) {
+            cargandoDatosRecuperacion = false;
             codigoValidoRecuperacion = false;
             document.getElementById('descripcion-recuperacion').textContent =
               textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
             return;
           }
 
+          cargandoDatosRecuperacion = false;
           codigoValidoRecuperacion = true;
 
           if (resultado.preferred_language) {
@@ -287,6 +318,7 @@
             textos[idiomaActual].descripcionLabel + (descripcionTexto || descripcionFallback);
         })
         .catch(() => {
+          cargandoDatosRecuperacion = false;
           codigoValidoRecuperacion = false;
           document.getElementById('descripcion-recuperacion').textContent =
             textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
@@ -299,15 +331,15 @@
   document.getElementById('btn-enviar-recuperacion').addEventListener('click', async function () {
     const opcionSeleccionada = document.querySelector('input[name="recuperado"]:checked');
     const comentarios = document.getElementById('recovery-comments').value.trim();
-  const mensaje = document.getElementById('mensaje-recuperacion');
-  const botonEnviar = document.getElementById('btn-enviar-recuperacion');
+    const mensaje = document.getElementById('mensaje-recuperacion');
+    const botonEnviar = document.getElementById('btn-enviar-recuperacion');
 
-  limpiarGrupoError('grupo-recuperado');
+    limpiarGrupoError('grupo-recuperado');
 
-  if (botonEnviar) {
-    botonEnviar.disabled = true;
-    botonEnviar.textContent = textos[idiomaActual].botonEnviando;
-  }
+    if (botonEnviar) {
+      botonEnviar.disabled = true;
+      botonEnviar.textContent = textos[idiomaActual].botonEnviando;
+    }
 
     if (!opcionSeleccionada) {
       marcarGrupoError('grupo-recuperado');
@@ -319,23 +351,23 @@
       return;
     }
 
-if (!code) {
-  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoInformado + '</div>';
-  if (botonEnviar) {
-    botonEnviar.disabled = false;
-    botonEnviar.textContent = textos[idiomaActual].boton;
-  }
-  return;
-}
+    if (!code) {
+      mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoInformado + '</div>';
+      if (botonEnviar) {
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = textos[idiomaActual].boton;
+      }
+      return;
+    }
 
-if (!codigoValidoRecuperacion) {
-  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoValido + '</div>';
-  if (botonEnviar) {
-    botonEnviar.disabled = false;
-    botonEnviar.textContent = textos[idiomaActual].boton;
-  }
-  return;
-}
+    if (!codigoValidoRecuperacion) {
+      mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textos[idiomaActual].errorGuardar + textos[idiomaActual].errorCodigoNoValido + '</div>';
+      if (botonEnviar) {
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = textos[idiomaActual].boton;
+      }
+      return;
+    }
 
     const recuperado = opcionSeleccionada.value === 'si';
 
@@ -360,22 +392,22 @@ if (!codigoValidoRecuperacion) {
       resultado = null;
     }
 
-  if (!respuesta.ok) {
-    const textoError = resultado?.error || textos[idiomaActual].errorGuardar;
-    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textoError + '</div>';
-    if (botonEnviar) {
-      botonEnviar.disabled = false;
-      botonEnviar.textContent = textos[idiomaActual].boton;
+    if (!respuesta.ok) {
+      const textoError = resultado?.error || textos[idiomaActual].errorGuardar;
+      mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; font-weight:bold;">' + textoError + '</div>';
+      if (botonEnviar) {
+        botonEnviar.disabled = false;
+        botonEnviar.textContent = textos[idiomaActual].boton;
+      }
+      return;
     }
-    return;
-  }
 
     limpiarGrupoError('grupo-recuperado');
-  mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">' + (resultado?.message || textos[idiomaActual].okGuardar) + '</div>';
-  if (botonEnviar) {
-    botonEnviar.textContent = textos[idiomaActual].boton;
-    botonEnviar.disabled = true;
-  }
+    mensaje.innerHTML = '<div style="padding:14px 16px; border-radius:12px; background:#dcfce7; color:#166534; border:1px solid #86efac; font-weight:bold;">' + (resultado?.message || textos[idiomaActual].okGuardar) + '</div>';
+    if (botonEnviar) {
+      botonEnviar.textContent = textos[idiomaActual].boton;
+      botonEnviar.disabled = true;
+    }
   });
 </script>
 </body>
