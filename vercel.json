@@ -5,14 +5,18 @@
       "schedule": "0 9 * * *"
     }
   ],
-  "rewrites": [
+  "routes": [
     {
-      "source": "/api/:path*",
-      "destination": "/api/:path*"
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
     },
     {
-      "source": "/(.*)",
-      "destination": "/maintenance.html"
+      "src": "/maintenance.html",
+      "dest": "/maintenance.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/maintenance.html"
     }
   ]
 }
