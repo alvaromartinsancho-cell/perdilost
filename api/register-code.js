@@ -125,63 +125,173 @@ export default async function handler(req, res) {
       });
     }
 
-    const respuestaItem = await fetch(
-      `${supabaseUrl}/rest/v1/items?code=eq.${encodeURIComponent(codeNormalizado)}&select=code,owner_name,contact_info`,
+    const supabaseHeaders = {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      'Content-Type': 'application/json'
+    };
+
+    const respuestaCode = await fetch(
+      `${supabaseUrl}/rest/v1/codes?code=eq.${encodeURIComponent(codeNormalizado)}&select=code,status`,
       {
         method: 'GET',
-        headers: {
-          apikey: serviceRoleKey,
-          Authorization: `Bearer ${serviceRoleKey}`,
-          'Content-Type': 'application/json'
-        }
+        headers: supabaseHeaders
       }
     );
 
-    if (!respuestaItem.ok) {
+    if (!respuestaCode.ok) {
       return res.status(500).json({
         error: textos[idioma].serverConfig
       });
     }
 
-    const items = await respuestaItem.json();
-    const item = Array.isArray(items) && items.length > 0 ? items[0] : null;
+    const codes = await respuestaCode.json();
+    const codeItem = Array.isArray(codes) && codes.length > 0 ? codes[0] : null;
 
-    if (!item) {
+    if (!codeItem) {
       return res.status(400).json({
         error: textos[idioma].invalidCode
       });
     }
 
-    if (item.owner_name || item.contact_info) {
+    if (codeItem.status === 'registered') {
       return res.status(400).json({
         error: textos[idioma].alreadyRegistered
       });
     }
 
-    const respuestaUpdate = await fetch(
-      `${supabaseUrl}/rest/v1/items?code=eq.${encodeURIComponent(codeNormalizado)}`,
+    if (codeItem.status !== 'active') {
+      return res.status(400).json({
+        error: textos[idioma].invalidCode
+      });
+    }
+
+    const respuestaItemExistente = await fetch(
+      `${supabaseUrl}/rest/v1/items?code=eq.${encodeURIComponent(codeNormalizado)}&select=code`,
       {
-        method: 'PATCH',
+        method: 'GET',
+        headers: supabaseHeaders
+      }
+    );
+
+    if (!respuestaItemExistente.ok) {
+      return res.status(500).json({
+        error: textos[idioma].serverConfig
+      });
+    }
+
+    const itemsExistentes = await respuestaItemExistente.json();
+    const itemExistente = Array.isArray(itemsExistentes) && itemsExistentes.length > 0 ? itemsExistentes[0] : null;
+
+    if (itemExistente) {
+      return res.status(400).json({
+        error: textos[idioma].alreadyRegistered
+      });
+    }
+
+    const ahora = new Date().toISOString();
+
+    const respuestaInsert = await fetch(
+      `${supabaseUrl}/rest/v1/items`,
+      {
+        method: 'POST',
         headers: {
-          apikey: serviceRoleKey,
-          Authorization: `Bearer ${serviceRoleKey}`,
-          'Content-Type': 'application/json'
+          ...supabaseHeaders,
+          Prefer: 'return=representation'
         },
         body: JSON.stringify({
+          code: codeNormalizado,
           owner_name: ownerNameNormalizado,
           owner_phone: ownerPhoneNormalizado || null,
           contact_info: contactInfoNormalizado,
           description: descriptionNormalizada,
           preferred_language: idioma,
           privacy_accepted: true,
-          privacy_accepted_at: new Date().toISOString(),
+          privacy_accepted_at: ahora,
           privacy_version: 'v1',
-          activated_at: new Date().toISOString()
+          activated_at: ahora
         })
       }
     );
 
-    if (!respuestaUpdate.ok) {
+    if (!respuestaInsert.ok) {
+      let detalleInsert = null;
+
+      try {
+        detalleInsert = await respuestaInsert.json();
+      } catch (e) {
+        detalleInsert = null;
+      }
+
+      const detalleTexto = JSON.stringify(detalleInsert || {});
+
+      if (
+        respuestaInsert.status === 409 ||
+        detalleTexto.includes('duplicate key') ||
+        detalleTexto.includes('items_code_unique')
+      ) {
+        return res.status(400).json({
+          error: textos[idioma].alreadyRegistered
+        });
+      }
+
+      return res.status(500).json({
+        error: textos[idioma].saveError
+      });
+    }
+
+    const respuestaUpdateCode = await fetch(
+      `${supabaseUrl}/rest/v1/codes?code=eq.${encodeURIComponent(codeNormalizado)}&status=eq.active`,
+      {
+        method: 'PATCH',
+        headers: {
+          ...supabaseHeaders,
+          Prefer: 'return=representation'
+        },
+        body: JSON.stringify({
+          status: 'registered',
+          registered_at: ahora
+        })
+      }
+    );
+
+    if (!respuestaUpdateCode.ok) {
+      await fetch(
+        `${supabaseUrl}/rest/v1/items?code=eq.${encodeURIComponent(codeNormalizado)}`,
+        {
+          method: 'DELETE',
+          headers: {
+            ...supabaseHeaders,
+            Prefer: 'return=minimal'
+          }
+        }
+      ).catch(() => {});
+
+      return res.status(500).json({
+        error: textos[idioma].saveError
+      });
+    }
+
+    let updatedCodes = [];
+
+    try {
+      updatedCodes = await respuestaUpdateCode.json();
+    } catch (e) {
+      updatedCodes = [];
+    }
+
+    if (!Array.isArray(updatedCodes) || updatedCodes.length === 0) {
+      await fetch(
+        `${supabaseUrl}/rest/v1/items?code=eq.${encodeURIComponent(codeNormalizado)}`,
+        {
+          method: 'DELETE',
+          headers: {
+            ...supabaseHeaders,
+            Prefer: 'return=minimal'
+          }
+        }
+      ).catch(() => {});
+
       return res.status(500).json({
         error: textos[idioma].saveError
       });
@@ -356,7 +466,7 @@ Gracias por utilizar Perdilost.`;
     const respuestaEmail = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${resendApiKey}`,
+        Authorization: `Bearer ${resendApiKey}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
