@@ -51,9 +51,9 @@ export default async function handler(req, res) {
     if (
       typeof code !== 'string' ||
       typeof message !== 'string' ||
-      (finder_name !== undefined && typeof finder_name !== 'string') ||
-      (finder_phone !== undefined && typeof finder_phone !== 'string') ||
-      (finder_contact !== undefined && typeof finder_contact !== 'string')
+      (finder_name !== undefined && finder_name !== null && typeof finder_name !== 'string') ||
+      (finder_phone !== undefined && finder_phone !== null && typeof finder_phone !== 'string') ||
+      (finder_contact !== undefined && finder_contact !== null && typeof finder_contact !== 'string')
     ) {
       return res.status(400).json({
         error: textos[idioma].invalidFormat
@@ -72,15 +72,15 @@ export default async function handler(req, res) {
       });
     }
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const resendApiKey = process.env.RESEND_API_KEY;
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const resendApiKey = process.env.RESEND_API_KEY;
 
-if (!supabaseUrl || !serviceRoleKey || !resendApiKey) {
-  return res.status(500).json({
-    error: textos[idioma].serverConfig
-  });
-}
+    if (!supabaseUrl || !serviceRoleKey || !resendApiKey) {
+      return res.status(500).json({
+        error: textos[idioma].serverConfig
+      });
+    }
 
     const codeNormalizado = code.trim();
     const messageNormalizado = message.trim();
@@ -94,15 +94,40 @@ if (!supabaseUrl || !serviceRoleKey || !resendApiKey) {
       });
     }
 
+    const supabaseHeaders = {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      'Content-Type': 'application/json'
+    };
+
+    const respuestaCode = await fetch(
+      `${supabaseUrl}/rest/v1/codes?code=eq.${encodeURIComponent(codeNormalizado)}&select=code,status`,
+      {
+        method: 'GET',
+        headers: supabaseHeaders
+      }
+    );
+
+    if (!respuestaCode.ok) {
+      return res.status(500).json({
+        error: textos[idioma].serverConfig
+      });
+    }
+
+    const codes = await respuestaCode.json();
+    const codeItem = Array.isArray(codes) && codes.length > 0 ? codes[0] : null;
+
+    if (!codeItem || codeItem.status !== 'registered') {
+      return res.status(400).json({
+        error: textos[idioma].invalidCode
+      });
+    }
+
     const respuestaItem = await fetch(
       `${supabaseUrl}/rest/v1/items?code=eq.${encodeURIComponent(codeNormalizado)}&select=code,owner_name,contact_info,preferred_language`,
       {
         method: 'GET',
-        headers: {
-          apikey: serviceRoleKey,
-          Authorization: `Bearer ${serviceRoleKey}`,
-          'Content-Type': 'application/json'
-        }
+        headers: supabaseHeaders
       }
     );
 
@@ -124,9 +149,7 @@ if (!supabaseUrl || !serviceRoleKey || !resendApiKey) {
     const respuestaInsert = await fetch(`${supabaseUrl}/rest/v1/found_reports`, {
       method: 'POST',
       headers: {
-        apikey: serviceRoleKey,
-        Authorization: `Bearer ${serviceRoleKey}`,
-        'Content-Type': 'application/json',
+        ...supabaseHeaders,
         Prefer: 'return=representation'
       },
       body: JSON.stringify([
@@ -156,11 +179,7 @@ if (!supabaseUrl || !serviceRoleKey || !resendApiKey) {
       `${supabaseUrl}/rest/v1/items?code=eq.${encodeURIComponent(codeNormalizado)}`,
       {
         method: 'PATCH',
-        headers: {
-          apikey: serviceRoleKey,
-          Authorization: `Bearer ${serviceRoleKey}`,
-          'Content-Type': 'application/json'
-        },
+        headers: supabaseHeaders,
         body: JSON.stringify({
           last_found_at: new Date().toISOString()
         })
@@ -209,100 +228,100 @@ Email: ${finderContactNormalizado || 'No facilitado'}
 
 Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`;
 
-const html = idiomaPropietario === 'en'
-  ? `
-    <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
-      <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
-        <div style="margin-bottom:24px;">
-          <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
-          <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
-        </div>
+    const html = idiomaPropietario === 'en'
+      ? `
+        <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
+          <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+            <div style="margin-bottom:24px;">
+              <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
+              <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
+            </div>
 
-        <p style="margin:0 0 16px 0;">Hello ${propietario.owner_name || ''},</p>
+            <p style="margin:0 0 16px 0;">Hello ${propietario.owner_name || ''},</p>
 
-        <p style="margin:0 0 20px 0;line-height:1.7;">
-          We would like to let you know that someone has found an item linked to your Perdilost code: <strong>${codeNormalizado}</strong>.
-        </p>
+            <p style="margin:0 0 20px 0;line-height:1.7;">
+              We would like to let you know that someone has found an item linked to your Perdilost code: <strong>${codeNormalizado}</strong>.
+            </p>
 
-        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
-          <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Message received</div>
-          <div style="color:#1f2937;line-height:1.7;white-space:pre-line;">${messageNormalizado}</div>
-        </div>
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
+              <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Message received</div>
+              <div style="color:#1f2937;line-height:1.7;white-space:pre-line;">${messageNormalizado}</div>
+            </div>
 
-        <div style="margin:24px 0;">
-          <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Contact details (if provided)</div>
-          <div style="color:#475569;line-height:1.7;">
-            Name: ${finderNameNormalizado || 'Not provided'}<br>
-            Phone: ${finderPhoneNormalizado || 'Not provided'}<br>
-            Email: ${finderContactNormalizado || 'Not provided'}
+            <div style="margin:24px 0;">
+              <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Contact details (if provided)</div>
+              <div style="color:#475569;line-height:1.7;">
+                Name: ${finderNameNormalizado || 'Not provided'}<br>
+                Phone: ${finderPhoneNormalizado || 'Not provided'}<br>
+                Email: ${finderContactNormalizado || 'Not provided'}
+              </div>
+            </div>
+
+            <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">
+              We recommend that you get in touch as soon as possible so you can recover it.
+            </p>
+
+            <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+              If you have any questions or would like more information about Perdilost, you can write to
+              <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+            </div>
           </div>
         </div>
+      `
+      : `
+        <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
+          <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+            <div style="margin-bottom:24px;">
+              <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
+              <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
+            </div>
 
-        <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">
-          We recommend that you get in touch as soon as possible so you can recover it.
-        </p>
+            <p style="margin:0 0 16px 0;">Hola ${propietario.owner_name || ''},</p>
 
-        <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
-          If you have any questions or would like more information about Perdilost, you can write to
-          <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
-        </div>
-      </div>
-    </div>
-  `
-  : `
-    <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
-      <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
-        <div style="margin-bottom:24px;">
-          <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
-          <p style="margin:8px 0 0 0;color:#475569;">${subject}</p>
-        </div>
+            <p style="margin:0 0 20px 0;line-height:1.7;">
+              Te informamos de que alguien ha encontrado una pertenencia asociada a tu código de Perdilost: <strong>${codeNormalizado}</strong>.
+            </p>
 
-        <p style="margin:0 0 16px 0;">Hola ${propietario.owner_name || ''},</p>
+            <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
+              <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Mensaje recibido</div>
+              <div style="color:#1f2937;line-height:1.7;white-space:pre-line;">${messageNormalizado}</div>
+            </div>
 
-        <p style="margin:0 0 20px 0;line-height:1.7;">
-          Te informamos de que alguien ha encontrado una pertenencia asociada a tu código de Perdilost: <strong>${codeNormalizado}</strong>.
-        </p>
+            <div style="margin:24px 0;">
+              <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Datos de contacto (si los ha facilitado)</div>
+              <div style="color:#475569;line-height:1.7;">
+                Nombre: ${finderNameNormalizado || 'No facilitado'}<br>
+                Teléfono: ${finderPhoneNormalizado || 'No facilitado'}<br>
+                Email: ${finderContactNormalizado || 'No facilitado'}
+              </div>
+            </div>
 
-        <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
-          <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">Mensaje recibido</div>
-          <div style="color:#1f2937;line-height:1.7;white-space:pre-line;">${messageNormalizado}</div>
-        </div>
+            <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">
+              Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.
+            </p>
 
-        <div style="margin:24px 0;">
-          <div style="font-weight:bold;color:#1f2937;margin-bottom:10px;">Datos de contacto (si los ha facilitado)</div>
-          <div style="color:#475569;line-height:1.7;">
-            Nombre: ${finderNameNormalizado || 'No facilitado'}<br>
-            Teléfono: ${finderPhoneNormalizado || 'No facilitado'}<br>
-            Email: ${finderContactNormalizado || 'No facilitado'}
+            <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+              Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
+              <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+            </div>
           </div>
         </div>
+      `;
 
-        <p style="margin:24px 0 0 0;line-height:1.7;color:#475569;">
-          Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.
-        </p>
-
-        <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
-          Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
-          <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
-        </div>
-      </div>
-    </div>
-  `;
-
-const respuestaEmail = await fetch('https://api.resend.com/emails', {
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${resendApiKey}`,
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    from: 'Perdilost <avisos@perdilost.com>',
-    to: [propietario.contact_info],
-    subject,
-    text,
-    html
-  })
-});
+    const respuestaEmail = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${resendApiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: 'Perdilost <avisos@perdilost.com>',
+        to: [propietario.contact_info],
+        subject,
+        text,
+        html
+      })
+    });
 
     if (!respuestaEmail.ok) {
       return res.status(200).json({
@@ -317,11 +336,7 @@ const respuestaEmail = await fetch('https://api.resend.com/emails', {
         `${supabaseUrl}/rest/v1/found_reports?id=eq.${reporte.id}`,
         {
           method: 'PATCH',
-          headers: {
-            apikey: serviceRoleKey,
-            Authorization: `Bearer ${serviceRoleKey}`,
-            'Content-Type': 'application/json'
-          },
+          headers: supabaseHeaders,
           body: JSON.stringify({
             email_sent: true
           })
