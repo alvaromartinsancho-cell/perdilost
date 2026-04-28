@@ -212,7 +212,9 @@ Name: ${finderNameNormalizado || 'Not provided'}
 Phone: ${finderPhoneNormalizado || 'Not provided'}
 Email: ${finderContactNormalizado || 'Not provided'}
 
-We recommend that you get in touch as soon as possible so you can recover it.`
+We recommend that you get in touch as soon as possible so you can recover it.
+
+If you want to stop using Perdilost, request the deletion of your data, modify the information linked to your code or stop receiving non-essential communications, please write to infoperdilost@gmail.com including your Perdilost code and the email used to register it.`
       : `Hola ${propietario.owner_name || ''},
 
 Te informamos de que alguien ha encontrado una pertenencia asociada a tu código de Perdilost: ${codeNormalizado}.
@@ -226,7 +228,9 @@ Nombre: ${finderNameNormalizado || 'No facilitado'}
 Teléfono: ${finderPhoneNormalizado || 'No facilitado'}
 Email: ${finderContactNormalizado || 'No facilitado'}
 
-Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`;
+Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.
+
+Si quieres dejar de usar Perdilost, solicitar la supresión de tus datos, modificar la información asociada a tu código o dejar de recibir comunicaciones no imprescindibles, escríbenos a infoperdilost@gmail.com indicando tu código Perdilost y el email con el que lo registraste.`;
 
     const html = idiomaPropietario === 'en'
       ? `
@@ -264,6 +268,12 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`;
             <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
               If you have any questions or would like more information about Perdilost, you can write to
               <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+            </div>
+
+            <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
+              If you want to stop using Perdilost, request the deletion of your data, modify the information linked to your code or stop receiving non-essential communications, please write to
+              <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
+              including your Perdilost code and the email used to register it.
             </div>
           </div>
         </div>
@@ -303,6 +313,12 @@ Te recomendamos ponerte en contacto lo antes posible para poder recuperarla.`;
             <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
               Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a
               <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+            </div>
+
+            <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
+              Si quieres dejar de usar Perdilost, solicitar la supresión de tus datos, modificar la información asociada a tu código o dejar de recibir comunicaciones no imprescindibles, escríbenos a
+              <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
+              indicando tu código Perdilost y el email con el que lo registraste.
             </div>
           </div>
         </div>
