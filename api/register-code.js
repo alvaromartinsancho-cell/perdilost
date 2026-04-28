@@ -332,6 +332,8 @@ ${descriptionNormalizada || 'Not provided'}
 How your code works:
 If someone finds your item and uses this code on our website to notify us, they will not have access to your personal data. We will send you their message to this same email address so you can contact them and recover your item.
 
+If you want to stop using Perdilost, request the deletion of your data, modify the information linked to your code or stop receiving non-essential communications, please write to infoperdilost@gmail.com including your Perdilost code and the email used to register it.
+
 Thank you for using Perdilost.`
       : `Hola ${ownerNameNormalizado},
 
@@ -352,6 +354,8 @@ ${descriptionNormalizada || 'No informada'}
 
 Funcionamiento de tu código:
 Si en algún momento alguien encuentra tu objeto y utiliza este código en nuestra web para comunicarlo, esa persona no tendrá acceso a tus datos personales. Nosotros te enviaremos a este mismo correo el mensaje que nos haya dejado para que puedas ponerte en contacto y recuperarlo.
+
+Si quieres dejar de usar Perdilost, solicitar la supresión de tus datos, modificar la información asociada a tu código o dejar de recibir comunicaciones no imprescindibles, escríbenos a infoperdilost@gmail.com indicando tu código Perdilost y el email con el que lo registraste.
 
 Gracias por utilizar Perdilost.`;
 
@@ -403,8 +407,9 @@ Gracias por utilizar Perdilost.`;
             </div>
 
             <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
-              If you wish to unsubscribe from our communications, write the word unsubscribe to the following email address:
+              If you want to stop using Perdilost, request the deletion of your data, modify the information linked to your code or stop receiving non-essential communications, please write to
               <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
+              including your Perdilost code and the email used to register it.
             </div>
           </div>
         </div>
@@ -456,8 +461,9 @@ Gracias por utilizar Perdilost.`;
             </div>
 
             <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
-              Si deseas darte de baja de nuestras comunicaciones, escribe la palabra baja a la siguiente dirección de email:
+              Si quieres dejar de usar Perdilost, solicitar la supresión de tus datos, modificar la información asociada a tu código o dejar de recibir comunicaciones no imprescindibles, escríbenos a
               <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
+              indicando tu código Perdilost y el email con el que lo registraste.
             </div>
           </div>
         </div>
