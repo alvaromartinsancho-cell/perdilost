@@ -257,6 +257,8 @@ ${itemDetalle.description || 'Not provided'}
 If you have already recovered it, or if you have arranged to recover it soon, we would appreciate it if you could confirm it here so we can improve the service and keep a record that you were able to recover it:
 ${recoveryUrl}
 
+If you want to stop using Perdilost, request the deletion of your data, modify the information linked to your code or stop receiving non-essential communications, please write to infoperdilost@gmail.com including your Perdilost code and the email used to register it.
+
 Thank you for using Perdilost.`
             : `Hola ${itemDetalle.owner_name || ''},
 
@@ -270,57 +272,62 @@ ${itemDetalle.description || 'No informada'}
 Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, te rogamos que nos lo confirmes para ayudarnos a mejorar el servicio y para que quede registrado que has podido recuperarlo:
 ${recoveryUrl}
 
+Si quieres dejar de usar Perdilost, solicitar la supresión de tus datos, modificar la información asociada a tu código o dejar de recibir comunicaciones no imprescindibles, escríbenos a infoperdilost@gmail.com indicando tu código Perdilost y el email con el que lo registraste.
+
 Gracias por utilizar Perdilost.`,
           html: `
-            <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;">
-              <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);">
+            <div style="background:#f4f7fb;padding:30px 15px;font-family:Arial,sans-serif;color:#1f2937;font-size:14px;line-height:1.7;">
+              <div style="max-width:640px;margin:0 auto;background:#ffffff;border-radius:16px;padding:32px;border:1px solid #e5e7eb;box-shadow:0 8px 24px rgba(0,0,0,0.06);font-size:14px;line-height:1.7;">
                 <div style="margin-bottom:24px;">
-                  <h1 style="margin:0;font-size:26px;color:#1e3a8a;">Perdilost</h1>
-                  <p style="margin:8px 0 0 0;color:#475569;">${idiomaReminder === 'en' ? 'Have you already recovered your item with Perdilost?' : '¿Has recuperado ya tu objeto en Perdilost?'}</p>
+                  <h1 style="margin:0;font-size:26px;line-height:1.25;color:#1e3a8a;">Perdilost</h1>
+                  <p style="margin:8px 0 0 0;color:#475569;font-size:14px;line-height:1.7;">${idiomaReminder === 'en' ? 'Have you already recovered your item with Perdilost?' : '¿Has recuperado ya tu objeto en Perdilost?'}</p>
                 </div>
 
-                <p style="margin:0 0 16px 0;">${idiomaReminder === 'en' ? 'Hello' : 'Hola'} ${itemDetalle.owner_name || ''},</p>
+                <p style="margin:0 0 16px 0;font-size:14px;line-height:1.7;">${idiomaReminder === 'en' ? 'Hello' : 'Hola'} ${itemDetalle.owner_name || ''},</p>
 
-                <p style="margin:0 0 20px 0;line-height:1.7;">
+                <p style="margin:0 0 20px 0;font-size:14px;line-height:1.7;">
                   ${idiomaReminder === 'en'
                     ? `We have detected that the Perdilost code linked to your item (<strong>${itemDetalle.code}</strong>) has been used recently.`
                     : `Hemos detectado que el código de tu objeto asociado a Perdilost (<strong>${itemDetalle.code}</strong>) ha sido utilizado recientemente.`}
                 </p>
 
-                <p style="margin:0 0 20px 0;line-height:1.7;">
+                <p style="margin:0 0 20px 0;font-size:14px;line-height:1.7;">
                   ${idiomaReminder === 'en'
                     ? 'For this reason, we would like to ask whether you have already recovered it or whether you have arranged with the person who found it to recover it soon.'
                     : 'Por eso, queríamos preguntarte si ya has podido recuperarlo o si has quedado con la persona que lo encontró para recuperarlo próximamente.'}
                 </p>
 
                 <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:14px;padding:18px 20px;margin:24px 0;">
-                  <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;">${idiomaReminder === 'en' ? 'Registered description' : 'Descripción registrada'}</div>
-                  <div style="color:#1f2937;line-height:1.7;">${itemDetalle.description || (idiomaReminder === 'en' ? 'Not provided' : 'No informada')}</div>
+                  <div style="font-weight:bold;color:#1e40af;margin-bottom:10px;font-size:14px;line-height:1.7;">${idiomaReminder === 'en' ? 'Registered description' : 'Descripción registrada'}</div>
+                  <div style="color:#1f2937;font-size:14px;line-height:1.7;">${itemDetalle.description || (idiomaReminder === 'en' ? 'Not provided' : 'No informada')}</div>
                 </div>
 
-                <p style="margin:24px 0;line-height:1.7;color:#475569;">
+                <p style="margin:24px 0;font-size:14px;line-height:1.7;color:#475569;">
                   ${idiomaReminder === 'en'
                     ? 'If you have already recovered it, or if you have arranged to recover it soon, we would appreciate it if you could confirm it so we can improve the service and keep a record that you were able to recover it.'
                     : 'Si ya lo has recuperado, o has quedado con la persona para recuperarlo próximamente, te rogamos que nos lo confirmes para ayudarnos a mejorar el servicio y para que quede registrado que has podido recuperarlo.'}
                 </p>
 
                 <div style="margin:28px 0;">
-                  <a href="${recoveryUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:bold;">
+                  <a href="${recoveryUrl}" style="display:inline-block;background:#2563eb;color:#ffffff;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:bold;font-size:14px;line-height:1.4;">
                     ${idiomaReminder === 'en' ? 'Confirm whether you have recovered it' : 'Confirmar si lo has recuperado'}
                   </a>
                 </div>
 
-                <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.6;">
+                <div style="margin-top:28px;padding-top:20px;border-top:1px solid #e5e7eb;color:#475569;font-size:14px;line-height:1.7;">
                   ${idiomaReminder === 'en'
                     ? 'If you have any questions or would like more information about Perdilost, you can write to'
                     : 'Para cualquier duda o si quieres más información sobre Perdilost, puedes escribir a'}
-                  <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;">infoperdilost@gmail.com</a>.
+                  <a href="mailto:infoperdilost@gmail.com" style="color:#1e40af;text-decoration:none;font-size:14px;line-height:1.7;">infoperdilost@gmail.com</a>.
 
                   <div style="margin-top:14px;font-size:11px;line-height:1.5;color:#94a3b8;">
                     ${idiomaReminder === 'en'
-                      ? 'If you wish to unsubscribe from our communications, write the word unsubscribe to the following email address:'
-                      : 'Si deseas darte de baja de nuestras comunicaciones, escribe la palabra baja a la siguiente dirección de email:'}
-                    <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;">infoperdilost@gmail.com</a>
+                      ? 'If you want to stop using Perdilost, request the deletion of your data, modify the information linked to your code or stop receiving non-essential communications, please write to'
+                      : 'Si quieres dejar de usar Perdilost, solicitar la supresión de tus datos, modificar la información asociada a tu código o dejar de recibir comunicaciones no imprescindibles, escríbenos a'}
+                    <a href="mailto:infoperdilost@gmail.com" style="color:#64748b;text-decoration:none;font-size:11px;line-height:1.5;">infoperdilost@gmail.com</a>
+                    ${idiomaReminder === 'en'
+                      ? 'including your Perdilost code and the email used to register it.'
+                      : 'indicando tu código Perdilost y el email con el que lo registraste.'}
                   </div>
                 </div>
               </div>
