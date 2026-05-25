@@ -10,6 +10,7 @@ export default async function handler(req, res) {
         serverConfig: 'Error de configuración del servidor',
         unauthorized: 'No autorizado',
         readFoundReportsError: 'Error al leer found_reports',
+        readCodesError: 'Error al leer codes',
         readItemsError: 'Error al leer items',
         noPendingReminders: 'No hay recordatorios pendientes de envío',
         noValidEmail: 'No se ha encontrado un email válido para el recordatorio',
@@ -23,6 +24,7 @@ export default async function handler(req, res) {
         serverConfig: 'Server configuration error',
         unauthorized: 'Unauthorized',
         readFoundReportsError: 'Error reading found_reports',
+        readCodesError: 'Error reading codes',
         readItemsError: 'Error reading items',
         noPendingReminders: 'There are no pending reminders to send',
         noValidEmail: 'No valid email was found for the reminder',
@@ -137,8 +139,55 @@ export default async function handler(req, res) {
       });
     }
 
+    const respuestaCodes = await fetch(
+      `${supabaseUrl}/rest/v1/codes?select=code,status&status=eq.registered&code=in.(${codigosCandidatos.map(code => `"${code}"`).join(',')})`,
+      {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${supabaseKey}`
+        }
+      }
+    );
+
+    let codesRegistered = [];
+
+    try {
+      codesRegistered = await respuestaCodes.json();
+    } catch (e) {
+      codesRegistered = [];
+    }
+
+    if (!respuestaCodes.ok) {
+      return res.status(500).json({
+        ok: false,
+        error: textos[idioma].readCodesError
+      });
+    }
+
+    const codigosRegistered = [
+      ...new Set(
+        codesRegistered
+          .filter(codeRow => codeRow.status === 'registered')
+          .map(codeRow => codeRow.code)
+      )
+    ];
+
+    if (codigosRegistered.length === 0) {
+      return res.status(200).json({
+        ok: true,
+        total_found_reports: datos.length,
+        total_candidatos_1_dia: avisosCandidatos.length,
+        total_items_validos_recordatorio: 0,
+        enviados: 0,
+        fallidos: 0,
+        sin_email_valido: 0,
+        recovery_reminder_sent: false,
+        message: textos[idioma].noPendingReminders
+      });
+    }
+
     const respuestaItems = await fetch(
-      `${supabaseUrl}/rest/v1/items?select=code,is_recovered,recovery_reminder_sent&code=in.(${codigosCandidatos.map(code => `"${code}"`).join(',')})`,
+      `${supabaseUrl}/rest/v1/items?select=code,is_recovered,recovery_reminder_sent&code=in.(${codigosRegistered.map(code => `"${code}"`).join(',')})`,
       {
         headers: {
           apikey: supabaseKey,
