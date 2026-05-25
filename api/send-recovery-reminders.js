@@ -132,9 +132,7 @@ export default async function handler(req, res) {
         enviados: 0,
         fallidos: 0,
         sin_email_valido: 0,
-        codigos_enviados: [],
-        codigos_fallidos: [],
-        codigos_sin_email: [],
+        recovery_reminder_sent: false,
         message: textos[idioma].noPendingReminders
       });
     }
@@ -177,9 +175,7 @@ export default async function handler(req, res) {
         enviados: 0,
         fallidos: 0,
         sin_email_valido: 0,
-        codigos_enviados: [],
-        codigos_fallidos: [],
-        codigos_sin_email: [],
+        recovery_reminder_sent: false,
         message: textos[idioma].noPendingReminders
       });
     }
@@ -187,10 +183,6 @@ export default async function handler(req, res) {
     let enviados = 0;
     let fallidos = 0;
     let sinEmailValido = 0;
-
-    const codigosEnviados = [];
-    const codigosFallidos = [];
-    const codigosSinEmail = [];
 
     for (const itemObjetivo of itemsValidos) {
       const respuestaItemDetalle = await fetch(
@@ -213,7 +205,6 @@ export default async function handler(req, res) {
 
       if (!respuestaItemDetalle.ok) {
         fallidos += 1;
-        codigosFallidos.push(itemObjetivo.code);
         continue;
       }
 
@@ -225,7 +216,6 @@ export default async function handler(req, res) {
 
       if (!itemDetalle || !itemDetalle.contact_info) {
         sinEmailValido += 1;
-        codigosSinEmail.push(itemObjetivo.code);
         continue;
       }
 
@@ -342,7 +332,6 @@ Gracias por utilizar Perdilost.`,
 
       if (!respuestaEmail.ok) {
         fallidos += 1;
-        codigosFallidos.push(itemDetalle.code);
         continue;
       }
 
@@ -366,12 +355,10 @@ Gracias por utilizar Perdilost.`,
 
       if (!respuestaUpdateItem.ok) {
         fallidos += 1;
-        codigosFallidos.push(itemDetalle.code);
         continue;
       }
 
       enviados += 1;
-      codigosEnviados.push(itemDetalle.code);
     }
 
     if (enviados === 0 && fallidos === 0 && sinEmailValido > 0) {
@@ -383,9 +370,6 @@ Gracias por utilizar Perdilost.`,
         enviados,
         fallidos,
         sin_email_valido: sinEmailValido,
-        codigos_enviados: [],
-        codigos_fallidos: [],
-        codigos_sin_email: codigosSinEmail,
         recovery_reminder_sent: false,
         message: textos[idioma].noValidEmail
       });
@@ -399,9 +383,6 @@ Gracias por utilizar Perdilost.`,
       enviados,
       fallidos,
       sin_email_valido: sinEmailValido,
-      codigos_enviados: codigosEnviados,
-      codigos_fallidos: codigosFallidos,
-      codigos_sin_email: codigosSinEmail,
       recovery_reminder_sent: enviados > 0,
       message: enviados > 0 ? textos[idioma].success : textos[idioma].noPendingReminders
     });
