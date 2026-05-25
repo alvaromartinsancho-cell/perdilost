@@ -88,34 +88,36 @@
       Estamos comprobando la información del objeto.
     </div>
 
-    <div id="grupo-recuperado" style="margin-top: 24px;">
-      <p id="pregunta-recuperacion" style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">¿Has recuperado ya el objeto (o has quedado con la persona para recuperarlo próximamente)?</p>
+    <div id="bloque-formulario-recuperacion" style="display:none;">
+      <div id="grupo-recuperado" style="margin-top: 24px;">
+        <p id="pregunta-recuperacion" style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">¿Has recuperado ya el objeto (o has quedado con la persona para recuperarlo próximamente)?</p>
 
-      <label id="label-recuperado-si" style="display:block; margin-bottom:10px; color:#334155;">
-        <input type="radio" name="recuperado" value="si">
-        Sí, ya lo he recuperado
-      </label>
+        <label id="label-recuperado-si" style="display:block; margin-bottom:10px; color:#334155;">
+          <input type="radio" name="recuperado" value="si">
+          Sí, ya lo he recuperado
+        </label>
 
-      <label id="label-recuperado-no" style="display:block; margin-bottom:10px; color:#334155;">
-        <input type="radio" name="recuperado" value="no">
-        No, todavía no lo he recuperado
-      </label>
-    </div>
+        <label id="label-recuperado-no" style="display:block; margin-bottom:10px; color:#334155;">
+          <input type="radio" name="recuperado" value="no">
+          No, todavía no lo he recuperado
+        </label>
+      </div>
 
-    <div style="margin-top: 24px;">
-      <p id="titulo-comentarios" style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">Comentarios (opcional)</p>
-      <textarea id="recovery-comments" placeholder="Puedes añadir aquí cualquier comentario sobre la recuperación del objeto" style="width:100%; max-width:100%; min-height:120px; padding:12px; border:1px solid #cbd5e1; border-radius:10px; box-sizing:border-box; font-size:14px;"></textarea>
-    </div>
+      <div style="margin-top: 24px;">
+        <p id="titulo-comentarios" style="font-weight: bold; color: #1f2937; margin-bottom: 12px;">Comentarios (opcional)</p>
+        <textarea id="recovery-comments" placeholder="Puedes añadir aquí cualquier comentario sobre la recuperación del objeto" style="width:100%; max-width:100%; min-height:120px; padding:12px; border:1px solid #cbd5e1; border-radius:10px; box-sizing:border-box; font-size:14px;"></textarea>
+      </div>
 
-    <div style="margin-top: 24px;">
-      <button type="button" id="btn-enviar-recuperacion" style="background:#2563eb; color:white; border:none; padding:12px 18px; border-radius:10px; cursor:pointer;">
-        Enviar confirmación
-      </button>
+      <div style="margin-top: 24px;">
+        <button type="button" id="btn-enviar-recuperacion" style="background:#2563eb; color:white; border:none; padding:12px 18px; border-radius:10px; cursor:pointer;">
+          Enviar confirmación
+        </button>
+      </div>
     </div>
 
     <div id="mensaje-recuperacion" style="margin-top:20px;"></div>
   </div>
-  
+
 <script>
   const params = new URLSearchParams(window.location.search);
   const token = params.get('token');
@@ -185,6 +187,20 @@
     }
   }
 
+  function mostrarFormularioRecuperacion() {
+    const bloqueFormulario = document.getElementById('bloque-formulario-recuperacion');
+    if (bloqueFormulario) {
+      bloqueFormulario.style.display = 'block';
+    }
+  }
+
+  function ocultarFormularioRecuperacion() {
+    const bloqueFormulario = document.getElementById('bloque-formulario-recuperacion');
+    if (bloqueFormulario) {
+      bloqueFormulario.style.display = 'none';
+    }
+  }
+
   function pintarEstadoCargaRecuperacion() {
     document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].cargandoCodigo;
     document.getElementById('descripcion-recuperacion').textContent = textos[idiomaActual].cargandoDescripcion;
@@ -241,6 +257,8 @@
 
   async function cargarDatosRecuperacion() {
     cargandoDatosRecuperacion = true;
+    codigoValidoRecuperacion = false;
+    ocultarFormularioRecuperacion();
     pintarEstadoCargaRecuperacion();
 
     if (token) {
@@ -259,6 +277,7 @@
         if (!respuestaToken.ok || !resultadoToken?.ok || !resultadoToken.code) {
           cargandoDatosRecuperacion = false;
           codigoValidoRecuperacion = false;
+          ocultarFormularioRecuperacion();
           document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
           document.getElementById('descripcion-recuperacion').textContent =
             textos[idiomaActual].descripcionLabel + (resultadoToken?.error || textos[idiomaActual].errorCodigoNoValido);
@@ -269,6 +288,7 @@
       } catch (e) {
         cargandoDatosRecuperacion = false;
         codigoValidoRecuperacion = false;
+        ocultarFormularioRecuperacion();
         document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoNoInformado;
         document.getElementById('descripcion-recuperacion').textContent =
           textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
@@ -277,6 +297,7 @@
     } else {
       cargandoDatosRecuperacion = false;
       codigoValidoRecuperacion = false;
+      ocultarFormularioRecuperacion();
       pintarEstadoNoInformadoRecuperacion();
       return;
     }
@@ -297,6 +318,7 @@
           if (!response.ok || !resultado?.ok) {
             cargandoDatosRecuperacion = false;
             codigoValidoRecuperacion = false;
+            ocultarFormularioRecuperacion();
             document.getElementById('descripcion-recuperacion').textContent =
               textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
             return;
@@ -316,10 +338,13 @@
           document.getElementById('codigo-recuperacion').textContent = textos[idiomaActual].codigoLabel + code;
           document.getElementById('descripcion-recuperacion').textContent =
             textos[idiomaActual].descripcionLabel + (descripcionTexto || descripcionFallback);
+
+          mostrarFormularioRecuperacion();
         })
         .catch(() => {
           cargandoDatosRecuperacion = false;
           codigoValidoRecuperacion = false;
+          ocultarFormularioRecuperacion();
           document.getElementById('descripcion-recuperacion').textContent =
             textos[idiomaActual].descripcionLabel + textos[idiomaActual].errorCodigoNoValido;
         });
