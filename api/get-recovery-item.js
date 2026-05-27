@@ -59,6 +59,33 @@ export default async function handler(req, res) {
       });
     }
 
+    const respuestaCode = await fetch(
+      `${supabaseUrl}/rest/v1/codes?code=eq.${encodeURIComponent(codeNormalizado)}&select=code,status`,
+      {
+        method: 'GET',
+        headers: {
+          apikey: serviceRoleKey,
+          Authorization: `Bearer ${serviceRoleKey}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!respuestaCode.ok) {
+      return res.status(500).json({
+        error: textos[idioma].serverConfig
+      });
+    }
+
+    const codes = await respuestaCode.json();
+    const codeRow = Array.isArray(codes) && codes.length > 0 ? codes[0] : null;
+
+    if (!codeRow || codeRow.status !== 'registered') {
+      return res.status(400).json({
+        error: textos[idioma].invalidCode
+      });
+    }
+
     const respuestaItem = await fetch(
       `${supabaseUrl}/rest/v1/items?code=eq.${encodeURIComponent(codeNormalizado)}&select=code,description,preferred_language`,
       {

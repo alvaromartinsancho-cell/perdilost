@@ -14,13 +14,15 @@ export default async function handler(req, res) {
         missingFields: 'Faltan datos obligatorios',
         invalidFormat: 'Formato de datos no válido',
         invalidToken: 'El enlace de recuperación no es válido.',
-        expiredToken: 'El enlace de recuperación ha caducado.'
+        expiredToken: 'El enlace de recuperación ha caducado.',
+        serverConfig: 'Error de configuración del servidor'
       },
       en: {
         missingFields: 'Required data is missing',
         invalidFormat: 'Invalid data format',
         invalidToken: 'The recovery link is not valid.',
-        expiredToken: 'The recovery link has expired.'
+        expiredToken: 'The recovery link has expired.',
+        serverConfig: 'Server configuration error'
       }
     };
 
@@ -46,9 +48,53 @@ export default async function handler(req, res) {
       });
     }
 
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !serviceRoleKey) {
+      return res.status(500).json({
+        error: textos[idioma].serverConfig
+      });
+    }
+
+    const codeNormalizado = String(resultado.code || '').trim();
+
+    if (!codeNormalizado) {
+      return res.status(400).json({
+        error: textos[idioma].invalidToken
+      });
+    }
+
+    const respuestaCode = await fetch(
+      `${supabaseUrl}/rest/v1/codes?code=eq.${encodeURIComponent(codeNormalizado)}&select=code,status`,
+      {
+        method: 'GET',
+        headers: {
+          apikey: serviceRoleKey,
+          Authorization: `Bearer ${serviceRoleKey}`,
+          'Content-Type': 'application/json'
+        }
+      }
+    );
+
+    if (!respuestaCode.ok) {
+      return res.status(500).json({
+        error: textos[idioma].serverConfig
+      });
+    }
+
+    const codes = await respuestaCode.json();
+    const codeRow = Array.isArray(codes) && codes.length > 0 ? codes[0] : null;
+
+    if (!codeRow || codeRow.status !== 'registered') {
+      return res.status(400).json({
+        error: textos[idioma].invalidToken
+      });
+    }
+
     return res.status(200).json({
       ok: true,
-      code: resultado.code
+      code: codeNormalizado
     });
   } catch (error) {
     const idiomaError = req.query?.language === 'en' ? 'en' : 'es';
