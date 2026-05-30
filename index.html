@@ -92,6 +92,7 @@
 <script>
   let idiomaActual = 'es';
 let formularioActivo = '';
+let avisoEncontradoSinContactoConfirmado = false;
     const textos = {
   es: {
     bienvenidaTitulo: 'Bienvenido a Perdilost',
@@ -156,7 +157,9 @@ proteccionDatosInfoAdicionalValor: 'puedes consultar la política de privacidad 
 proteccionDatosPoliticaTexto: 'Ver política de privacidad completa',
 checkboxPrivacidadRegistro: 'He leído la información básica sobre protección de datos y acepto el tratamiento de mis datos para registrar mi código y gestionar las comunicaciones necesarias del servicio Perdilost.',
 mensajePrivacidadObligatoria: 'Debes aceptar la información de protección de datos para registrar tu código.',
-mensajePrivacidadObligatoriaEncontrado: 'Debes aceptar la información de protección de datos para enviar el aviso.'
+mensajePrivacidadObligatoriaEncontrado: 'Debes aceptar la información de protección de datos para enviar el aviso.',
+mensajeAvisoSinContacto: 'El propietario solo recibirá la información que hayas escrito en el mensaje. Si no has indicado email o teléfono, asegúrate de explicar claramente cómo puede recuperar el objeto. Por ejemplo: “He dejado el objeto en el bar XX” o “Puedes preguntar por él en recepción”.',
+botonEnviarAvisoIgualmente: 'Enviar aviso igualmente'
   },
   en: {
     bienvenidaTitulo: 'Welcome to Perdilost',
@@ -221,7 +224,9 @@ proteccionDatosInfoAdicionalValor: 'you can read the full privacy policy using t
 proteccionDatosPoliticaTexto: 'View full privacy policy',
 checkboxPrivacidadRegistro: 'I have read the basic data protection information and I accept the processing of my data to register my code and manage the communications necessary for the Perdilost service.',
 mensajePrivacidadObligatoria: 'You must accept the data protection information to register your code.',
-mensajePrivacidadObligatoriaEncontrado: 'You must accept the data protection information to send the notice.'
+mensajePrivacidadObligatoriaEncontrado: 'You must accept the data protection information to send the notice.',
+mensajeAvisoSinContacto: 'The owner will only receive the information you wrote in the message. If you have not provided an email or phone number, please make sure you clearly explain how the item can be recovered. For example: “I left the item at XX bar” or “You can ask for it at reception”.',
+botonEnviarAvisoIgualmente: 'Send notice anyway'
   }
 };
     function aplicarTextosGenerales() {
@@ -382,6 +387,7 @@ function limpiarGrupoError(id) {
     function mostrarEncontrado() {
       document.getElementById('btn-encontrado').classList.add('activo');
       formularioActivo = 'encontrado';
+      avisoEncontradoSinContactoConfirmado = false;
       document.getElementById('btn-propietario').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
@@ -591,6 +597,7 @@ if (botonEnviarAviso) {
 }
 
 if (!codigo || !mensaje) {
+  avisoEncontradoSinContactoConfirmado = false;
   if (!codigo) marcarCampoError('codigo-encontrado');
   if (!mensaje) marcarCampoError('mensaje-encontrado');
 
@@ -604,11 +611,24 @@ if (!codigo || !mensaje) {
 
 const privacyAcceptedEncontrado = document.getElementById('privacy-accepted-encontrado')?.checked;
 if (!privacyAcceptedEncontrado) {
+  avisoEncontradoSinContactoConfirmado = false;
   marcarGrupoError('grupo-privacy-accepted-encontrado');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoriaEncontrado}</div>`;
   if (botonEnviarAviso) {
     botonEnviarAviso.disabled = false;
     botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
+  }
+  return;
+}
+
+const avisoSinContacto = !telefono && !contacto;
+
+if (avisoSinContacto && !avisoEncontradoSinContactoConfirmado) {
+  avisoEncontradoSinContactoConfirmado = true;
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-aviso" style="background:#fff7ed; border:1px solid #fdba74; border-left:4px solid #f97316; color:#7c2d12; padding:14px 16px; border-radius:12px; line-height:1.55;">${textos[idiomaActual].mensajeAvisoSinContacto}</div>`;
+  if (botonEnviarAviso) {
+    botonEnviarAviso.disabled = false;
+    botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAvisoIgualmente;
   }
   return;
 }
@@ -637,6 +657,7 @@ try {
 }
 
 if (!respuesta.ok) {
+  avisoEncontradoSinContactoConfirmado = false;
   marcarCampoError('codigo-encontrado');
   const textoError = resultado?.error || (idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
@@ -654,6 +675,7 @@ document.getElementById('telefono-encontrado').value = '';
 document.getElementById('contacto-encontrado').value = '';
 document.getElementById('mensaje-encontrado').value = '';
 document.getElementById('privacy-accepted-encontrado').checked = false;
+avisoEncontradoSinContactoConfirmado = false;
 
 limpiarCampoError('codigo-encontrado');
 limpiarCampoError('nombre-encontrado');
@@ -670,6 +692,7 @@ if (resultado.ok === true && resultado.emailSent === true) {
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${resultado.message}</div>`;
     return;
   } else if (resultado.ok === false) {
+    avisoEncontradoSinContactoConfirmado = false;
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${resultado.message}</div>`;
     if (botonEnviarAviso) {
       botonEnviarAviso.disabled = false;
@@ -684,6 +707,7 @@ if (botonEnviarAviso) {
   botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
 }
 
+avisoEncontradoSinContactoConfirmado = false;
 mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.'}</div>`;
     }
   </script>
