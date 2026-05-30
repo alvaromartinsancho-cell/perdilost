@@ -158,10 +158,8 @@ proteccionDatosPoliticaTexto: 'Ver política de privacidad completa',
 checkboxPrivacidadRegistro: 'He leído la información básica sobre protección de datos y acepto el tratamiento de mis datos para registrar mi código y gestionar las comunicaciones necesarias del servicio Perdilost.',
 mensajePrivacidadObligatoria: 'Debes aceptar la información de protección de datos para registrar tu código.',
 mensajePrivacidadObligatoriaEncontrado: 'Debes aceptar la información de protección de datos para enviar el aviso.',
-mensajeAvisoSinContactoTitulo: 'Antes de enviar el aviso',
-mensajeAvisoSinContacto: 'Si no has rellenado tus datos de contacto, que son opcionales, el propietario solo recibirá la información que hayas escrito en este mensaje. Asegúrate de explicar claramente cómo puede recuperar el objeto. Por ejemplo: “He dejado el objeto en el Bar XX, pregunta por él en la barra” o “Lo he dejado en la recepción del Hotel XX”.',
-botonConfirmarAvisoSinContacto: 'He indicado cómo recuperarlo. Enviar',
-botonRevisarAvisoSinContacto: 'Revisar mensaje'
+mensajeAvisoSinContacto: 'El propietario solo recibirá la información que hayas escrito en el mensaje. Si no has indicado email o teléfono, asegúrate de explicar claramente cómo puede recuperar el objeto. Por ejemplo: “He dejado el objeto en el bar XX” o “Puedes preguntar por él en recepción”.',
+botonEnviarAvisoIgualmente: 'Enviar aviso igualmente'
   },
   en: {
     bienvenidaTitulo: 'Welcome to Perdilost',
@@ -206,10 +204,7 @@ botonEnviarAviso: 'Send notice',
 botonEnviando: 'Sending...',
 mensajeCamposRegistro: 'You must complete all fields to register your code.',
 mensajeEmailsNoCoinciden: 'The email addresses do not match. Please check both fields.',
-mensajeEmailRegistroNoEnviado: 'Code phone number (optional)',
-placeholderContactoEncontrado: 'Your email (optional)',
-placeholderMensajeEncontrado: 'Write here the message you want the owner to receive so they can recover their item. You can indicate how to contact you or where you left it.',
-bot activated correctly, but we could not send you the confirmation email.',
+mensajeEmailRegistroNoEnviado: 'Code activated correctly, but we could not send you the confirmation email.',
 mensajeRegistroOk: 'Code activated correctly. We have sent you a confirmation email with the registration details.',
 mensajeCamposEncontrado: 'You must complete all required fields to send the notice.',
 
@@ -230,10 +225,8 @@ proteccionDatosPoliticaTexto: 'View full privacy policy',
 checkboxPrivacidadRegistro: 'I have read the basic data protection information and I accept the processing of my data to register my code and manage the communications necessary for the Perdilost service.',
 mensajePrivacidadObligatoria: 'You must accept the data protection information to register your code.',
 mensajePrivacidadObligatoriaEncontrado: 'You must accept the data protection information to send the notice.',
-mensajeAvisoSinContactoTitulo: 'Before sending the notice',
-mensajeAvisoSinContacto: 'If you have not filled in your contact details, which are optional, the owner will only receive the information you wrote in this message. Please make sure you clearly explain how the item can be recovered. For example: “I left the item at XX Bar; please ask at the counter” or “I left it at the reception desk of XX Hotel”.',
-botonConfirmarAvisoSinContacto: 'I explained how to recover it. Send',
-botonRevisarAvisoSinContacto: 'Review message'
+mensajeAvisoSinContacto: 'The owner will only receive the information you wrote in the message. If you have not provided an email or phone number, please make sure you clearly explain how the item can be recovered. For example: “I left the item at XX bar” or “You can ask for it at reception”.',
+botonEnviarAvisoIgualmente: 'Send notice anyway'
   }
 };
     function aplicarTextosGenerales() {
@@ -334,61 +327,8 @@ function limpiarGrupoError(id) {
 }
 
     aplicarTextosGenerales();
-
-function cerrarPopupAvisoSinContacto() {
-  const popup = document.getElementById('popup-aviso-sin-contacto');
-  if (popup) {
-    popup.remove();
-  }
-
-  const botonEnviarAviso = document.getElementById('btn-enviar-aviso');
-  if (botonEnviarAviso) {
-    botonEnviarAviso.disabled = false;
-    botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
-  }
-}
-
-function mostrarPopupAvisoSinContacto() {
-  cerrarPopupAvisoSinContacto();
-
-  const popup = document.createElement('div');
-  popup.id = 'popup-aviso-sin-contacto';
-  popup.setAttribute('role', 'dialog');
-  popup.setAttribute('aria-modal', 'true');
-  popup.setAttribute('aria-labelledby', 'popup-aviso-sin-contacto-titulo');
-
-  popup.innerHTML = `
-    <div style="position:fixed; inset:0; background:rgba(15,23,42,0.55); z-index:9999; display:flex; align-items:center; justify-content:center; padding:20px;">
-      <div style="background:#ffffff; max-width:560px; width:100%; border-radius:18px; box-shadow:0 24px 70px rgba(15,23,42,0.35); padding:24px; color:#1f2937; line-height:1.6;">
-        <div style="display:flex; align-items:flex-start; gap:12px; margin-bottom:10px;">
-          <div style="width:36px; height:36px; border-radius:999px; background:#fff7ed; color:#ea580c; display:flex; align-items:center; justify-content:center; flex:0 0 auto;">
-            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-          </div>
-          <div>
-            <h3 id="popup-aviso-sin-contacto-titulo" style="margin:0 0 8px 0; color:#1f2d3d; font-size:1.15rem;">${textos[idiomaActual].mensajeAvisoSinContactoTitulo}</h3>
-            <p style="margin:0;">${textos[idiomaActual].mensajeAvisoSinContacto}</p>
-          </div>
-        </div>
-        <div style="display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap; margin-top:22px;">
-          <button type="button" onclick="cerrarPopupAvisoSinContacto()" style="background:#e5e7eb; color:#1f2937;">${textos[idiomaActual].botonRevisarAvisoSinContacto}</button>
-          <button type="button" onclick="confirmarAvisoSinContactoYEnviar()">${textos[idiomaActual].botonConfirmarAvisoSinContacto}</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.body.appendChild(popup);
-}
-
-function confirmarAvisoSinContactoYEnviar() {
-  avisoEncontradoSinContactoConfirmado = true;
-  cerrarPopupAvisoSinContacto();
-  comprobarCodigoEncontrado();
-}
     
     function mostrarPropietario() {
-      cerrarPopupAvisoSinContacto();
-      avisoEncontradoSinContactoConfirmado = false;
       document.getElementById('btn-propietario').classList.add('activo');
       formularioActivo = 'propietario';
       document.getElementById('btn-encontrado').classList.remove('activo');
@@ -445,10 +385,9 @@ function confirmarAvisoSinContactoYEnviar() {
     }
 
     function mostrarEncontrado() {
-      cerrarPopupAvisoSinContacto();
-      avisoEncontradoSinContactoConfirmado = false;
       document.getElementById('btn-encontrado').classList.add('activo');
       formularioActivo = 'encontrado';
+      avisoEncontradoSinContactoConfirmado = false;
       document.getElementById('btn-propietario').classList.remove('activo');
       document.getElementById('zona').innerHTML = `
         <div class="tarjeta-formulario">
@@ -658,10 +597,10 @@ if (botonEnviarAviso) {
 }
 
 if (!codigo || !mensaje) {
+  avisoEncontradoSinContactoConfirmado = false;
   if (!codigo) marcarCampoError('codigo-encontrado');
   if (!mensaje) marcarCampoError('mensaje-encontrado');
 
-  avisoEncontradoSinContactoConfirmado = false;
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajeCamposEncontrado}</div>`;
   if (botonEnviarAviso) {
     botonEnviarAviso.disabled = false;
@@ -672,8 +611,8 @@ if (!codigo || !mensaje) {
 
 const privacyAcceptedEncontrado = document.getElementById('privacy-accepted-encontrado')?.checked;
 if (!privacyAcceptedEncontrado) {
-  marcarGrupoError('grupo-privacy-accepted-encontrado');
   avisoEncontradoSinContactoConfirmado = false;
+  marcarGrupoError('grupo-privacy-accepted-encontrado');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textos[idiomaActual].mensajePrivacidadObligatoriaEncontrado}</div>`;
   if (botonEnviarAviso) {
     botonEnviarAviso.disabled = false;
@@ -685,11 +624,12 @@ if (!privacyAcceptedEncontrado) {
 const avisoSinContacto = !telefono && !contacto;
 
 if (avisoSinContacto && !avisoEncontradoSinContactoConfirmado) {
+  avisoEncontradoSinContactoConfirmado = true;
+  mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-aviso" style="background:#fff7ed; border:1px solid #fdba74; border-left:4px solid #f97316; color:#7c2d12; padding:14px 16px; border-radius:12px; line-height:1.55;">${textos[idiomaActual].mensajeAvisoSinContacto}</div>`;
   if (botonEnviarAviso) {
     botonEnviarAviso.disabled = false;
-    botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
+    botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAvisoIgualmente;
   }
-  mostrarPopupAvisoSinContacto();
   return;
 }
 
@@ -716,9 +656,8 @@ try {
   resultado = null;
 }
 
-avisoEncontradoSinContactoConfirmado = false;
-
 if (!respuesta.ok) {
+  avisoEncontradoSinContactoConfirmado = false;
   marcarCampoError('codigo-encontrado');
   const textoError = resultado?.error || (idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.');
   mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${textoError}</div>`;
@@ -736,6 +675,7 @@ document.getElementById('telefono-encontrado').value = '';
 document.getElementById('contacto-encontrado').value = '';
 document.getElementById('mensaje-encontrado').value = '';
 document.getElementById('privacy-accepted-encontrado').checked = false;
+avisoEncontradoSinContactoConfirmado = false;
 
 limpiarCampoError('codigo-encontrado');
 limpiarCampoError('nombre-encontrado');
@@ -752,6 +692,7 @@ if (resultado.ok === true && resultado.emailSent === true) {
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-ok">${resultado.message}</div>`;
     return;
   } else if (resultado.ok === false) {
+    avisoEncontradoSinContactoConfirmado = false;
     mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${resultado.message}</div>`;
     if (botonEnviarAviso) {
       botonEnviarAviso.disabled = false;
@@ -766,6 +707,7 @@ if (botonEnviarAviso) {
   botonEnviarAviso.textContent = textos[idiomaActual].botonEnviarAviso;
 }
 
+avisoEncontradoSinContactoConfirmado = false;
 mensajeEncontradoFormulario.innerHTML = `<div class="mensaje-error">${idiomaActual === 'en' ? 'Unexpected error sending the notice.' : 'Error inesperado al enviar el aviso.'}</div>`;
     }
   </script>
